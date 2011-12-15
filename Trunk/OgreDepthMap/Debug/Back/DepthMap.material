@@ -1,0 +1,52 @@
+fragment_program FragmentDepthMap glsl
+{
+   source depthmap.frag
+}
+
+fragment_program FragmentSampler glsl
+{
+    source sampler.frag
+    default_params
+    {
+        param_named Depth int 0
+    }
+}
+
+
+material DepthMap
+{
+    technique
+    {
+        pass
+        {
+            fragment_program_ref FragmentDepthMap
+            {
+                param_named_auto fNear near_clip_distance
+                param_named_auto fFar far_clip_distance
+            }
+        }
+    }
+}
+
+material Sampler
+{
+    technique
+    {
+        pass
+        {
+            fragment_program_ref FragmentSampler
+            {
+            }
+            texture_unit
+            {
+                tex_coord_set 0
+                tex_address_mode clamp
+                filtering trilinear
+            }
+        }
+    }
+}
+
+
+
+

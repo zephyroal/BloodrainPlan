@@ -1,0 +1,152 @@
+14:41:19: Creating resource group General
+14:41:19: Creating resource group Internal
+14:41:19: Creating resource group Autodetect
+14:41:19: SceneManagerFactory for type 'DefaultSceneManager' registered.
+14:41:19: Registering ResourceManager for type Material
+14:41:19: Registering ResourceManager for type Mesh
+14:41:19: Registering ResourceManager for type Skeleton
+14:41:19: MovableObjectFactory for type 'ParticleSystem' registered.
+14:41:19: OverlayElementFactory for type Panel registered.
+14:41:19: OverlayElementFactory for type BorderPanel registered.
+14:41:19: OverlayElementFactory for type TextArea registered.
+14:41:19: Registering ResourceManager for type Font
+14:41:19: ArchiveFactory for archive type FileSystem registered.
+14:41:19: ArchiveFactory for archive type Zip registered.
+14:41:19: DDS codec registering
+14:41:19: FreeImage version: 3.13.1
+14:41:19: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
+14:41:19: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2,pfm,pct,pict,pic,bay,bmq,cr2,crw,cs1,dc2,dcr,dng,erf,fff,hdr,k25,kdc,mdc,mos,mrw,nef,orf,pef,pxn,raf,raw,rdc,sr2,srf,arw,3fr,cine,ia,kc2,mef,nrw,qtk,rw2,sti,drf,dsc,ptx,cap,iiq,rwz
+14:41:19: Registering ResourceManager for type HighLevelGpuProgram
+14:41:19: Registering ResourceManager for type Compositor
+14:41:19: MovableObjectFactory for type 'Entity' registered.
+14:41:19: MovableObjectFactory for type 'Light' registered.
+14:41:19: MovableObjectFactory for type 'BillboardSet' registered.
+14:41:19: MovableObjectFactory for type 'ManualObject' registered.
+14:41:19: MovableObjectFactory for type 'BillboardChain' registered.
+14:41:19: MovableObjectFactory for type 'RibbonTrail' registered.
+14:41:19: OGRE EXCEPTION(6:FileNotFoundException): 'plugins.cfg' file not found! in ConfigFile::load at .\src\OgreConfigFile.cpp (line 83)
+14:41:19: plugins.cfg not found, automatic plugin loading disabled.
+14:41:19: *-*-* OGRE Initialising
+14:41:19: *-*-* Version 1.7.2 (Cthugha)
+14:41:19: Loading library Plugin_OctreeSceneManager_d
+14:41:19: Installing plugin: Octree & Terrain Scene Manager
+14:41:19: Plugin successfully installed
+14:41:19: Loading library RenderSystem_Direct3D9_d
+14:41:19: Installing plugin: D3D9 RenderSystem
+14:41:19: D3D9 : Direct3D9 Rendering Subsystem created.
+14:41:19: D3D9: Driver Detection Starts
+14:41:19: D3D9: Driver Detection Ends
+14:41:19: Plugin successfully installed
+14:41:19: CPU Identifier & Features
+14:41:19: -------------------------
+14:41:19:  *   CPU ID: GenuineIntel: Intel(R) Core(TM)2 Duo CPU     E8400  @ 3.00GHz
+14:41:19:  *      SSE: yes
+14:41:19:  *     SSE2: yes
+14:41:19:  *     SSE3: yes
+14:41:19:  *      MMX: yes
+14:41:19:  *   MMXEXT: yes
+14:41:19:  *    3DNOW: no
+14:41:19:  * 3DNOWEXT: no
+14:41:19:  *     CMOV: yes
+14:41:19:  *      TSC: yes
+14:41:19:  *      FPU: yes
+14:41:19:  *      PRO: yes
+14:41:19:  *       HT: no
+14:41:19: -------------------------
+14:41:19: D3D9 : Subsystem Initialising
+14:41:19: Registering ResourceManager for type Texture
+14:41:19: Registering ResourceManager for type GpuProgram
+14:41:19: ***************************************
+14:41:19: *** D3D9 : Subsystem Initialised OK ***
+14:41:19: ***************************************
+14:41:19: Creating resource group TestCoreResGroup
+14:41:19: Added resource location 'e:\ZeusSVN\Trunk\Deferred\Data\RTShaderLib' of type 'FileSystem' to resource group 'TestCoreResGroup'
+14:41:19: Added resource location 'e:\ZeusSVN\Trunk\Deferred\Data\Scene' of type 'FileSystem' to resource group 'TestCoreResGroup'
+14:41:19: D3D9RenderSystem::_createRenderWindow "TestCore", 1068x575 windowed  miscParams: FSAA=0 depthBuffer=false externalWindowHandle=137870 useNVPerfHUD=true vsync=false 
+14:41:19: D3D9 : Created D3D9 Rendering Window 'TestCore' : 1068x575, 32bpp
+14:41:19: D3D9 : WARNING - disabling VSync in windowed mode can cause timing issues at lower frame rates, turn VSync on if you observe this problem.
+14:41:19: D3D9: Vertex texture format supported - PF_A8R8G8B8
+14:41:19: D3D9: Vertex texture format supported - PF_B8G8R8A8
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT16_RGB
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT16_RGBA
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT32_RGB
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT32_RGBA
+14:41:19: D3D9: Vertex texture format supported - PF_R8G8B8A8
+14:41:19: D3D9: Vertex texture format supported - PF_DEPTH
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT16_R
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT32_R
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT16_GR
+14:41:19: D3D9: Vertex texture format supported - PF_FLOAT32_GR
+14:41:19: D3D9: Vertex texture format supported - PF_PVRTC_RGB2
+14:41:19: D3D9: Vertex texture format supported - PF_PVRTC_RGBA2
+14:41:19: D3D9: Vertex texture format supported - PF_PVRTC_RGB4
+14:41:19: D3D9: Vertex texture format supported - PF_PVRTC_RGBA4
+14:41:19: RenderSystem capabilities
+14:41:19: -------------------------
+14:41:19: RenderSystem Name: Direct3D9 Rendering Subsystem
+14:41:19: GPU Vendor: nvidia
+14:41:19: Device Name: Monitor-1-NVIDIA GeForce GT 430
+14:41:19: Driver Version: 6.14.12.7061
+14:41:19:  * Fixed function pipeline: yes
+14:41:19:  * Hardware generation of mipmaps: yes
+14:41:19:  * Texture blending: yes
+14:41:19:  * Anisotropic texture filtering: yes
+14:41:19:  * Dot product texture operation: yes
+14:41:19:  * Cube mapping: yes
+14:41:19:  * Hardware stencil buffer: yes
+14:41:19:    - Stencil depth: 8
+14:41:19:    - Two sided stencil support: yes
+14:41:19:    - Wrap stencil values: yes
+14:41:19:  * Hardware vertex / index buffers: yes
+14:41:19:  * Vertex programs: yes
+14:41:19:  * Number of floating-point constants for vertex programs: 256
+14:41:19:  * Number of integer constants for vertex programs: 16
+14:41:19:  * Number of boolean constants for vertex programs: 16
+14:41:19:  * Fragment programs: yes
+14:41:19:  * Number of floating-point constants for fragment programs: 224
+14:41:19:  * Number of integer constants for fragment programs: 16
+14:41:19:  * Number of boolean constants for fragment programs: 16
+14:41:19:  * Geometry programs: no
+14:41:19:  * Number of floating-point constants for geometry programs: 0
+14:41:19:  * Number of integer constants for geometry programs: 0
+14:41:19:  * Number of boolean constants for geometry programs: 0
+14:41:19:  * Supported Shader Profiles: hlsl ps_1_1 ps_1_2 ps_1_3 ps_1_4 ps_2_0 ps_2_a ps_2_b ps_2_x ps_3_0 vs_1_1 vs_2_0 vs_2_a vs_2_x vs_3_0
+14:41:19:  * Texture Compression: yes
+14:41:19:    - DXT: yes
+14:41:19:    - VTC: no
+14:41:19:    - PVRTC: no
+14:41:19:  * Scissor Rectangle: yes
+14:41:19:  * Hardware Occlusion Query: yes
+14:41:19:  * User clip planes: yes
+14:41:19:  * VET_UBYTE4 vertex element type: yes
+14:41:19:  * Infinite far plane projection: yes
+14:41:19:  * Hardware render-to-texture: yes
+14:41:19:  * Floating point textures: yes
+14:41:19:  * Non-power-of-two textures: yes
+14:41:19:  * Volume textures: yes
+14:41:19:  * Multiple Render Targets: 4
+14:41:19:    - With different bit depths: yes
+14:41:19:  * Point Sprites: yes
+14:41:19:  * Extended point parameters: yes
+14:41:19:  * Max Point Size: 10
+14:41:19:  * Vertex texture fetch: yes
+14:41:19:  * Number of world matrices: 0
+14:41:19:  * Number of texture units: 8
+14:41:19:  * Stencil buffer depth: 8
+14:41:19:  * Number of vertex blend matrices: 0
+14:41:19:    - Max vertex textures: 4
+14:41:19:    - Vertex textures shared: no
+14:41:19:  * Render to Vertex Buffer : no
+14:41:19:  * DirectX per stage constants: yes
+14:41:19: DefaultWorkQueue('Root') initialising on thread main.
+14:41:19: Particle Renderer Type 'billboard' registered
+14:41:19: SceneManagerFactory for type 'OctreeSceneManager' registered.
+14:41:19: SceneManagerFactory for type 'TerrainSceneManager' registered.
+14:41:19: Parsing scripts for resource group Autodetect
+14:41:19: Finished parsing scripts for resource group Autodetect
+14:41:19: Parsing scripts for resource group General
+14:41:19: Finished parsing scripts for resource group General
+14:41:19: Parsing scripts for resource group Internal
+14:41:19: Finished parsing scripts for resource group Internal
+14:41:19: Parsing scripts for resource group TestCoreResGroup
+14:41:19: Finished parsing scripts for resource group TestCoreResGroup

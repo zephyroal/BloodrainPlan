@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BloodRain3D", "BloodRain3D\BloodRain3D.vcproj", "{81CA0C06-5DDA-4EDA-BF1B-943F4537C891}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2} = {08060A31-6315-4F03-81EF-9089A1EBDAB2}
+		{2E30F488-61FD-455B-BE50-9AD347C527A6} = {2E30F488-61FD-455B-BE50-9AD347C527A6}
+		{5506C2AB-7DD1-47BB-A77D-EB26E52BE41C} = {5506C2AB-7DD1-47BB-A77D-EB26E52BE41C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EditableTerrainManager", "Dependency\ETM\EditableTerrain.vcproj", "{2E30F488-61FD-455B-BE50-9AD347C527A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2} = {08060A31-6315-4F03-81EF-9089A1EBDAB2}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyXML", "Dependency\TinyXML\TinyXML.vcproj", "{08060A31-6315-4F03-81EF-9089A1EBDAB2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hydrax", "Dependency\Hydrax\Hydrax.vcproj", "{5506C2AB-7DD1-47BB-A77D-EB26E52BE41C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81CA0C06-5DDA-4EDA-BF1B-943F4537C891}.Debug|Win32.ActiveCfg = Debug|Win32
+		{81CA0C06-5DDA-4EDA-BF1B-943F4537C891}.Debug|Win32.Build.0 = Debug|Win32
+		{81CA0C06-5DDA-4EDA-BF1B-943F4537C891}.Release|Win32.ActiveCfg = Release|Win32
+		{81CA0C06-5DDA-4EDA-BF1B-943F4537C891}.Release|Win32.Build.0 = Release|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Debug|Win32.Build.0 = Debug|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Release|Win32.ActiveCfg = Release|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Release|Win32.Build.0 = Release|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Debug|Win32.Build.0 = Debug|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Release|Win32.ActiveCfg = Release|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Release|Win32.Build.0 = Release|Win32
+		{5506C2AB-7DD1-47BB-A77D-EB26E52BE41C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5506C2AB-7DD1-47BB-A77D-EB26E52BE41C}.Debug|Win32.Build.0 = Debug|Win32
+		{5506C2AB-7DD1-47BB-A77D-EB26E52BE41C}.Release|Win32.ActiveCfg = Release|Win32
+		{5506C2AB-7DD1-47BB-A77D-EB26E52BE41C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

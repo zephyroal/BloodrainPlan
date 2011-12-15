@@ -1,0 +1,23 @@
+fragment_program MyFragmentShader3 cg
+{
+  source Ogre3DBeginnersGuideShaders3.cg
+  entry_point MyFragmentShader3
+  profiles ps_2_0 arbfp1
+}
+
+material Ogre3DBeginnersGuide/Comp3
+{
+  technique
+  {
+    pass
+    {
+      fragment_program_ref MyFragmentShader3
+      {
+      }
+      texture_unit
+      {
+
+      }
+    }
+  }
+}

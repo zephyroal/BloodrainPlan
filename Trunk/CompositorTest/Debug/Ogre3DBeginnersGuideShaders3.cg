@@ -1,0 +1,10 @@
+void MyFragmentShader3(float2 uv : TEXCOORD0,
+out float4 color : COLOR,
+uniform sampler2D texture)
+{
+  float num=50;
+  float stepsize = 1.0/ num;
+  float2 fragment = float2(stepsize * floor(uv.x * num),stepsize *floor(uv.y * num));
+  color = tex2D(texture, fragment);
+
+}

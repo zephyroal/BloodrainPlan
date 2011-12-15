@@ -1,0 +1,34 @@
+ // Post processors
+material DeferredShadow
+{
+    technique
+    {
+		pass
+		{
+			lighting off
+			
+			depth_write off
+			depth_check off
+      
+			vertex_program_ref DeferredShading/post/vs
+			{
+			
+			}
+			fragment_program_ref DeferredShading/post/Ambient_ps
+			{
+			
+			}
+			texture_unit
+			{
+				tex_address_mode clamp
+				filtering none
+			}
+			texture_unit
+			{
+				tex_address_mode clamp
+				filtering none
+			}
+			
+		}
+	}
+}

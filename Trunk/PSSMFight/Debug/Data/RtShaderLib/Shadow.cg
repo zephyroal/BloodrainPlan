@@ -1,0 +1,184 @@
+//----------------------------------------------------------------------
+//yezhu.cg
+//----------------------------------------------------------------------
+void ogre_far_fog_vp_main(float4 pos           :POSITION,
+                          out float4 oPosition :POSITION,
+                          uniform float4x4 worldViewProj)
+{
+    oPosition=mul(worldViewProj,pos);
+}
+
+
+void ogre_far_fog_fp_main(uniform float4 fogColour,
+                          out float4 oColour:COLOR)
+{
+    oColour=fogColour;
+}
+
+//-----------------------------------------------------------------------
+void ogre_transparent_vp_main(float4 pos           :POSITION,
+                              float2 tex           :TEXCOORD0,
+                              out float4 oPosition :POSITION,
+                              out float4 oTex      :TEXCOORD0,
+                              uniform float4x4 worldViewProj,
+                              uniform float4x4 worldView,
+                              uniform float3   fogParams,
+                              uniform float    transStartRatio
+                              )
+{
+    oPosition=mul(worldViewProj,pos);
+    float disWithCam=distance(mul(worldView,pos).xyz,float3(0,0,0));
+    float startfog=fogParams.x+(fogParams.y-fogParams.x)*transStartRatio;
+    float end=fogParams.y;
+    float alptha=0;
+    if(disWithCam<startfog)
+    {
+        alptha=1;
+    }
+    else if(disWithCam>end)
+    {
+        alptha=0;
+    }
+    else
+    {
+        alptha = 1 - (disWithCam-startfog)*(1/(end-startfog));
+    }
+    oTex=float4(tex.xy,alptha,1);
+}
+
+void ogre_transparent_fp_main(float4 tex:TEXCOORD0,
+                              out float4 oColour:COLOR,
+                              uniform sampler2D texMap:register(s0)
+                              )
+{
+    float4 col=tex2D(texMap,tex.xy);
+    col.a=tex.z;
+    oColour=col;
+}
+
+//-----------------------------------------------------------------------------
+float shadowPCF(sampler2D shadowMap, float4 shadowMapPos, float2 offset)
+{
+   shadowMapPos = shadowMapPos / shadowMapPos.w;
+   float2 uv = shadowMapPos.xy;
+   float3 o = float3(offset, -offset.x) * 0.3f;
+
+   // Note: We using 2x2 PCF. Good enough and is alot faster.
+   float c = (shadowMapPos.z <= tex2D(shadowMap, uv.xy - o.xy).r) ? 1 : 0; // top left
+   c +=  (shadowMapPos.z <= tex2D(shadowMap, uv.xy + o.xy).r) ? 1 : 0; // bottom right
+   c +=  (shadowMapPos.z <= tex2D(shadowMap, uv.xy + o.zy).r) ? 1 : 0; // bottom left
+   c +=  (shadowMapPos.z <= tex2D(shadowMap, uv.xy - o.zy).r) ? 1 : 0; // top right
+
+
+   return c / 4;
+}
+
+void ogre_texture_depthshadow_caster_vp_main(float4 pos           :POSITION,
+                                             out float4 oPosition :POSITION,
+                                             out float2 oDepth    :TEXCOORD0,
+                                             uniform float4x4 worldViewProj)
+{
+     oPosition=mul(worldViewProj,pos);
+     oDepth.x=oPosition.z;
+     oDepth.y=oPosition.w;                         
+}
+                     
+void ogre_texture_depthshadow_caster_fp_main(float2 depth       :TEXCOORD0,
+                                             out float4 oColour :COLOR)
+{
+    float finalDepth = depth.x / depth.y;
+    oColour = float4(finalDepth, finalDepth, finalDepth, 1);
+}
+
+
+void ogre_texture_depthshadow_receiver_vp_main(
+                                  float4 position:POSITION,
+                                  float3 normal  :NORMAL,
+                                  float2 uv      :TEXCOORD0,
+                                  out float4 oPosition      :POSITION,
+                                  out float4 oUV            :TEXCOORD0,
+                                  out float4 oLightPosition0:TEXCOORD1,
+                                  out float4 oLightPosition1:TEXCOORD2,
+                                  out float4 oLightPosition2:TEXCOORD3,
+                                  out float3 oNorm          :TEXCOORD4,
+                                  out float4 oLightPos      :TEXCOORD5,
+                                  out float3 oEyePos        :TEXCOORD6,
+                                  out float4 oPos           :TEXCOORD7,
+                                  uniform float4   lightPosition,
+                                  uniform float3   eyePosition,
+                                  uniform float4x4 worldViewProj,
+                                  uniform float4x4 texWorldViewProjMatrix0,
+                                  uniform float4x4 texWorldViewProjMatrix1,
+                                  uniform float4x4 texWorldViewProjMatrix2)
+{
+    oPosition = mul(worldViewProj,position);
+    oPos      = position;
+    oNorm     = normal;
+    oLightPos = lightPosition;
+    oEyePos   = eyePosition;
+    
+    oUV       = float4(uv,oPosition.z,1);
+    
+    oLightPosition0=mul(texWorldViewProjMatrix0,position);
+    oLightPosition1=mul(texWorldViewProjMatrix1,position);
+    oLightPosition2=mul(texWorldViewProjMatrix2,position);
+}
+
+
+void ogre_texture_depthshadow_receiver_fp_main(
+                                  float4 UV            :TEXCOORD0,
+                                  float4 LightPosition0:TEXCOORD1,
+                                  float4 LightPosition1:TEXCOORD2,
+                                  float4 LightPosition2:TEXCOORD3,
+                                  float3 Norm          :TEXCOORD4,
+                                  float4 LightPos      :TEXCOORD5,
+                                  float3 EyePos        :TEXCOORD6,
+                                  float4 Pos           :TEXCOORD7, 
+                                  out     float4 oColour   :COLOR,
+                                  uniform float4 pssmSplitPoints,
+                                  uniform float4 inverseShadowmapSize0,
+                                  uniform float4 inverseShadowmapSize1,
+                                  uniform float4 inverseShadowmapSize2,
+                                  uniform float4 lightAmbient,
+                                  uniform float4 lightDiffuse,
+                                  uniform float4 lightSpecular,
+                                  uniform float  exponent,
+                                  uniform float4 shadowColour,
+                                  uniform sampler2D texMap    :register(s0),
+                                  uniform sampler2D shadowMap0:register(s1),
+                                  uniform sampler2D shadowMap1:register(s2),
+                                  uniform sampler2D shadowMap2:register(s3))
+{
+    float3 N = normalize(Norm);
+    float3 EyeDir = normalize(EyePos-Pos.xyz);
+    float3 LightDir = normalize(LightPos.xyz - (Pos.xyz*LightPos.w));
+    float3 HalfAngle = normalize(LightDir+EyeDir);
+    float NdotL=dot(LightDir,N);
+    float NdotH=dot(HalfAngle,N);
+    float4 Lit=lit(NdotL,NdotH,exponent);
+    float4 textColour= tex2D(texMap,UV.xy);
+    oColour=lightDiffuse*Lit.y + lightSpecular*Lit.z + textColour;
+    oColour*=lightAmbient;
+    
+    float Depth = UV.z;
+    float shadowing=1.0f;
+    if(Depth<=pssmSplitPoints.y)
+    {
+        shadowing=shadowPCF(shadowMap0,LightPosition0,inverseShadowmapSize0.xy);
+    }
+    else if(Depth<=pssmSplitPoints.z)
+    {
+        shadowing=shadowPCF(shadowMap1,LightPosition1,inverseShadowmapSize1.xy);
+    }
+    else
+    {
+        shadowing=shadowPCF(shadowMap2,LightPosition2,inverseShadowmapSize2.xy);
+    }
+    
+    shadowColour+=shadowing;
+    shadowColour.x = clamp(shadowColour.x,0,1);
+    shadowColour.y = clamp(shadowColour.y,0,1);
+    shadowColour.z = clamp(shadowColour.z,0,1);
+
+    oColour*=shadowColour;
+}
