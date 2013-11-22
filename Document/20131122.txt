@@ -1,0 +1,20 @@
+20131122
+--
+昨日彷佛犹在眼前，那些快要失去的勇气，可不可以保持？
+不要害怕失去，或在等下，全力争取，
+一万年太久，只争朝夕！
+
+1，退出Crash问题
+2，MyGUI TreeView
+3，材质链接
+4，GridInfo错位 emei test
+5，重启HydraX
+6，加入SkyX,PagedGeo
+7, 理清 
+	a，OgreDS 流程
+	b，Ogre Compositor Fresnel
+	c，CE3 处理 HDR DOF SM AA Glow Sharp GodRay Tone MotionBlur 
+	d，UE3处理流程
+8，完成管线改造 Topic
+	ShadowMap PreZ G-Buffer( Diffuse Position MaterialId[Glow emissive metal 3S] MotionXY Noraml ) Transparent LitUp PostProcess
+9,Evolution of GameEngine 
