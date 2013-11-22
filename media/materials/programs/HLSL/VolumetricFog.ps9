@@ -1,0 +1,236 @@
+#include "ShaderDefinePS.hlsl9"
+
+#define _RT_FSAA 0
+#define _RT_HDR_ENCODE 0
+#define _SKY_DEPTH 30000.0f								// 天空的默认深度
+
+
+float4 vfParams :	register(c19);					// 【16/mFogAtmosphereHeight】【】【mFogGlobalDensity】【mFogDensityOffset】
+float4 vfRampParams :	register(c20);			// 
+float3 vfColGradBase :	register(c21);		// 雾的基本颜色
+float3 vfColGradDelta :	register(c22);		// 雾颜色变化步长
+float4 viewDirection :	register(c23);
+float4 cAdditionParams :	register(c24);	//原为HDRParam2
+float4 cTargetSize : register(c25);
+float4 cCamZVecInWorld : register(c26);
+float3 vfViewPos : register(c27);
+float4 cAlphaParams : register(c28);
+float4 cFogDensityParams : register(c29);	// 下层雾和上层雾浓度的调节参数
+float4 cFogDisFactor : register(c30);
+
+sampler2D sceneTex				 : register(s0);
+sampler2D dlDepthMap       : register(s1);
+sampler2D fogDensityMap		 : register(s2);
+
+struct VS_OUTPUT {
+   float4 Pos: POSITION;
+   float2 oTexCoord: TEXCOORD0;
+   float3 oRay : TEXCOORD1;
+};
+
+struct pixout
+{
+  half4 Color  : COLOR0;
+};
+
+#define SCENE_HDR_MULTIPLIER 32.h
+//===================================================================================
+half
+ComputeVolumetricFog( in float3 cameraToWorldPos )
+{
+	#define atmosphereScale								vfParams.x
+	#define volFogHeightDensityAtViewer 	half(vfParams.y)
+	#define fogDensity										half(vfParams.z)
+	#define artistTweakDensityOffset			half(vfParams.w)
+
+	half fogInt = 1.h;
+	static const float c_slopeThreshold = 10.0f;
+	half l = 1.0h;
+	if( cameraToWorldPos.y > c_slopeThreshold )
+	{
+		float t = atmosphereScale * cameraToWorldPos.y;
+		fogInt *= ( 1.f - exp( -t ) ) / t * cFogDensityParams.y;
+	}
+	else if (cameraToWorldPos.y < -c_slopeThreshold)
+	{
+		float t = atmosphereScale * cameraToWorldPos.y;
+		fogInt *= ( 1.f - exp( -t ) ) / t * cFogDensityParams.x;
+	}
+	else
+	{
+		// 首先计算过渡区域两侧的雾参数，然后根据这两个值插值得到当前所要计算的参数
+		float t1 = atmosphereScale * (-c_slopeThreshold);
+		float t2 = -t1;
+		float factor = (cameraToWorldPos.y + c_slopeThreshold) / (c_slopeThreshold * 2.0f);
+		float fogInt1 = ( 1.f - exp( -t1 ) ) / t1 * cFogDensityParams.x;
+		float fogInt2 = ( 1.f - exp( -t2 ) ) / t2 * cFogDensityParams.y;
+		fogInt = lerp(fogInt1, fogInt2, factor);
+		cameraToWorldPos.y = c_slopeThreshold;	// 保证高度值和过渡区域两侧的高度是一致的
+	}
+
+	float factor = 1.0f;
+	float halfLength = (cFogDensityParams.w - cFogDensityParams.z)/2;
+	float halfClipDis = (cFogDensityParams.w + cFogDensityParams.z)/2;
+	l = length( cameraToWorldPos );				// NOTE: volFogHeightDensityAtViewer = log2(e) * fogDensity * exp( -atmosphereScale * ( vfViewPos.y - waterLevel ) );
+	// 根据当前物体与摄像机的距离，计算一个影响因子
+	if (l < cFogDensityParams.z)
+	{
+		factor = cFogDisFactor.x;
+	}
+	else if (l < halfClipDis)
+	{
+		float tmpFactor = (l - cFogDensityParams.z)/(halfLength);
+		factor = lerp(cFogDisFactor.x, cFogDisFactor.y, tmpFactor);
+	}
+	else if (l < cFogDensityParams.w)
+	{
+		float tmpFactor = (l - halfClipDis)/halfLength;
+		factor = lerp(cFogDisFactor.y, cFogDisFactor.z, tmpFactor);
+	}
+	else
+	{
+		float tmpFactor = (l - cFogDensityParams.w)/(cAdditionParams.z - cFogDensityParams.w);
+		factor = lerp(cFogDisFactor.z, cFogDisFactor.w, tmpFactor);
+	}
+	// 对距离l施加影响，以便影响雾的 alpha 值，用于产生物体在雾中的层次感
+	l *= factor;
+	half u = l * volFogHeightDensityAtViewer;
+	fogInt = fogInt * u - artistTweakDensityOffset;
+		
+	half f = saturate( exp2( -fogInt ) );
+ 	half r = saturate(l * vfRampParams.x + vfRampParams.y);
+ 	r = r * (2-r);
+ 	r = r * vfRampParams.z + vfRampParams.w;
+ 	f = (1-f) * r;
+	return f;
+}
+half ComputeVolumetricFogTest(in float3 cameraToWorldPos)
+{
+	half fogAlpha = 0.5h;
+	float L = length(cameraToWorldPos)*100;
+	float2 tc;
+	tc.y = 0.5f;
+	tc.x = (L-cFogDensityParams.z) / (cFogDensityParams.w - cFogDensityParams.z);
+	float4 fogDensity1 = tex2D(fogDensityMap, tc);
+	fogAlpha = fogDensity1.r;
+	return fogAlpha;
+}
+//===================================================================================
+//////////////////////////////////////////////////////////////////////////
+// Distance based implementation
+//////////////////////////////////////////////////////////////////////////
+half4 
+GetVolumetricFogColor(in float3 worldPos, in float3 cameraToWorldPos)
+{
+	// 计算雾的alpha值
+	half fog = ComputeVolumetricFog(cameraToWorldPos);
+	// 根据物体和摄像机的相对高度差计算雾的颜色
+	half factor = saturate(normalize(cameraToWorldPos.xyz).y);
+	half3 fogColor = {0.0h, 0.0h, 0.0h};
+	float threshold = 0.1f;	// 用于消减中间的条形带（0.1为经验值）
+	// 避免和摄像机Z向量平齐的像素条带的雾颜色过渡不均匀
+	if (abs(factor) < threshold)
+	{
+		fogColor = vfColGradBase + threshold * vfColGradDelta;
+	}
+	else
+	{
+		fogColor = vfColGradBase + factor * vfColGradDelta;
+	}
+
+	return half4(fogColor, fog);
+}
+
+//===================================================================================
+//post
+void FogPassCommon (in VS_OUTPUT IN, out float sceneDepth, out half4 localFogColor, out float3 worldPos, out float3 cameraToWorldPos)
+{
+  float sDepthRG;				// 记录深度图中的深度
+  float specialDepth;		// 记录水的深度（暂时没用）
+
+	float4 sceneDepthParams = -tex2D(sceneTex, IN.oTexCoord.xy + 0.5f*cTargetSize.zw).wwww;
+	sDepthRG = -sceneDepthParams.r / cAdditionParams.w;
+
+  sceneDepth = sDepthRG; 
+
+  float3 worldVec;			// 世界空间下到摄像机到物体向量（只记录方向）
+  worldVec = IN.oRay.xyz;
+  worldVec = normalize(worldVec.xyz);
+  // 获得摄像机Z负方向（在世界空间中）和摄像机到物体向量夹角的余弦，用于计算该物体的实际深度
+  float cosTheta = dot(worldVec, normalize(cCamZVecInWorld.xyz));
+  // 增加对天空部分颜色的过渡(天空深度为0，所以此时深度值被假设为 _SKY_DEPTH ，然后对该值进行调整，以完成雾颜色的过渡)
+  if (abs(sceneDepth) <= 0.0001f)
+  {
+  	float3 vec = _SKY_DEPTH / cosTheta * worldVec + vfViewPos.xyz;
+  	vec = normalize(vec);
+  	// 根据天空像素所对应世界空间中的高度，适度调整深度值（越高深度值越小）
+  	sceneDepth = cAdditionParams.z * cAdditionParams.x;// * (1-abs(vec.y));
+  	// 计算世界空间下天空到物体的实际向量(此时认为当前深度即为到摄像机的实际距离)
+  	cameraToWorldPos = sceneDepth * worldVec;
+  }
+  else
+  {
+  	// 计算世界空间下摄像机到物体的实际向量(当前深度不是实际距离，要除以cosTheta)
+  	cameraToWorldPos = sceneDepth / cosTheta * worldVec;
+  }
+  
+  // 计算物体在世界空间中的坐标
+  worldPos = cameraToWorldPos + vfViewPos;
+  localFogColor = GetVolumetricFogColor(worldPos, cameraToWorldPos);
+
+#if _RT_FSAA
+  localFogColor.a = sDepthRG.y;
+#endif
+}
+
+//===================================================================================
+// Using RGBK format (multiplier in alpha - filtering should work fine)
+// quality: good	
+half4 EncodeRGBK(in half4 Color, const half fMultiplier, bool bUsePPP = false)
+{
+	const half4 cScale = half4(half3(1.h, 1.h, 1.h) / fMultiplier, 1.h / 255.0);
+	half fMax = saturate(dot(half4(Color.rgb, 1.h), cScale));   // 1 alu
+
+	Color.a = ceil(fMax * 255.h) / 255.h;                       // 3 alu
+
+	Color.xyz /= Color.a * fMultiplier;                         // 2alu
+
+  if( bUsePPP )
+  {
+	//Color *= rsqrt( Color ); // for best quality
+
+	Color.a = sqrt( Color.a ); // encode just multiplier for performance reasons
+  }
+
+  return Color;
+}
+//===================================================================================
+void HDROutput( out pixout OUT, half4 Color, half fDepth)
+{
+  OUT.Color = Color;
+
+#if _RT_HDR_ENCODE  
+  OUT.Color = EncodeRGBK(OUT.Color, SCENE_HDR_MULTIPLIER);
+#endif
+}
+//===================================================================================
+float4 main(VS_OUTPUT IN) : COLOR0
+{
+  pixout OUT;
+	float sceneDepth;
+	half4 localFogColor;
+	float3 worldPos, cameraToWorldPos;
+
+	FogPassCommon(IN, sceneDepth, localFogColor, worldPos, cameraToWorldPos);
+
+  // Re-scale range(cAdditionParams.y is a parameter of HDR.)
+  localFogColor.xyz *= cAdditionParams.y;
+
+  HDROutput(OUT, localFogColor, 1);
+  
+  float4 sceneColor = tex2D(sceneTex, IN.oTexCoord + 0.5f*cTargetSize.zw);
+  sceneColor.rgb = lerp(sceneColor.rgb, OUT.Color.rgb, OUT.Color.a);//(1-OUT.Color.a)*sceneColor.rgb + OUT.Color.a * OUT.Color.rgb;
+
+  return sceneColor;
+}
+

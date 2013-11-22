@@ -1,0 +1,7 @@
+fragment_program TWOLayerLight/TWOLayerLightPSOnly cg
+{
+	source twolayer_light.cg
+	entry_point TwoLayerLight_GeneralPSOnly
+	profiles ps_2_0 arbfp1
+}
+	

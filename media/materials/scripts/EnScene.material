@@ -1,0 +1,369 @@
+
+/////////////////////////////////////////////////
+//skyDome material
+/////////////////////////////////////////////////
+vertex_program EnScene/skydome_vp hlsl
+{
+	source EnScene.hlsl
+	entry_point En_sky_dome_v
+	target  vs_2_0
+
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+		//param_named_auto cameraPos camera_position
+		//param_named_auto farClipDistance  far_clip_distance
+	}
+}
+
+fragment_program EnScene/skydome_fp hlsl
+{
+	source EnScene.hlsl
+	entry_point En_sky_dome_p
+	// sorry, ps_1_1 and fp20 can't do this
+	target ps_2_0
+}
+
+material EnScene/skyDome
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			separate_scene_blend one zero zero zero
+			depth_check on
+			depth_write off
+			depth_func less_equal
+			fog_override true none 
+			point_sprites off
+			vertex_program_ref EnScene/skydome_vp 
+			{
+			}
+			fragment_program_ref EnScene/skydome_fp 
+			{
+				
+			}
+			texture_unit
+			{
+				texture mie_gradient.dds
+			}
+		}
+	}
+}
+
+/////////////////////////////////////////////////
+//sun and moon material
+/////////////////////////////////////////////////
+vertex_program EnScene/sunandmoon_v hlsl
+{
+	source EnScene.hlsl
+	entry_point En_sunandmoon_vp
+	target vs_2_0
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+	}
+}
+
+fragment_program EnScene/sunandmoon_f hlsl
+{
+	source EnScene.hlsl
+	entry_point En_sunandmoon_fp
+	// sorry, ps_1_1 and fp20 can't do this
+	target ps_2_0
+}
+
+material EnScene/moon
+{
+	technique
+	{
+		pass
+		{
+			depth_check on
+			scene_blend alpha_blend 
+			depth_write off
+			depth_func less_equal
+			fog_override true none
+			vertex_program_ref EnScene/sunandmoon_v
+			{
+			}
+			fragment_program_ref EnScene/sunandmoon_f
+			{
+				
+			}
+			texture_unit
+			{
+				texture png_moon_03.dds
+			}
+		}
+	}
+}
+
+//太阳做遮挡计算时用的材质
+material EnScene/sunocclusion
+{
+	technique
+	{		
+		pass
+		{
+			depth_check on
+			scene_blend zero one 
+			depth_write off
+			depth_func less_equal
+			fog_override true none  
+			vertex_program_ref EnScene/sunandmoon_v
+			{
+			}
+			fragment_program_ref EnScene/sunandmoon_f
+			{
+				
+			}
+			texture_unit
+			{
+				texture sun.dds 
+			}
+		}
+	}
+}
+//太阳正常渲染的材质
+material EnScene/sun
+{
+	technique
+	{		
+		pass
+		{
+			depth_check on
+			scene_blend alpha_blend 
+			depth_write off
+			depth_func less_equal
+			fog_override true none   
+			vertex_program_ref EnScene/sunandmoon_v
+			{
+			}
+			fragment_program_ref EnScene/sunandmoon_f
+			{
+				
+			}
+			texture_unit
+			{
+				texture sun.dds 
+			}
+		}
+	}
+}
+
+vertex_program EnScene/flare_vp hlsl
+{
+	source EnScene.hlsl
+	entry_point En_flare_vp
+	target vs_2_0
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+	}
+}
+
+fragment_program EnScene/flare_fp hlsl
+{
+	source EnScene.hlsl
+	entry_point En_flare_fp
+	target ps_2_0
+}
+
+material EnScene/sunflare1
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+			scene_blend src_alpha one 
+			depth_write off
+			depth_func less_equal
+			fog_override true none  
+			vertex_program_ref EnScene/flare_vp
+			{
+			}
+			fragment_program_ref EnScene/flare_fp
+			{
+				
+			}
+			texture_unit
+			{
+				texture fx_flare_trees.dds
+			}
+		}
+	}
+}
+/////////////////////////////////////////////////
+//cloud material
+/////////////////////////////////////////////////
+vertex_program EnScene/cloud_v hlsl
+{
+	source EnScene.hlsl
+	entry_point En_cloudv
+	target vs_2_0
+
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+		param_named_auto worldMatrix world_matrix
+		//param_named_auto farClipDistance  far_clip_distance
+	}
+}
+
+fragment_program EnScene/cloud_p hlsl
+{
+	source EnScene.hlsl
+	entry_point En_cloudp
+	target ps_2_0
+	default_params
+	{
+		param_named_auto fogColour fog_colour
+		param_named_auto ambientCol ambient_light_colour
+		param_named_auto surfaceAmbientCol surface_ambient_colour
+	}
+}
+//顶云正常渲染材质
+material EnScene/cloud	
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1 1
+      lighting off
+			scene_blend alpha_blend 
+			depth_check on
+			depth_write off
+			depth_func less_equal
+			fog_override true none
+			cull_hardware none
+			cull_software none
+			point_sprites off
+			vertex_program_ref EnScene/cloud_v 
+			{
+
+			}
+			fragment_program_ref EnScene/cloud_p
+			{
+
+			}
+		}
+	}
+}
+//太阳遮挡计算是用的顶云材质
+material EnScene/cloudocclusion	
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1 1
+			alpha_rejection greater_equal 50
+			lighting off
+			scene_blend zero one 
+			depth_check on
+			depth_write on
+			depth_func less_equal
+			fog_override true none
+			cull_hardware none
+			cull_software none 
+			point_sprites off
+			vertex_program_ref EnScene/cloud_v 
+			{
+			}
+			fragment_program_ref EnScene/cloud_p
+			{
+			}
+		}
+	}
+}
+
+/////////////////////////////////////////////////
+//ring cloud material
+/////////////////////////////////////////////////
+vertex_program EnScene/ringcloudv hlsl
+{
+	source EnScene.hlsl
+	entry_point En_ringcloudv
+	target vs_2_0
+
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+		param_named_auto worldMatrix world_matrix
+		param_named_auto cameraPos camera_position
+		//param_named_auto farClipDistance  far_clip_distance
+	}
+}
+
+fragment_program EnScene/ringcloudp hlsl
+{
+	source EnScene.hlsl
+	entry_point En_ringcloudp
+	// sorry, ps_1_1 and fp20 can't do this
+	target ps_2_0
+	default_params
+	{
+		param_named_auto fogColour fog_colour
+		param_named_auto ambientCol ambient_light_colour
+		param_named_auto surfaceAmbientCol surface_ambient_colour
+	}
+}
+//环云正常渲染材质
+material EnScene/ringcloud  
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 1 1 1
+			scene_blend alpha_blend 
+			depth_check on
+			depth_write off
+			depth_func less_equal
+			fog_override true none
+			cull_hardware none
+			cull_software none
+			colour_write on  
+			point_sprites off
+			lighting off
+			vertex_program_ref EnScene/ringcloudv 
+			{
+			}
+			fragment_program_ref EnScene/ringcloudp
+			{
+			}
+		}
+	}
+}
+//太阳遮挡计算是时的环云材质
+material EnScene/ringcloudocclusion  
+{
+	technique
+	{
+		pass
+		{
+			alpha_rejection greater_equal 150 
+			ambient 1 1 1 1
+			scene_blend zero one 
+			depth_check on
+			depth_write on
+			depth_func less_equal
+			fog_override true none
+			cull_hardware none
+			cull_software none
+			colour_write on   
+			point_sprites off
+			lighting off
+			vertex_program_ref EnScene/ringcloudv 
+			{
+			}
+			fragment_program_ref EnScene/ringcloudp
+			{
+			}
+		}
+	}
+}

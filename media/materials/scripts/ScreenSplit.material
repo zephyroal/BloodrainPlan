@@ -1,0 +1,56 @@
+fragment_program PostFilters/Compositor/ScreenChapHLSL_fp hlsl
+{
+	source ScreenSplit.hlsl
+	entry_point psScreenChap
+	target ps_3_0
+}
+
+material PostFilters/ScreenSplit
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/ScreenChapHLSL_fp
+			{
+				// Uncomment the following line to control the chap manually,
+				// Please also uncomment the 239th line in __ldj.hlsl
+				// This param's range is [0, 1]
+				param_named fPlayRatio float 0
+				
+				//param_named_auto fTime time
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit splittex
+			{
+				// Change this texture to get more styles
+				texture ScreenSplitImage.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit masktex
+			{
+				// Change this texture to get more styles
+				texture ScreenSplitMask.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

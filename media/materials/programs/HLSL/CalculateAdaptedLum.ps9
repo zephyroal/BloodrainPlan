@@ -1,0 +1,40 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 7 > --- Calc Lum
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+//float4 cEyeAdaptionParams : register(c19);
+
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D lumMapCurr: register(s0);
+sampler2D lumMapPrev: register(s1);				
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Calc Lum
+//-----------------------------------------------------------------------------
+void main(  in     float4 POS  : POSITION ,
+			out    float4 color    : COLOR)
+{
+	float cEyeAdaptationScale = UberEyeAdaptionFactor;// cEyeAdaptionParams.x;
+	float cEyeAdaptationBias = UberEyeAdaptionBias;// cEyeAdaptionParams.y;
+	// float cEyeAdaptationFalloff = cEyeAdaptionParams.z;
+	float cEyeAdaptationElapsedTime = UberAdationTime;// cEyeAdaptionParams.w;
+
+    float fCurrLum = tex2D(lumMapCurr, float2(0.5, 0.5)).r;
+    float fPrevLum = tex2D(lumMapPrev, float2(0.5, 0.5)).r;
+
+    float fSceneLum = lerp(fCurrLum, fPrevLum, cEyeAdaptationElapsedTime);
+    // new from CE3
+    float fAdaptedLum = lerp(cEyeAdaptationBias, fSceneLum , saturate(cEyeAdaptationScale));
+    
+    color = float4(fSceneLum, fAdaptedLum, 1, 1);
+}
+//-----------------------------------------------------------------------------

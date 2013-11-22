@@ -1,0 +1,65 @@
+#ifndef _JoyBasicMaterialPS_H_
+#define _JoyBasicMaterialPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyBasicMaterial_DF.inc"
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uv1;
+	FI.vTangent		= IN.tangent.xyz;
+	FI.vBinormal	= IN.binormal.xyz;
+	FI.vNormal		= IN.normal;
+	FI.color			= IN.col;
+	FI.position		= IN.pv;
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0; 
+
+	OUT.color1 = float4( params.cFinal.rgb, params.FI.position.z );
+	float flag = 0;
+#if g_GrassEnable != 0
+	flag = 1;
+#endif
+#if g_FogEnable == 0
+	flag = 2;
+#endif
+	OUT.color2 = float4( g_LightingParams.x, flag,encode_normal(normalize( params.FI.vNormal.rgb )) );
+	OUT.color3 = float4( derived_scene_colour.rgb, 0 );
+
+	return OUT;
+}
+
+PS_OUT main( VS_OUT IN ) 
+{ 
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	/// …Ë÷√‰÷»æ≤Œ ˝
+	fmt_rop( params );
+	
+	/// diffuse rt
+	Calc_Diffuse_Tex( params );
+	
+	/// diffise 2
+	Calc_Diffuse2_Blend( params );
+	
+	/// alpha rejection
+	Tex_Kill( params );
+	
+	/// bump normal
+	Bump_Normal( params );
+	
+	// Beast Map
+	Calc_BeastMap_Blend_Df( params );
+
+	return fmt_output( params );
+}
+
+#endif

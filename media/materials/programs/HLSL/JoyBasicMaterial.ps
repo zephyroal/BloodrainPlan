@@ -1,0 +1,95 @@
+#ifndef _JoyBasicMaterialPS_H_
+#define _JoyBasicMaterialPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyBasicMaterial.inc"
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uv1;
+	FI.vNormal		= IN.normal;
+	FI.vView			= float4( normalize( IN.v.xyz ), IN.v.w );
+	FI.color			= IN.col;
+	FI.position		= IN.pw;
+	
+#if g_NormalMapEnable == 1
+	FI.vTangent		= IN.tangent.xyz;
+	FI.vBinormal	= IN.binormal.xyz;
+#endif
+
+#if g_Diffuse2Enable == 1
+	FI.extTC1			= IN.uv2;
+#endif
+
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0; 
+	OUT.color1 = float4( HDROutput(params).rgb, params.cDiffuseRT.a * params.FI.color.a * surface_diffuse_colour.a );
+	
+#if g_ZWriteEnable == 1
+	OUT.color1 = float4( HDROutput(params).rgb, params.FI.position.w );
+	OUT.color2 = float4( params.fHDRPower,0,0,0 );
+#else
+	OUT.color1 = float4( HDROutput(params).rgb, params.cDiffuseRT.a * params.FI.color.a );
+	OUT.color2 = float4( params.fHDRPower,0,0,0 );
+#endif
+
+#if g_ForceTrans == 1
+	OUT.color1 = float4( HDROutput(params).rgb, surface_diffuse_colour.a );
+	OUT.color2 = float4( params.fHDRPower,0,0,0 );
+#endif
+
+#if g_IsReleaseMode == 0
+	if(ComplexityParams.x > 0)
+	{
+		OUT.color1.rgb = params.cComplexity.rgb;
+	}
+//	if(use_instance_rendering.x > 0.5)
+//	{
+//		OUT.color1.rgb = float4(1,1,0,1);
+//	}
+#endif
+	return OUT;
+}
+
+PS_OUT main( VS_OUT IN ) 
+{ 
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	/// …Ë÷√‰÷»æ≤Œ ˝
+	fmt_rop( params );
+	
+	/// diffuse rt
+	Calc_Diffuse_Tex( params );
+	
+	/// diffise 2
+	Calc_Diffuse2_Blend( params );
+	
+	/// alpha rejection
+	Tex_Kill( params );
+	
+	/// bump normal
+	Bump_Normal( params );
+	
+	/// lighting
+	Calc_Light_In_Ps_FL( params );
+	
+	/// Beast
+	Calc_BeastMap_Blend( params );
+
+	/// fog
+	// Calc_Fog_Color( params );
+
+	Calc_Complexity_Color( params );
+	
+	return fmt_output( params );
+}
+
+#endif

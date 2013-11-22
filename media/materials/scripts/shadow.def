@@ -1,0 +1,106 @@
+ensure_shadow = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) and ( Effect_ShadowMapSupport ==1 );
+end;
+
+RT_ShadowMap_Receive=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_ShadowMap ) and ensure_shadow();
+
+	doc									=	"‰÷»æ“ı”∞Õº";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(1,1,1,1);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"ShadowMap/ReceiveShadowMap/Default";
+		identifier	= 45;
+		filter_option = Ogre.Global.FO_POINT;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+RT_ShadowMap_Receive_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_ShadowMap ) and ensure_shadow();
+
+	doc									=	"‰÷»æ“ı”∞Õº";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(1,1,1,1);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"ShadowMap/ReceiveShadowMap/Defered";
+		identifier	= 45;
+		filter_option = Ogre.Global.FO_POINT;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+--[[
+RT_ShadowMap_Blend=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_ShadowMap ) and ensure_shadow();
+	doc									=	"ªÏ∫œ“ı”∞∫Õ≥°æ∞Õº";
+	name								=	"swap_buffer2";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"ShadowMap/BlendShadowMap";
+		identifier	= 45;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "swap_buffer", 0 };
+		};
+	};
+};
+--]]
+
+RT_ShadowMap_CopySwapToMain=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_ShadowMap ) and ensure_shadow();
+	doc						=	"øΩ±¥";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

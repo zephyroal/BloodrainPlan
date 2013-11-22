@@ -1,0 +1,39 @@
+RT_CopyMainToSwap_Distortion=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_EffectDistortion );
+	doc						=	"拷贝一次场景图用来做特效空间扭曲";
+	name					=	"swap_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+		
+	};
+};
+
+
+RT_Effect_Distortion=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_EffectDistortion );
+	doc									=	"渲染空间扭曲特效";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_EFFECT_DISTORTION;
+	shadows							= false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_AlphaBlend;
+		last_render_queue		=	Ogre.FAIRY.ORQ_AlphaBlend+1;
+	};
+};
+
+

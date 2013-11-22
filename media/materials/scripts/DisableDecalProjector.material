@@ -1,0 +1,19 @@
+
+material DisableDecalProjector
+{
+	technique
+	{
+		pass
+		{
+			
+			DEPTH_BIAS 1 0
+			texture_unit
+			{
+				texture FlowerRed.tga
+
+			}
+		}
+
+	}
+
+}

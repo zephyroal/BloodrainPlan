@@ -1,0 +1,45 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 13 > --- Combine Bloom
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+float4 cTargetSize	  : register(c19);
+float4 cTargetFactor0 : register(c20);
+float4 cTargetFactor1 : register(c22);
+float4 cTargetFactor2 : register(c23);
+//float4 cBloomWeights  : register(c24);
+
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D bloomMap0: register(s0);
+sampler2D bloomMap1: register(s1);	
+sampler2D bloomMap2: register(s2);				
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Combine Bloom
+//-----------------------------------------------------------------------------
+void main( in     float4 POS  : POSITION 
+		  ,in     float2 TC: TEXCOORD0
+		  ,out    float4 color    : COLOR
+							)
+{
+    float2 tc0 = TC + cTargetSize.zw*cTargetFactor0.xy*0.5f;
+    float2 tc1 = TC + cTargetSize.zw*cTargetFactor1.xy*0.5f;
+    float2 tc2 = TC + cTargetSize.zw*cTargetFactor2.xy*0.5f;
+
+    float4 bloom0 = tex2D(bloomMap0, tc0);
+    float4 bloom1 = tex2D(bloomMap1, tc1);
+    float4 bloom2 = tex2D(bloomMap2, tc2);
+
+    float4 sum = bloom0 * UberBloom1 + bloom1 * UberBloom2 + bloom2 * UberBloom3;
+
+    color = sum;
+}
+//-----------------------------------------------------------------------------

@@ -1,0 +1,9 @@
+fragment_program NormalEffect/EmissiveOneTexture cg
+{
+	source emissiveonetexture.cg
+	entry_point emissiveOneTexture
+	profiles ps_1_1 arbfp1
+	default_params
+	{
+	}
+}

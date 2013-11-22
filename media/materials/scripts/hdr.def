@@ -1,0 +1,600 @@
+ensure_hdr = function()
+	return ( Hardware_SM3 == 1 ) and ( Effect_HDRSupport == 1 );
+end;
+
+Hdr64TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"hdr_buffer64";
+	size					=	{64,64,0,0};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+Hdr16TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"hdr_buffer16";
+	size					=	{16,16,0,0};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+Hdr4TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"hdr_buffer4";
+	size					=	{4,4,0,0};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+Hdr1TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"hdr_buffer1_cur";
+	size					=	{1,1,0,0};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+HdrPre1TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"hdr_buffer1_pre";
+	size					=	{1,1,0,0};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+HdrAdapterTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"hdr_buffer1_adapter";
+	size					=	{1,1,0,0};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+HdrBrightTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bright_buffer";
+	size					=	{0,0,0.5,0.5};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+HdrBloomHTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bloom_buffer_h";
+	size					=	{0,0,0.5,0.5};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+HdrBloom1TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bloom_buffer_1";
+	size					=	{0,0,0.25,0.25};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+	
+HdrBloom1HTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bloom_buffer_1_h";
+	size					=	{0,0,0.25,0.25};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+	
+HdrBloom2TexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bloom_buffer_2";
+	size					=	{0,0,0.125,0.125};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+	
+HdrBloom2HTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bloom_buffer_2_h";
+	size					=	{0,0,0.125,0.125};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+	
+HdrComposeTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	name					=	"bloom_buffer_compose";
+	size					=	{0,0,0.5,0.5};
+	texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_HDR_DownSacleScene=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"创建原场景一半大小的buffer";
+	name					=	"blur_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/DownScaleScene";
+		identifier	= 24;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_LumSample=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"计算平均亮度1";
+	name					=	"hdr_buffer64";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/SampleLuminance";
+		identifier	= 25;
+		
+		inputs=
+		{
+			{ "blur_buffer", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_DownScale16=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"降级采样16";
+	name					=	"hdr_buffer16";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/DownScaleLum";
+		identifier	= 26;
+		
+		inputs=
+		{
+			{ "hdr_buffer64", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_DownScale4=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"降级采样4";
+	name					=	"hdr_buffer4";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/DownScaleLum";
+		identifier	= 27;
+		
+		inputs=
+		{
+			{ "hdr_buffer16", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_DownScale1=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"降级采样1";
+	name					=	"hdr_buffer1_cur";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/DownScaleLum";
+		identifier	= 28;
+		
+		inputs=
+		{
+			{ "hdr_buffer4", 0 };
+		};
+		
+	};
+};
+
+RT_HDR_BlurPreInit=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"拷贝采样结果";
+	name					=	"hdr_buffer1_pre";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	only_initial	= true;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		identifier	= 29;
+		
+		inputs=
+		{
+			{ "hdr_buffer1_cur", 0 };
+		};
+		
+	};
+};
+	 
+RT_HDR_Adapter=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"计算权重";
+	name					=	"hdr_buffer1_adapter";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/CalculateAdaptedLum";
+		identifier	= 30;
+		
+		inputs=
+		{
+			{ "hdr_buffer1_cur", 0 };
+			{ "hdr_buffer1_pre", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_Copy=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"拷贝结果到缓存";
+	name					=	"hdr_buffer1_pre";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		identifier	= 31;
+		
+		inputs=
+		{
+			{ "hdr_buffer1_adapter", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_Bright=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"亮度修正";
+	name					=	"bright_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/BrightPass";
+		identifier	= 32;
+		
+		inputs=
+		{
+			{ "blur_buffer", 0 };
+			{ "hdr_buffer1_adapter", 0 };
+			{ "main_buffer", 1 };
+		};
+		
+	};
+};
+	
+RT_HDR_BloomH=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"横向模糊";
+	name					=	"bloom_buffer_h";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/Bloom0GaussianH";
+		identifier	= 33;
+		
+		inputs=
+		{
+			{ "bright_buffer", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_BloomV=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"纵向模糊";
+	name					=	"bright_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/Bloom0GaussianV";
+		identifier	= 34;
+		
+		inputs=
+		{
+			{ "bloom_buffer_h", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_BloomScale=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"把模糊后的结果再次缩放";
+	name					=	"bloom_buffer_1";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/RescaleBloom0";
+		identifier	= 35;
+		
+		inputs=
+		{
+			{ "bright_buffer", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_BloomH2=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"模糊缩放后的结果H";
+	name					=	"bloom_buffer_1_h";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/Bloom1GaussianH";
+		identifier	= 36;
+		
+		inputs=
+		{
+			{ "bloom_buffer_1", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_BloomV2=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"模糊缩放后的结果V";
+	name					=	"bloom_buffer_1";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/Bloom1GaussianV";
+		identifier	= 37;
+		
+		inputs=
+		{
+			{ "bloom_buffer_1_h", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_ReScale1=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"继续降级采样";
+	name					=	"bloom_buffer_2";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/RescaleBloom1";
+		identifier	= 38;
+		
+		inputs=
+		{
+			{ "bloom_buffer_1", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_ReScale2=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"模糊降级采样结果";
+	name					=	"bloom_buffer_2_h";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/Bloom2GaussianH";
+		identifier	= 39;
+		
+		inputs=
+		{
+			{ "bloom_buffer_2", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_ReScale3=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"模糊降级采样结果";
+	name					=	"bloom_buffer_2";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/Bloom2GaussianV";
+		identifier	= 40;
+		
+		inputs=
+		{
+			{ "bloom_buffer_2_h", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_Compose=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"混合结果";
+	name					=	"bloom_buffer_compose";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/ComposeFinalBloom";
+		identifier	= 41;
+		
+		inputs=
+		{
+			{ "bright_buffer", 0 };
+			{ "bloom_buffer_1", 0 };
+			{ "bloom_buffer_2", 0 };
+		};
+		
+	};
+};
+	
+RT_HDR_Final=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"HDR最终结果";
+	name					=	"swap_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"HDR/ComposeFinalScene";
+		identifier	= 42;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "hdr_buffer1_adapter", 0 };
+			{ "bloom_buffer_compose", 0 };
+			{ "main_buffer", 1 };
+		};
+		
+	};
+};
+
+RT_HDR_CopySwapToMain=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HDR ) and ensure_hdr();
+	doc						=	"拷贝";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

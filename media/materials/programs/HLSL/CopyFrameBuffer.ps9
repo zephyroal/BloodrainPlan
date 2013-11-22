@@ -1,0 +1,47 @@
+/*
+//-------------------------------------------------------------------
+	NOTE : 	Make sure this Pixel Shader being utilized in final pass to 
+			excute Color Gamma Correction!
+//-------------------------------------------------------------------
+*/
+
+#include "ShaderDefinePS.hlsl9"
+
+float4 cTargetSize	 : register(c19);
+
+struct vtxOutDownscaleZBuffer
+{
+  float4 HPosition  	: POSITION;
+  float4  baseTC0	: TEXCOORD0;  
+  float3  ray       	: TEXCOORD1;           
+};
+
+void main( 	vtxOutDownscaleZBuffer IN, uniform sampler2D Tex0	:	register(s0), uniform sampler2D Tex1 : register(s1), out float4 colour : COLOR )
+{
+   
+  float2 texCoord = IN.baseTC0.xy + 0.5 * cTargetSize.zw;
+  
+	colour =  tex2D( Tex0, texCoord );
+	
+	//float4 ctex = tex2Dlod( Tex1, float4(IN.baseTC0.xy,0,0) );
+	
+	//colour = lerp( colour,  ctex, ctex.a );
+	
+	/*
+	//rgb to srgb
+	float3 res = colour.rgb <  0.0031308;
+	float3 smallVal = 12.92h * colour.rgb;
+	float3 largeVal = 1.055h * pow( colour.rgb, 1.0h / 2.2h) - 0.055h;
+	colour.rgb = res * smallVal + (1-res)*largeVal;		
+	*/
+	
+}
+
+void mainDepth( 	vtxOutDownscaleZBuffer IN, uniform sampler2D Tex0	:	register(s0), uniform sampler2D Tex1 : register(s1), out float4 colour : COLOR )
+{
+   
+  float2 texCoord = IN.baseTC0.xy + 0.5 * cTargetSize.zw;
+  
+	colour =  tex2D( Tex0, texCoord ).w;
+	
+}

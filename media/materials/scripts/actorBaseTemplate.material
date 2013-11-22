@@ -1,0 +1,34 @@
+material premierBaseTemplate
+{    
+    technique
+    {
+        pass
+        {
+             emissive 0.4 0.4 0.4
+		    alpha_rejection greater 128
+
+            texture_unit
+            {
+                texture_alias <baseTexture> 
+                tex_address_mode clamp
+            }
+        }
+    }
+}
+material actorBaseTemplate
+{    
+    technique
+    {
+        pass
+        {
+            emissive 0.4 0.4 0.4
+		    alpha_rejection greater 128
+
+            texture_unit
+            {
+                texture_alias <baseTexture> 
+                tex_address_mode clamp
+            }
+        }
+    }
+}

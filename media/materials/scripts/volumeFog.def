@@ -1,0 +1,165 @@
+ensure_vfog = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) and ( Effect_VolumeFogSupport == 1 );
+end;
+
+VolumeFogTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	name					=	"VolumeCCWDepth";
+	size					=	{0,0,1,1};
+	texture_format=	{Ogre.Global.PF_FLOAT32_R};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_VolumeCCW_Clear=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	doc									=	"渲染体积雾CCW深度";
+	name								=	"VolumeCCWDepth";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_VOLUME_FOG;	
+	fog									= false;
+  
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,1);
+	};
+};
+
+RT_VolumeCCW=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	doc									=	"渲染体积雾CCW深度";
+	name								=	"VolumeCCWDepth";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_VOLUME_FOG;
+	material_scheme			= "VolumeCCWDepth";
+	fog									= false;
+		
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	98;
+		last_render_queue		=	99;
+	};
+};
+
+RT_VolumeFog_Clear=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_vfogEnable ) and ensure_vfog();
+	doc									=	"渲染体积近表面到独立的场景图";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_VOLUME_FOG;	
+	fog									= false;
+	
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,0);
+	};
+};
+	
+RT_VolumeFog=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_vfogEnable ) and ensure_vfog();
+	doc									=	"渲染体积近表面到独立的场景图";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_VOLUME_FOG;
+	material_scheme			= "renderNearFog";
+	fog									= false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	72;
+		last_render_queue		=	73;
+	};
+};
+
+RT_VolumeFogInner_Clear=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	doc						=	"在体积雾里绘制场景";
+	name					=	"swap_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	fog						= false;
+	
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,0);
+	};
+};
+	
+RT_VolumeFogInner=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	doc						=	"在体积雾里绘制场景";
+	name					=	"swap_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;	
+	fog						= false;	
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"VolumeFog/RenderFarFog";		
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "VolumeCCWDepth", 0 };
+		};
+		
+	};
+};
+	
+RT_VolumeFogCombine=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	doc									=	"计算体积雾";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material					=	"MS/VolumeFog/Material/Combine";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+			{ "swap_buffer2", 0 };
+		};
+	};
+};
+
+RT_CopyMainToSwap2_VolumeFog=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner ) and ensure_vfog();
+	doc						=	"拷贝一次场景图用来做体积雾的输出";
+	name					=	"swap_buffer2";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	fog						= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+		
+	};
+};

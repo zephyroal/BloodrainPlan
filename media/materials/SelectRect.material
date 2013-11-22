@@ -1,0 +1,41 @@
+vertex_program SelectRectVS cg
+{
+  source SelectRect.cg
+  entry_point SelectRectVS
+  profiles vs_1_1 arbvp1
+  default_params
+  {
+    param_named_auto worldViewMatrix worldviewproj_matrix
+    param_named_auto TimeElapsed time
+  }
+}
+fragment_program SelectRectPS cg
+{
+  source SelectRect.cg
+  entry_point SelectRectPS
+  profiles ps_1_1 arbfp1
+}
+material SelectRect 
+{ 
+  technique 
+  { 
+    pass
+    { 
+      cull_hardware    none
+      scene_blend alpha_blend
+      vertex_program_ref SelectRectVS
+      {
+
+      }
+      fragment_program_ref SelectRectPS
+      {
+
+      }
+      texture_unit
+      {
+        texture BeachStones.jpg
+        scroll_anim 0.01 0.01
+      }
+    } 
+  } 
+} 

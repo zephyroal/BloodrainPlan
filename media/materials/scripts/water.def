@@ -1,0 +1,129 @@
+ensure_water = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) and ( Effect_WaterSupport == 1 );
+end;
+--[[
+RT_WaterMask_Clear=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_waterEnable  +  Ogre.FAIRY.Mask_ShadowMap ) and ensure_water();
+	doc									=	"清空logicmodel mask 贴图";
+	name								=	"swap_buffer2";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;	
+
+  _G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,0);	
+	};
+};
+
+RT_WaterMask=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_waterEnable  +  Ogre.FAIRY.Mask_ShadowMap) and ensure_water();
+	doc									=	"logicmodel mask 贴图";
+	name								=	"swap_buffer2";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_ACTOR;
+	material_scheme     = "LogicModelMask";
+	shadows							= false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ZWrite+2;
+	};
+
+};
+--]]
+
+RT_WaterFog=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_waterEnable ) and ensure_water();
+	doc									=	"渲染水雾";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_POST_EFFECT;
+	material_scheme			= "WaterFog";
+	shadows							= false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	98;
+		last_render_queue		=	99;
+	};
+};
+
+RT_Water=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_waterEnable ) and ensure_water();
+	doc									=	"渲染水";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_POST_EFFECT;
+	shadows							= false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	71;
+		last_render_queue		=	72;
+	};
+};
+
+RT_CopyMainToSwap_Clear =
+{
+	con						= filterMask( Ogre.FAIRY.Mask_waterEnable ) and ensure_water();
+	doc						=	"清除swap_buffer";
+	name					=	"swap_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,1);	
+	};
+	
+}
+
+RT_CopyMainToSwap_Water=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_waterEnable ) and ensure_water();
+	doc						=	"拷贝一次场景图用来做折射缓冲";
+	name					=	"swap_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+		
+	};
+};
+
+RT_CopySwapToMain_Water=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_waterEnable ) and ensure_water();
+	doc						=	"拷贝一次场景图用来做折射缓冲";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

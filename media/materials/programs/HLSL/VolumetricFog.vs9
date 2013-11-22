@@ -1,0 +1,27 @@
+//#include <ShaderDefineVS.hlsl9>
+//#pragma pack_matrix( row_major )
+uniform float4x4  cWorldVecGen	:	register(c19);
+
+struct VS_OUTPUT {
+   float4 Pos: POSITION;
+   float2 oTexCoord: TEXCOORD0;
+   float3 oRay : TEXCOORD1;
+};
+
+VS_OUTPUT main( in float4 Pos: POSITION)
+{
+   VS_OUTPUT Out;
+
+	// Clean up inaccuracies
+	Pos.xy = sign(Pos.xy);
+
+	Out.Pos = float4(Pos.xy, 1, 1);
+	// Image-space
+	Out.oTexCoord.x = 0.5 * (1 + Pos.x);
+	Out.oTexCoord.y = 0.5 * (1 - Pos.y);
+
+  float4 worldVec = mul(cWorldVecGen, Out.Pos.xyww);
+  Out.oRay = worldVec.xyz / worldVec.w;         
+
+  return Out;
+}

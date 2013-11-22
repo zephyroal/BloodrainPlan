@@ -1,0 +1,70 @@
+#ifndef _JoyParticleMaterialPS_H_
+#define _JoyParticleMaterialPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyParticleMaterial.inc"
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uv1;
+	
+#if g_Diffuse2Enable == 1
+	FI.extTC1			= IN.uv2;
+#endif
+
+#if g_SpaceDistortionEnable == 1
+  FI.extTC2     = IN.uv3;
+  FI.extTC3     = IN.pv;
+#endif
+
+	FI.color			= IN.col;
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0;
+#if g_SpaceDistortionEnable != 1
+	OUT.color1 = float4( HDROutput(params).rgb * params.FI.color.rgb, params.cDiffuseRT.a * params.FI.color.a * surface_diffuse_colour.a);
+#else
+  OUT.color1 = float4( HDROutput(params).rgb, params.cDiffuseRT.a * surface_diffuse_colour.a);
+#endif
+
+#if g_IsReleaseMode == 0
+	if(ComplexityParams.x > 0)
+	{
+		OUT.color1.rgb = params.cComplexity.rgb;
+	}
+#endif
+	OUT.color2 = float4( params.fHDRPower, 0, 0, 0 );	return OUT;
+}
+
+PS_OUT main( VS_OUT IN ) 
+{ 
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	/// …Ë÷√‰÷»æ≤Œ ˝
+	fmt_rop( params );
+	
+	// distortion 
+	Distortion( params );
+	
+	/// diffuse rt
+	Calc_Diffuse_Tex( params );
+	
+	// diffise 2
+	Calc_Diffuse2_Blend( params );
+	
+	/// alpha rejection
+	Tex_Kill( params );
+	
+	Calc_Complexity_Color( params );
+	
+	return fmt_output( params );
+}
+
+#endif

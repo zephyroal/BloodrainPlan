@@ -1,0 +1,52 @@
+vertex_program Quad_F hlsl
+{
+	source Quad.vs9
+	entry_point main
+	target vs_2_0
+}
+
+fragment_program CopyFrame_F hlsl
+{
+    source CopyFrameBuffer.ps9
+    entry_point main
+    target ps_2_0
+    default_params
+    {
+    	param_named vCamFrustum float4 1 1 1 1
+    	param_named_auto cTargetSize viewport_size
+    }
+}
+
+material PostFilters/FinalOutput
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+      
+      vertex_program_ref Quad_F
+      {
+      }
+      
+      fragment_program_ref CopyFrame_F
+      {
+      	param_named_auto cTargetSize viewport_size
+      }
+
+			texture_unit
+			{
+				texture <source>
+				tex_address_mode clamp
+				filtering point point none
+        tex_coord_set 0
+				colour_op replace
+			}
+		}
+	}
+}

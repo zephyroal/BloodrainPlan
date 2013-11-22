@@ -1,0 +1,21 @@
+compositor ShadowMapComPositor
+{
+  technique
+  {
+    texture scene target_width target_height PF_R8G8B8
+    texture temp target_width target_height PF_R8G8B8
+    target scene
+    {
+
+    }
+    target_output
+    {
+      input previous
+      pass render_quad
+      {
+        material ShadowMapComPositor
+        input 0 scene
+      }
+    }
+  }
+}

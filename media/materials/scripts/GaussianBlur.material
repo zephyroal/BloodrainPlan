@@ -1,0 +1,70 @@
+fragment_program PostFilters/Compositor/GaussianBlurHLSL_fp hlsl
+{
+	source GaussianBlur.hlsl
+	entry_point psGaussianBlur
+	target ps_3_0
+}
+
+material PostFilters/GaussianBlurH
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/GaussianBlurHLSL_fp
+			{
+				param_named fStrength float 1
+				
+				param_named offset float2 1 0
+				param_named_auto vvp viewport_size
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material PostFilters/GaussianBlurV
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/GaussianBlurHLSL_fp
+			{
+				param_named fStrength float 1
+				
+				param_named offset float2 0 1
+				param_named_auto vvp viewport_size
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

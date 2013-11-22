@@ -1,0 +1,11 @@
+<DetailObject>
+	<MaterialName>Examples/GrassBlades</MaterialName>
+	<SplitNumber>1</SplitNumber>
+	<RandPos>0</RandPos>
+	<Density>0.3</Density>
+	<DetailWidth>100</DetailWidth>
+	<DetailHeight>100</DetailHeight>
+	<DetailRandSize>0.7</DetailRandSize>
+	<RegionWidth>4</RegionWidth>
+	<RegionHeight>4</RegionHeight>
+</DetailObject>

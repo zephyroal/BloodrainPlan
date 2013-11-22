@@ -1,0 +1,51 @@
+material charcolorchangetemplate
+{
+    technique
+    {
+    	  pass
+        {
+        //    emissive 0.000000 0.000000 0.000000
+            texture_unit
+            {
+                texture_alias <baseTexture>
+            }
+            
+         		fragment_program_ref Char/charOneTextureColor
+						{
+						}
+        }       
+       
+    }
+    
+    technique
+    {
+    		scheme dx90c
+        pass
+        {
+        //    emissive 0.000000 0.000000 0.000000
+            texture_unit
+            {
+                texture_alias <baseTexture>
+            }
+            
+         		fragment_program_ref Char/charOneTextureColor_30
+						{
+						}
+        }       
+       
+    }
+    
+    technique
+    {
+				scheme dx70
+        pass
+        {
+         //   emissive 1.000000 1.000000 1.000000
+         //   specular 1 1 1 60
+            texture_unit
+            {
+                texture_alias <baseTexture>
+            }
+        }             
+    }
+}

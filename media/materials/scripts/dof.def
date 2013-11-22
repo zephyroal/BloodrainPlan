@@ -1,0 +1,79 @@
+ensure_dof = function()
+	return ( Hardware_CapsMrtSupport == 1 ) and ( Hardware_SM3 == 1 ) and ( Effect_DofSupport == 1 );
+end;
+
+BlurTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_DepthOfField + Ogre.FAIRY.Mask_HDR ) and ensure_dof();
+	name					=	"blur_buffer";
+	size					=	{0,0,0.5,0.5};
+	texture_format=	{Ogre.Global.PF_A8R8G8B8};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_DofBlur=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_DepthOfField ) and ensure_dof();
+	doc									=	"景深 模糊处理";
+	name								=	"blur_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"DoF_Gaussian3x3";
+		identifier				= 4;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+RT_Dof=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_DepthOfField ) and ensure_dof();
+	doc									=	"景深 计算";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"DoF_DepthOfField";
+		identifier				= 5;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "blur_buffer", 0 };
+		};
+	};
+};
+
+RT_CopySwapToMain_DOF=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_DepthOfField ) and ensure_dof();
+	doc						=	"高度雾的处理结果拷贝到main_buffer中";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output					= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+			
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

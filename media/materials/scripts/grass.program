@@ -1,0 +1,23 @@
+vertex_program Examples/GrassWaverVp cg
+{
+	source Grass.cg
+	entry_point grass_vp2
+	profiles vs_1_1 arbvp1
+	default_params
+	{
+			param_named_auto worldViewProj worldviewproj_matrix
+			param_named_auto ambient ambient_light_colour
+//			param_named_auto objSpaceLightPos[0] light_position_object_space 0
+			param_named_auto lightColour[0] light_diffuse_colour 0
+//			param_named_auto objSpaceLightPos[1] light_position_object_space 1
+			param_named_auto lightColour[1] light_diffuse_colour 1	
+//			param_named_auto objSpaceLightPos[2] light_position_object_space 2
+			param_named_auto lightColour[2] light_diffuse_colour 2
+//			param_named_auto objSpaceLightPos[3] light_position_object_space 3
+			param_named_auto lightColour[3] light_diffuse_colour 3
+			param_named_auto offset custom 999
+			param_named_auto lightFactor custom 998			
+			param_named_auto windForce global_env_param 60
+		//	float4 0.3 0.3 0.3 0.3
+	}
+}

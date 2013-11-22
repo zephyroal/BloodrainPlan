@@ -1,0 +1,109 @@
+fragment_program SSAO_Blur_PS hlsl
+{
+	source JoyAO_Blur.hlsl
+	entry_point SSAO_Blur_PS
+	target ps_3_0
+	default_params
+	{
+		preprocessor_defines SM3=1
+		param_named_auto inverse_texture_size inverse_texture_size 1
+	}
+}
+
+vertex_program StandardVp hlsl
+{
+	source hdr.hlsl
+	entry_point hdrStandardVp
+	target vs_3_0
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+material SSAO_BlurPass0
+{
+	technique
+	{
+
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref StandardVp
+			{
+			}
+
+			fragment_program_ref SSAO_Blur_PS
+			{
+				param_named dir float 0
+      }
+            	
+			texture_unit 0
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+				max_anisotropy 16
+			}
+			texture_unit 1
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+				max_anisotropy 16
+			}
+			texture_unit 2
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+				max_anisotropy 16
+			}
+		}
+	}
+
+}
+
+material SSAO_BlurPass1
+{
+	technique
+	{
+
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref StandardVp
+			{
+			}
+
+			fragment_program_ref SSAO_Blur_PS
+			{
+				param_named dir float 1
+			}
+
+			texture_unit 0
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+				max_anisotropy 16
+			}
+			texture_unit 1
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+				max_anisotropy 16
+			}
+			texture_unit 2
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering anisotropic
+				max_anisotropy 16
+			}
+		}
+	}
+}

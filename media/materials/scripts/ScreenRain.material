@@ -1,0 +1,156 @@
+
+
+fragment_program PostFilters/Compositor/ScreenRainHLSL_fp hlsl
+{
+	source ScreenRain.hlsl
+	entry_point psScreenRain
+	target ps_3_0
+}
+
+fragment_program PostFilters/Compositor/ScreenRainMixHLSL_fp hlsl
+{
+	source ScreenRain.hlsl
+	entry_point psScreenRainMix
+	target ps_3_0
+}
+
+material PostFilters/ScreenRain
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			//vertex_program_ref PostFilters/std_quad_vs
+			//{
+			//}
+			fragment_program_ref PostFilters/Compositor/ScreenRainHLSL_fp
+			{
+				param_named vTrailColor float3 0.7 0.8 0.9
+				param_named vTrailDensity float 0.1
+			
+				param_named_auto fTime time
+				param_named_auto vvp viewport_size
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit
+			{
+				texture ScreenRainNoise.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering bilinear
+			}
+			texture_unit texRainMask
+			{
+				texture Screen_Rain_Mask
+        tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material PostFilters/ScreenRain/Mix
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+			scene_blend src_alpha one_minus_src_alpha
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/ScreenRainMixHLSL_fp
+			{
+				param_named fTrailWeakness float 2
+			
+				param_named_auto fElapsedTime frame_time
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			texture_unit texRainMask
+			{
+				texture Screen_Rain_Mask
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+material PostFilters/ScreenRain/CopyBack
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+			scene_blend src_alpha one_minus_src_alpha
+			lighting off
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+// for particle
+material PostFilters/Particle/ScreenRainImage
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+			scene_blend src_alpha one_minus_src_alpha
+			lighting off
+
+			texture_unit
+			{
+				texture ScreenRain_test.dds
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

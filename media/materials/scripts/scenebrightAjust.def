@@ -1,0 +1,75 @@
+ensure_ScnBriAjust = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 );
+end;
+
+RT_SceneBrightAjust = 
+{
+	con									= filterMask( Ogre.FAIRY.Mask_SceneBrightAdjustEnable ) and ensure_ScnBriAjust();
+	doc									=	"场景图整体亮度调节";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;	
+	shadows							= false;
+
+  _G.Compositor.RenderQuad
+	{
+		material					=	"ScnBriAdj/SceneBrightAdjust";
+		identifier				= 48;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+--[
+RT_ReRenderObj_Clear = 
+{
+	con									= filterMask( Ogre.FAIRY.Mask_SceneBrightAdjustEnable ) and ensure_ScnBriAjust();
+	doc									=	"clear depthmap";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_DEPTH };
+		depth_value 			= 1.0;
+	};	  
+};
+--]
+
+RT_ReRenderObj = 
+{
+  con									= filterMask( Ogre.FAIRY.Mask_SceneBrightAdjustEnable ) and ensure_ScnBriAjust();
+	doc									=	"渲染logicmodel";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_ACTOR + Ogre.FAIRY.OVF_DEFAULT;
+
+	_G.Compositor.RenderScene
+	{	  
+		first_render_queue	=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue		=	Ogre.FAIRY.ORQ_AlphaBlend + 1;
+	};
+};
+
+RT_CopySwapToMain_ScnBriAdjust =
+{
+  con						= filterMask( Ogre.FAIRY.Mask_SceneBrightAdjustEnable ) and ensure_ScnBriAjust();
+	doc						=	"拷贝到main_buffer中";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+			
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};		
+	};
+};

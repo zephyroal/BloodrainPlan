@@ -1,0 +1,70 @@
+#ifndef _JoyTerrainMaterialPS_H_
+#define _JoyTerrainMaterialPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyTerrainMaterial_DF.inc"
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uvBottom;
+#if g_MiddleLayerEnable == 1 || g_UpperLayerEnable == 1
+	FI.extTC1			= IN.uvMiddleUpper;
+#endif
+#if g_BlendLayerEnable == 1 || g_ColorMapEnable == 1
+	FI.extTC2			= IN.uvBlendLightColor;
+#endif
+#if g_DetailLayerEnable == 1 || g_NormalLayerEnable == 1
+	FI.extTC3			= IN.uvDetailNormal;
+#endif
+	FI.vNormal		= float4( IN.normal.xyz, 0 );
+	FI.vView			= float4( normalize( IN.v.xyz ), IN.v.w );
+	FI.fog				= IN.fog;
+	FI.position		= IN.pv;
+	
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0;
+	
+	OUT.color1 = float4( params.cFinal.rgb, params.FI.position.z );
+	OUT.color2 = float4( g_LightingParams.x, 0,encode_normal(normalize( params.FI.vNormal.rgb )) );
+	OUT.color3 = float4( derived_scene_colour.rgb, 0 );
+	
+	return OUT;
+}
+
+PS_OUT main( VS_OUT IN )
+{
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	/// 设置渲染参数
+	fmt_rop( params );
+	
+	/// 底层
+	Calc_Terrain_BottomLayer( params );
+
+	/// 中层
+	Calc_Terrain_MiddleLayer( params );
+	
+	/// 上层
+	Calc_Terrain_UpperLayer( params );
+
+	/// Color Map
+	Calc_Color_Blend( params );
+	
+	/// bump normal
+	Bump_Normal( params );
+	
+	// Beast Map
+	Calc_BeastMap_Blend_Df( params );
+	
+	return fmt_output( params );
+}
+
+#endif

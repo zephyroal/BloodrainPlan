@@ -1,0 +1,612 @@
+
+material 水01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 0.7
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+
+			texture_unit
+			{
+				anim_texture riverWater.jpg 24 1
+			}
+		}
+	}
+}
+
+material 水01Depth
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+
+			texture_unit
+			{
+				anim_texture riverWater.jpg 24 1
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+
+material haihuwater
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 海湖水.jpg 28 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+
+material heliuwater
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 河流.jpg 28 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+
+material 水01_moon
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 0.7
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+
+			texture_unit
+			{
+				anim_texture riverWater.jpg 24 1
+			}
+
+			texture_unit Fairy/Projector
+			{
+				anim_texture moon.tga 28 2
+				tex_address_mode clamp
+				colour_op_ex blend_texture_alpha src_texture src_current
+				alpha_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback src_alpha one_minus_src_alpha
+			}
+		}
+	}
+}
+material haihuwater_moon
+{
+   technique
+   {
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 河流.jpg 28 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+
+			texture_unit Fairy/Projector
+			{
+				anim_texture moon.tga 28 2
+				tex_address_mode clamp
+				colour_op_ex blend_texture_alpha src_texture src_current
+				alpha_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback src_alpha one_minus_src_alpha
+			}
+		}
+   }
+}
+material shuiyinwater
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 水银.jpg 30 5				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+
+material bingwater
+{
+	technique
+	{
+		pass
+		{
+			specular 0.9 0.9 0.9 100
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+
+			texture_unit
+			{
+				anim_texture 冰.jpg 2 1
+			}
+		                texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+material haihuwaterlv
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 海湖水绿.jpg 28 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+material waterNormalDepth
+{
+
+}
+
+material huwaterlv
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 湖水.jpg 40 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+material haihuwaterlan
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 海湖水蓝.jpg 28 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+material huwaterlan
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+			specular 0.9 0.9 0.9 20
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off        
+			texture_unit
+			{
+				anim_texture 湖水蓝.jpg 40 2				
+			}
+			texture_unit
+			{
+				texture water_depth.tga 1d
+				colour_op_ex source1 src_current src_texture
+				colour_op_multipass_fallback one zero
+				alpha_op_ex modulate src_current src_texture
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering none none none
+			}
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+vertex_program Water/water_depth/VS hlsl
+{
+	source ModelSceneDepth.hlsl
+	entry_point Depth_VS
+	target vs_3_0
+
+	default_params
+	{
+		param_named_auto WorldViewXf	worldview_matrix
+		param_named_auto WvpXf		worldviewproj_matrix
+	}
+}
+
+fragment_program Water/water_depth/PS hlsl
+{
+	source ModelSceneDepth.hlsl
+	entry_point Depth_PS
+	target ps_3_0
+	preprocessor_defines TEXTURE_USED=1
+	
+	default_params
+	{
+		param_named specialFlag	float 1.0
+	}
+}
+
+fragment_program Water/water_depth/NoTex_PS hlsl
+{
+	source ModelSceneDepth.hlsl
+	entry_point Depth_PS
+	target ps_3_0
+	preprocessor_defines TEXTURE_USED=0
+	
+	default_params
+	{
+		param_named specialFlag	float 1.0
+	}
+}
+
+vertex_program Water/water_Fog/VS hlsl
+{
+	source WaterReflectionReraction.hlsl
+	entry_point WaterFog_VS
+	target vs_3_0
+	
+	default_params
+	{
+		param_named_auto worldMatrix world_matrix
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+		param_named_auto eyePosition camera_position_object_space
+		param_named_auto camFrontDir view_direction
+	}
+}
+
+fragment_program Water/water_Fog/PS hlsl
+{
+	source WaterReflectionReraction.hlsl
+	entry_point WaterFog_PS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto viewportSize viewport_size
+		// FogColorDensity.w input range : [0--10000]
+		param_named FogColorDensity float4 1.0 1.0 1.0 70
+	}
+}
+
+vertex_program Water/water_ReflectionReraction/VS hlsl
+{
+	source WaterReflectionReraction.hlsl
+	entry_point WaterReflectionReraction_VS
+	target vs_3_0
+
+	default_params
+	{
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+		param_named_auto worldViewMatrix worldview_matrix
+		param_named_auto eyePosition camera_position_object_space
+		param_named_auto timeVal time 0.0125	
+		
+		param_named wavesSpeed float2 40 0
+	}
+}
+
+fragment_program Water/water_ReflectionReraction/PS hlsl
+{
+	source WaterReflectionReraction.hlsl
+	entry_point WaterReflectionReraction_PS
+	target ps_3_0
+
+	default_params
+	{
+	  param_named_auto viewportSize viewport_size
+		param_named_auto SunLightDir light_direction 0
+		param_named_auto SunColor light_diffuse_colour	0
+		
+		param_named BigWavesScale float 0.59
+		param_named SmallWavesScale float 0.44
+		param_named BumpScale float2 0.6 0.6
+		param_named TransparencyRatio float 0.11
+		param_named SunShinePow float 113
+		param_named SunMultiplier float 0.41
+		param_named FresnelBias float 0.1
+		param_named UVScale float2 1.0 1.0
+		
+	}
+}
+
+material water_ReflectionReraction
+{
+  technique LogicModelMask
+  {
+    scheme  LogicModelMask
+    pass
+    {
+     depth_write off  
+    }     
+  }  
+  
+  technique WaterFog
+	{
+		scheme WaterFog
+		// render fog under water
+		pass
+		{
+			depth_write off
+			separate_scene_blend src_alpha one_minus_src_alpha zero zero			
+			
+			vertex_program_ref Water/water_Fog/VS
+			{
+			}
+			fragment_program_ref Water/water_Fog/PS
+			{
+			}
+			texture_unit DepthTex
+			{
+				tex_address_mode clamp
+				content_type compositor Main main_buffer 0
+			}
+		}
+	}
+	
+	technique Effect
+	{
+		pass
+		{
+			depth_write off
+			separate_scene_blend src_alpha one_minus_src_alpha zero one
+			
+			vertex_program_ref Water/water_ReflectionReraction/VS
+			{
+			}
+			fragment_program_ref Water/water_ReflectionReraction/PS
+			{
+			}
+			
+			texture_unit
+			{
+				texture oceanwaves.dds 2d
+				filtering trilinear				
+			}
+			texture_unit CubicMap
+			{
+			  texture Water_Cubicmap.dds cubic			  		 
+			}
+			
+			texture_unit RefractTex
+			{
+				tex_address_mode clamp      	
+				content_type compositor Main swap_buffer
+			}
+         
+			texture_unit  LiquidTexture
+			{
+				tex_address_mode clamp
+				//filtering point 
+			}
+      
+			//texture_unit LogicModelMaskTex
+			//{
+				//tex_address_mode clamp
+				//content_type compositor Main swap_buffer2
+			//}            
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////
+//兼容老场景water material
+//////////////////////////////////////////////////////////
+
+material shader_water01
+{
+	technique WaterFog
+	{
+		scheme WaterFog
+		// render fog under water
+		pass
+		{
+			depth_write off
+			//scene_blend alpha_blend
+			separate_scene_blend src_alpha one_minus_src_alpha zero zero
+			
+			vertex_program_ref Water/water_Fog/VS
+			{
+			}
+			fragment_program_ref Water/water_Fog/PS
+			{
+			}
+			texture_unit DepthTex
+			{
+				tex_address_mode clamp
+			}
+		}
+	}
+
+	technique Effect
+	{	
+		pass
+		{
+			depth_write off
+
+			vertex_program_ref Water/water_ReflectionReraction/VS
+			{
+			}
+			fragment_program_ref Water/water_ReflectionReraction/PS
+			{
+			}
+
+			texture_unit
+			{
+				texture oceanwaves.dds 2d
+				filtering trilinear
+			}
+			texture_unit CubicMap
+			{
+				
+			}
+			texture_unit RefractTex
+			{
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

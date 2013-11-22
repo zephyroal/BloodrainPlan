@@ -1,0 +1,89 @@
+material SPECIALEffect/SpecularLight
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend	alpha_blend
+			alpha_rejection greater	128
+		 	texture_unit
+			{
+				texture reflect.tga
+				tex_address_mode mirror
+				colour_op_ex add src_texture src_manual	0.2 0.2 0.2 0
+				env_map spherical
+			}
+		}		
+	}
+}
+
+
+material SPECIALEffect/BlueFloodLight
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend	alpha_blend
+			alpha_rejection greater	128
+		 	texture_unit
+			{
+				texture 水13.tga
+		//		tex_address_mode mirror
+				colour_op_ex add src_texture src_manual	0.2 0.2 0.2 0
+		//		env_map spherical
+				scroll_anim 0.03 0.03
+        rotate_anim 0.03
+				tex_coord_set	1
+			}
+		}		
+	}
+}
+
+
+material SPECIALEffect/BlueFloodLightAutoTexcoord
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend	alpha_blend
+			alpha_rejection greater	128
+		 	texture_unit
+			{
+				texture 水13.tga
+		//		tex_address_mode mirror
+				colour_op_ex add src_texture src_manual	0.2 0.2 0.2 0
+				env_map spherical
+				scroll_anim 0.03 0.03
+        rotate_anim 0.03
+			}
+		}		
+	}
+}
+
+
+material SPECIALEffect/BlueFloodLightAutoTexcoordCameraReflect
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend	alpha_blend
+			alpha_rejection greater	128
+		 	texture_unit
+			{
+				texture 水13.tga
+		//		tex_address_mode mirror
+				colour_op_ex add src_texture src_manual	0.2 0.2 0.2 0
+				env_map planar
+				scroll_anim 0.03 0.03
+        rotate_anim 0.03
+			}
+		}		
+	}
+}

@@ -1,0 +1,39 @@
+#ifndef	RENDER_SW_VERSION
+#define	RENDER_SW_VERSION	9
+#endif
+
+#ifndef	RENDER_HW_VERSION
+#define	RENDER_HW_VERSION	9
+#endif
+
+
+//shader register define
+//-----------------------------------------------
+//	Frame	Register
+//-----------------------------------------------
+int4	vScreen		:	register(i0);
+
+float4	vTime		:	register(c0);	//totaltime,timedelta,daytime,daytime/24
+float4	vFog		:	register(c1);	//xyz=vFog,w=0
+float4	vAmbient	:	register(c2);	//xyz=vAmbient,w=0
+float4	vLightDir	:	register(c3);	//xyz=SunDir,w=0
+float4	vLightDiff	:	register(c4);	//xyz=SunDiffuse,w=0
+float4	vLightSpec	:	register(c5);	//xyz=SunSpec,SpecPower
+
+
+//-----------------------------------------------
+//	Camera	Register
+//-----------------------------------------------
+float4x4	mViewProj:	register(c6);
+float4	vCamPos		:	register(c10);
+float4	vCamDir		:	register(c11);
+float4	vCamUpDir	:	register(c12);
+float4	vCamFarCorner	:	register(c13);
+//float4	vCamFrustum	:	register(c14);	//xy=(1/viewport width, 1/viewport height), zw=(1/near clip, 1/far clip)
+
+//-----------------------------------------------
+//	Object	Register
+//-----------------------------------------------
+float4x4	mWorld	:	register(c15);
+
+

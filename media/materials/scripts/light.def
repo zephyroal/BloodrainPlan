@@ -1,0 +1,135 @@
+ensure_light = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) ;--and ( Effect_DefferedModeSupport == 1 );
+end;
+
+DiffuseTexDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+			name					=	"diffuse_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+LightInfoDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+			name					=	"light_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+CCWTexDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+			name					=	"ccw_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	{Ogre.Global.PF_FLOAT32_R};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_CopyDiffuseToMain=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+	doc						=	"main_buffer";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "diffuse_buffer", 0 };
+		};
+		
+	};
+};
+
+RT_CombineLights=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+	doc						=	"diffuse_buffer";
+	name					=	"diffuse_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"CombineLights";
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "light_buffer", 0 };
+		};
+		
+	};
+};
+
+RT_DLCP_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+	doc									=	"";
+	name								=	"light_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.DLCPRender
+	{
+	};
+};
+
+RT_CCWLight=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+	doc									=	"";
+	name								=	"ccw_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	material_scheme			= "ccw_depth";
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,0);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+	
+	_G.Compositor.DLCPRender
+	{
+	};
+};
+
+RT_ClearLightBuffer=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_light();
+	doc									=	"";
+	name								=	"light_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,0);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+};

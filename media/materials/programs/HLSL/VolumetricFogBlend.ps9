@@ -1,0 +1,21 @@
+
+sampler2D sceneTex				 : register(s0);
+sampler2D fogColorTex       : register(s1);
+float4 cTargetSize : register(c19);
+
+struct vtxOutDownscaleZBuffer
+{
+  float4 HPosition  	: POSITION;
+  float4  baseTC0	: TEXCOORD0;  
+  float3  ray       	: TEXCOORD1;           
+};
+
+
+float4 main(vtxOutDownscaleZBuffer IN,in float2 tc : TEXCOORD0) : COLOR
+{
+	float4 sceneColor = tex2D(sceneTex, tc + 0.5*cTargetSize.zw);
+	float4 fogColor = tex2D(fogColorTex, tc + 0.5*cTargetSize.zw);
+	sceneColor.rgb = fogColor.a * fogColor.rgb + (1-fogColor.a)*sceneColor.rgb;
+	
+	return sceneColor;
+}

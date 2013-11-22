@@ -1,0 +1,732 @@
+
+get_adapter_format = function()
+	return function()
+												-- 预先判定浮点贴图 如果不支持浮点图直接返回，关闭所有效果
+												if ( Hardware_CapsFloatTex == 0 ) then
+													return { Ogre.Global.PF_A8R8G8B8 };
+												end;
+												 
+												if ( Hardware_CapsMrtSupport == 0 or Quality_Level == 0) then		
+
+													return { Ogre.Global.PF_A8R8G8B8};
+												else																
+				
+													return { Ogre.Global.PF_FLOAT16_RGBA };
+												end;	
+	end;
+end;
+
+get_adapter2_format = function()
+	return function()
+				 
+												if (  Quality_Level == 0) then		
+
+													return { Ogre.Global.PF_A8R8G8B8};
+												else																
+				
+													return { Ogre.Global.PF_FLOAT16_RGBA };
+												end;	
+	end;
+end;
+
+
+
+SceneTexDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable + Ogre.FAIRY.Mask_DepthOfField +Ogre.FAIRY.Mask_FadeDeath );
+			name					=	"main_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	get_adapter_format();
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+Swap1TexDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_waterEnable + Ogre.FAIRY.Mask_hfogEnable + Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner + Ogre.FAIRY.Mask_DepthOfField + Ogre.FAIRY.Mask_HDR + Ogre.FAIRY.Mask_ShadowMap + Ogre.FAIRY.Mask_godrayEnable + Ogre.FAIRY.Mask_AntiAlising + Ogre.FAIRY.Mask_MotionBlur + Ogre.FAIRY.Mask_EffectDistortion + Ogre.FAIRY.Mask_HSVAjust + Ogre.FAIRY.Mask_HeatHaze + Ogre.FAIRY.Mask_FadeDeath);
+			name					=	"swap_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	get_adapter2_format();
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+Swap2TexDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_vfogEnable + Ogre.FAIRY.Mask_vfogEnable_Inner + Ogre.FAIRY.Mask_ShadowMap + Ogre.FAIRY.Mask_waterEnable + Ogre.FAIRY.Mask_EffectDistortion );
+			name					=	"swap_buffer2";
+			size					=	{0,0,1,1};
+			texture_format=	get_adapter2_format();
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_ClearRed=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染地形，clear后进行earlyz 测试";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR, Ogre.Global.FBT_DEPTH, Ogre.Global.FBT_STENCIL };
+		colour_value 			= Ogre.ColourValue(0,0,0,1);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+};
+
+RT_ClearGreen=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染地形，clear后进行earlyz 测试";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR, Ogre.Global.FBT_DEPTH, Ogre.Global.FBT_STENCIL };
+		colour_value 			= Ogre.ColourValue(0,0,0,1);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+};
+
+-- 注意deffer模式和清理颜色相关 不要更改这里的clear颜色等
+RT_ClearBlue=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR, Ogre.Global.FBT_DEPTH, Ogre.Global.FBT_STENCIL };
+		colour_value 			= Ogre.ColourValue(0,0,0,0);
+		depth_value 			= 1.0;
+		stencil_value 		= 0;
+	};
+};
+
+RT_Terrain=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染地形，clear后进行earlyz 测试";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_TERRAIN;
+	id									= Ogre.FAIRY.PassID_Terrain;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_Terrain;
+		last_render_queue		=	Ogre.FAIRY.ORQ_Terrain+1;
+	};
+	
+	id									= Ogre.FAIRY.PassID_Terrain;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+	
+};
+
+RT_ZWrite=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染支持earlyz的对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_TERRAIN + Ogre.FAIRY.OVF_ACTOR;
+	
+	id									= Ogre.FAIRY.PassID_ZWrite;
+	blend_src						= Ogre.Global.SBF_ONE;
+	blend_dst						= Ogre.Global.SBF_ZERO;
+	addr_mode						= Ogre.TextureUnitState.TAM_WRAP;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ZWrite+1;
+	};
+	
+};
+
+RT_UnSorted=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染其他未排序对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_VOLUME_FOG;
+	
+	id									= Ogre.FAIRY.PassID_UnSorted;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_UnSorted;
+		last_render_queue		=	Ogre.FAIRY.ORQ_UnSorted+1;
+	};
+};
+
+RT_AlphaBlend=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染透明对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op			=	Ogre.FAIRY.OVF_EFFECT_DISTORTION;
+	id									= Ogre.FAIRY.PassID_AlphaBlend;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_check					= true;
+	depth_write					= false;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_AlphaBlend;
+		last_render_queue		=	Ogre.FAIRY.ORQ_AlphaBlend+1;
+	};
+};
+
+RT_Actor_Pre=
+{
+	con									= 	filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染LogicModel";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output								= 	Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask						=	Ogre.FAIRY.OVF_ACTOR;
+	material_scheme    					= 	"pre";
+	shadows								= 	false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue				=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue				=	Ogre.FAIRY.ORQ_ZWrite+2;
+	};
+
+};
+
+RT_Actor=
+{
+	con									= 	filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染LogicModel";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output								= 	Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask						=	Ogre.FAIRY.OVF_ACTOR;
+	material_scheme    					= 	"default";
+	shadows								= 	false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue				=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue				=	Ogre.FAIRY.ORQ_ZWrite+2;
+	};
+
+};
+
+RT_Actor_Df=
+{
+	con									= 	filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染LogicModel";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output								= 	Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask						=	Ogre.FAIRY.OVF_ACTOR;
+	material_scheme    					= 	"deffered";
+	shadows								= 	false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue				=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue				=	Ogre.FAIRY.ORQ_ZWrite+2;
+	};
+
+};
+
+RT_AlphaTest=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染Alpha测试对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_ACTOR;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ALPHATEST;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ALPHATEST+1;
+	};
+	
+	id									= Ogre.FAIRY.PassID_AlphaTest;
+	blend_src						= Ogre.Global.SBF_ONE;
+	blend_dst						= Ogre.Global.SBF_ZERO;
+	addr_mode						= Ogre.TextureUnitState.TAM_WRAP;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_GREATER_EQUAL;
+	alpha_val						= 128;
+};
+
+RT_Sky=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable );
+	doc									=	"渲染天空";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_SKY_OBJECT;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	51;
+		last_render_queue		=	61;
+	};
+	
+};
+
+RT_SkyDome=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable );
+	doc									=	"渲染天空体";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_SKY_OBJECT;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	5;
+		last_render_queue		=	6;
+	};
+	
+};
+
+RT_SkyDome_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable );
+	doc									=	"渲染天空体";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_SKY_OBJECT;
+	material_scheme			= "pre";
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	5;
+		last_render_queue		=	6;
+	};
+	
+};
+
+RT_SkyDome_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable );
+	doc									=	"渲染天空体";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_SKY_OBJECT;
+	material_scheme			= "deffered";
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	5;
+		last_render_queue		=	6;
+	};
+	
+};
+
+RT_Terrain_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染地形，clear后进行earlyz 测试";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_TERRAIN;
+	material_scheme			= "pre";
+
+	id									= Ogre.FAIRY.PassID_Terrain;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_Terrain;
+		last_render_queue		=	Ogre.FAIRY.ORQ_Terrain+1;
+	};
+	
+};
+
+RT_ZWrite_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染支持earlyz的对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_TERRAIN;
+	material_scheme			= "pre";
+	
+	id									= Ogre.FAIRY.PassID_ZWrite;
+	blend_src						= Ogre.Global.SBF_ONE;
+	blend_dst						= Ogre.Global.SBF_ZERO;
+	addr_mode						= Ogre.TextureUnitState.TAM_WRAP;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+	
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ZWrite+1;
+	};
+	
+};
+
+RT_AlphaTest_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染Alpha测试对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	material_scheme			= "pre";
+  visibility_mask_op			=	Ogre.FAIRY.OVF_EFFECT_DISTORTION;
+	id									= Ogre.FAIRY.PassID_AlphaTest;
+	blend_src						= Ogre.Global.SBF_ONE;
+	blend_dst						= Ogre.Global.SBF_ZERO;
+	addr_mode						= Ogre.TextureUnitState.TAM_WRAP;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_GREATER_EQUAL;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ALPHATEST;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ALPHATEST+1;
+	};
+	
+};
+
+RT_AlphaBlend_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染透明对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	material_scheme			= "pre";
+  visibility_mask_op			=	Ogre.FAIRY.OVF_EFFECT_DISTORTION;
+	id									= Ogre.FAIRY.PassID_AlphaBlend;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= false;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_AlphaBlend;
+		last_render_queue		=	Ogre.FAIRY.ORQ_AlphaBlend+1;
+	};
+	
+};
+
+RT_UnSorted_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染其他未排序对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_VOLUME_FOG;
+	material_scheme			= "pre";
+
+	id									= PassID_UnSorted;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_UnSorted;
+		last_render_queue		=	Ogre.FAIRY.ORQ_UnSorted+1;
+	};
+};
+
+RT_Terrain_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染地形，clear后进行earlyz 测试";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask			=	Ogre.FAIRY.OVF_TERRAIN;
+	material_scheme			= "deffered";
+	
+	id									= Ogre.FAIRY.PassID_Terrain;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	70;
+		last_render_queue		=	71;
+	};
+	
+};
+
+RT_ZWrite_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染支持earlyz的对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_TERRAIN;
+	material_scheme			= "deffered";
+	
+	id									= Ogre.FAIRY.PassID_ZWrite;
+	blend_src						= Ogre.Global.SBF_ONE;
+	blend_dst						= Ogre.Global.SBF_ZERO;
+	addr_mode						= Ogre.TextureUnitState.TAM_WRAP;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ZWrite+1;
+	};
+	
+};
+
+RT_AlphaTest_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染Alpha测试对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	material_scheme			= "deffered";
+	
+	id									= Ogre.FAIRY.PassID_AlphaTest;
+	blend_src						= Ogre.Global.SBF_ONE;
+	blend_dst						= Ogre.Global.SBF_ZERO;
+	addr_mode						= Ogre.TextureUnitState.TAM_WRAP;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= true;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_GREATER_EQUAL;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_ALPHATEST;
+		last_render_queue		=	Ogre.FAIRY.ORQ_ALPHATEST+1;
+	};
+	
+};
+
+RT_TmpTransparency=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染Alpha测试对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	material_scheme			= "default";
+	
+	id									= Ogre.FAIRY.PassID_AlphaBlend;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= false;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	73;
+		last_render_queue		=	74;
+	};
+	
+};
+
+RT_TmpTransparency_Pre=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	copy_from						= RT_TmpTransparency;
+	material_scheme			= "pre";
+};
+
+RT_TmpTransparency_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	copy_from						= RT_TmpTransparency;
+	material_scheme			= "deffered";
+};
+
+RT_AlphaBlend_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染透明对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	material_scheme			= "deffered";
+	
+	id									= Ogre.FAIRY.PassID_AlphaBlend;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	depth_fun						= Ogre.Global.CMPF_LESS_EQUAL;
+	depth_write					= false;
+	depth_check					= true;
+	depth_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_AlphaBlend;
+		last_render_queue		=	Ogre.FAIRY.ORQ_AlphaBlend+1;
+	};
+	
+};
+
+RT_UnSorted_Df=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_sceneContentEnable + Ogre.FAIRY.Mask_waterEnable );
+	doc									=	"渲染其他未排序对象";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask_op	=	Ogre.FAIRY.OVF_VOLUME_FOG;
+	material_scheme			= "deffered";
+	
+	id									= PassID_UnSorted;
+	filter_option				= Ogre.Global.FO_LINEAR;
+	max_aniso						= 4;
+	mipmap_bias					= 0.0;
+	alpha_fun						= Ogre.Global.CMPF_ALWAYS_PASS;
+	alpha_val						= 128;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue	=	Ogre.FAIRY.ORQ_UnSorted;
+		last_render_queue		=	Ogre.FAIRY.ORQ_UnSorted+1;
+	};
+};
+
+SceneTexDef_Df = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable );
+			name					=	"main_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	{Ogre.Global.PF_FLOAT16_RGBA,Ogre.Global.PF_FLOAT16_RGBA,Ogre.Global.PF_FLOAT16_RGBA};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};

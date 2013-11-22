@@ -1,0 +1,36 @@
+material Core/WireFrame
+{
+		technique
+    {
+        pass
+        {
+        	polygon_mode wireframe
+        	cull_hardware none
+          cull_software none
+				}
+		}
+ }
+    
+    
+material Core/TestRibbon
+{
+		technique
+    {
+    	pass
+			{
+				lighting off
+				scene_blend colour_blend
+				depth_write off
+				cull_hardware none
+        cull_software none
+			
+				texture_unit
+				{
+					texture a001.jpg
+					colour_op replace
+				}
+			}     
+		}
+ }
+   
+    

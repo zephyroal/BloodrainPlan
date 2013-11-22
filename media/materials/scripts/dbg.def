@@ -1,0 +1,57 @@
+
+RT_Dbg_CopyMain1=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_waterEnable );
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "main_buffer", 1 };
+		};
+		
+	};
+};
+
+RT_Dbg_CopyMain2=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_waterEnable );
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "main_buffer", 2 };
+		};
+		
+	};
+};
+
+RT_Dbg_CopyMain3=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_waterEnable );
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "main_buffer", 3 };
+		};
+		
+	};
+};

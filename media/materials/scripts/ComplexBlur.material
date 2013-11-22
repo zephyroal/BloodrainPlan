@@ -1,0 +1,41 @@
+
+
+fragment_program PostFilters/Compositor/ComplexBlurHLSL_fp hlsl
+{
+	source ComplexBlur.hlsl
+	entry_point psComplexBlur
+	target ps_3_0
+}
+
+material PostFilters/ComplexBlur
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/ComplexBlurHLSL_fp
+			{
+				param_named fDistance float 24
+				param_named fUnblured float 0.1
+				param_named fStrength float 0.05
+				
+				param_named_auto vvp viewport_size
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

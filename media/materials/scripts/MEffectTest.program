@@ -1,0 +1,19 @@
+vertex_program MEffectTest/TestVS cg
+{
+	source MeffectTest.cg
+	entry_point TestVS
+	profiles vs_2_0 arbvp1
+	default_params
+	{
+	}
+}
+
+fragment_program MEffectTest/TestPS cg
+{
+	source MeffectTest.cg
+	entry_point TestPS
+	profiles ps_2_0 arbfp1
+	default_params
+	{
+	}
+}

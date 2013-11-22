@@ -1,0 +1,17 @@
+void EdgeHighLight_vp(float4 position : POSITION,
+                      float3 normal      : NORMAL,
+                      out float4 oPosition : POSITION,
+                      uniform float4x4 worldViewProj,
+                      uniform float TimeElapsed)
+{
+    oPosition = float4(position.xyz + normal * 0.8f, 1);
+    //oPosition.x*=1+0.2*(1+sin(TimeElapsed))
+    //oPosition = float4(position.x, position.yzw);
+    oPosition = mul(worldViewProj, oPosition);
+}
+void EdgeHighLight_fp(out float4 colour : COLOR,
+                      uniform float TimeElapsed)
+{
+  colour=float4(1,1,TimeElapsed,0.2);//,
+}
+

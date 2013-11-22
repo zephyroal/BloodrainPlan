@@ -1,0 +1,100 @@
+ensure_mb = function()
+	return true;
+end;
+
+MonBlurTexDef=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_MotionBlur ) and ensure_dof();
+	name					=	"lastFrame_buffer";
+	size					=	{0,0,1,1};
+	texture_format=	{Ogre.Global.PF_A8R8G8B8};
+	pooled				=	false;
+	gamma					=	false;
+	fsaa					=	false;
+	depthBufferId	=	1;
+	scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_MonblurInitial=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_MotionBlur ) and ensure_mb();
+	doc									=	"copy";
+	name								=	"lastFrame_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+	only_initial				= true;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"FrameCopy";
+		--identifier				= 4;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+RT_MonBlurCombine=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_MotionBlur ) and ensure_mb();
+	doc									=	"运动模糊";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"PostFilters/MotionBlur/Combine";
+		identifier					= 15;
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "lastFrame_buffer", 0 };
+		};
+	};
+};
+
+RT_MonBlurCopy=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_MotionBlur ) and ensure_mb();
+	doc									=	"运动模糊";
+	name								=	"lastFrame_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+	};
+};
+
+RT_MonBlurCopyToMain=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_MotionBlur ) and ensure_mb();
+	doc									=	"运动模糊";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+	};
+};

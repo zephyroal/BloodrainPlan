@@ -1,0 +1,44 @@
+ensure_fdeath = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) and ( Effect_FadeDeathSupport == 1 );
+end;
+
+RT_FdeathCombine=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_FadeDeath ) and ensure_fdeath();
+	doc									=	"死亡特效的使用";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"PostFilters/Fade";
+		identifier				= 8;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+RT_CopySwapToMain_FDeath=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_FadeDeath ) and ensure_fdeath();
+	doc						=	"死亡特效的处理结果拷贝到main_buffer中";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+			
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

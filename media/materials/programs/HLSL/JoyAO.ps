@@ -1,0 +1,122 @@
+#ifndef _JoyAOPS_H_
+#define _JoyAOPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyAO.inc"
+#include "JoyCodec.inc"
+
+/// tmp
+sampler PositionSampler : register(s0);
+sampler NormalSampler 	: register(s1);
+sampler RNormalSampler 	: register(s2);
+
+#define MAX_RAND_SAMPLES 14
+#define NUM_BASE_SAMPLES 6
+
+const float3 RAND_SAMPLES[MAX_RAND_SAMPLES] =
+{
+    float3(1, 0, 0),
+    float3(	-1, 0, 0),
+    float3(0, 1, 0),
+    float3(0, -1, 0),
+    float3(0, 0, 1),
+    float3(0, 0, -1),
+    normalize(float3(1, 1, 1)),
+    normalize(float3(-1, 1, 1)),
+    normalize(float3(1, -1, 1)),
+    normalize(float3(1, 1, -1)),
+    normalize(float3(-1, -1, 1)),
+    normalize(float3(-1, 1, -1)),
+    normalize(float3(1, -1, -1)),
+    normalize(float3(-1, -1, -1))
+};
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uv1.xyxy;
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0;
+	OUT.color1 = params.cFinal;
+	return OUT;
+}
+
+float ao_range 			= 0.2;
+float ao_power 			= 1;
+float ao_bias  			= 0;
+float ao_randomuv 	= 100;
+float ao_length 		= 1;
+
+float4x4 view_matrix_custom;
+float4x4 proj_matrix_custom;
+float4x4 inverse_proj_matrix;
+
+float4 calculate_view_pos(in float4 ray, in float sceneDepth)
+{
+	ray = mul( inverse_proj_matrix, float4(ray.xyww) );
+	ray /= ray.w;
+	ray.xyz = normalize(ray.xyz);
+	
+	float cosTheta = dot(ray.xyz, float3(0,0,1));
+	
+	float3 viewPos = -sceneDepth / cosTheta * ray.xyz;
+
+	return float4(viewPos, 1);
+}
+
+PS_OUT main( VS_OUT IN ) 
+{
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	// position in view
+	float3 pv = calculate_view_pos( IN.ray, tex2D( PositionSampler, params.FI.baseTC ).w ).xyz;
+	
+	// normals in view
+	float2 norm = tex2D( NormalSampler, params.FI.baseTC ).zw;
+	float3 nv = normalize( decode_normal(norm) );
+	
+	// rand normal
+	float3 rn = normalize( tex2D( RNormalSampler, params.FI.baseTC.xy * ao_randomuv ).rgb ); // screen_size * uv / random_size
+	rn = 2 * rn - float3(1,1,1);
+
+	float occ = 0;
+  for (int i = 0; i < NUM_BASE_SAMPLES; ++i)
+  {
+      float3 randomDir = reflect(RAND_SAMPLES[i], rn) + nv.xyz;
+
+      #define RADIUS 2000
+      float4 nuv = mul( proj_matrix_custom, float4(pv.xyz + randomDir * ao_range * 10000 / pv.z, 1 ) );
+      nuv.xy /= nuv.w;
+      
+      nuv.xy = ( nuv.xy * float2( 0.5, -0.5 ) ) + float2( 0.5, 0.5 );
+
+			// get occ pt
+			float3 v = calculate_view_pos( IN.ray, tex2D( PositionSampler, nuv.xy ).w ).xyz;
+			
+			float3 vd = normalize( v - pv );
+			
+      // compute occlusion based on the (scaled) Z difference
+      float zd = saturate( abs(v.z - pv.z) / 5000.f );
+      
+      // qtx other occ function
+      // occ += saturate(pow(1.0 - zd, 11) + zd);
+      occ += max( 0, dot(nv,vd) - ao_bias ) * ( 1.0 / (1.0 + zd * zd) ) * ao_power;
+      // occ += saturate(zd/5000.f);
+  }
+	
+	// Average
+	float unOcclusion = ( occ / NUM_BASE_SAMPLES );
+	
+	params.cFinal = float4( unOcclusion.xxx, 1 );
+
+	return fmt_output( params );
+}
+
+#endif

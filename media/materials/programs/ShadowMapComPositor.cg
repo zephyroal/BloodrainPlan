@@ -1,0 +1,9 @@
+void ShadowMapComPositorFP(float2 uv : TEXCOORD0,
+out float4 color : COLOR,
+uniform sampler2D texture)
+{
+  float4 temp_color = tex2D(texture, uv); 
+  color = float4( 1.0 - temp_color.r,1.0 - temp_color.g, 1.0 - temp_color.b,0);
+  //float greyvalue = temp_color.r * 0.3 + temp_color.g * 0.59 + temp_color.b * 0.11;
+  //color = float4(greyvalue,greyvalue,greyvalue,0);
+}

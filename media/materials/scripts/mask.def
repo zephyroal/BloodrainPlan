@@ -1,0 +1,37 @@
+ensure_mask = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) and ( Effect_WaterSupport == 1 );
+end;
+
+RT_LogicModel_Mask_Clear=
+{
+	con									= 	filterMask( Ogre.FAIRY.Mask_waterEnable  +  Ogre.FAIRY.Mask_ShadowMap ) and ensure_mask();
+	doc									=	"Çå¿Õlogicmodel mask ÌùÍ¼";
+	name								=	"swap_buffer2";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output								= 	Ogre.CompositionTargetPass.OM_NONE;	
+
+  _G.Compositor.Clear
+	{
+		buffers							=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 					= 	Ogre.ColourValue(0,0,0,0);	
+	};
+};
+
+RT_LogicModel_Mask=
+{
+	con									= 	filterMask( Ogre.FAIRY.Mask_waterEnable  +  Ogre.FAIRY.Mask_ShadowMap) and ensure_mask();
+	doc									=	"logicmodel mask ÌùÍ¼";
+	name								=	"swap_buffer2";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output								= 	Ogre.CompositionTargetPass.OM_NONE;
+	visibility_mask						=	Ogre.FAIRY.OVF_ACTOR;
+	material_scheme    					= 	"LogicModelMask";
+	shadows								= 	false;
+
+	_G.Compositor.RenderScene
+	{
+		first_render_queue				=	Ogre.FAIRY.ORQ_ZWrite;
+		last_render_queue				=	Ogre.FAIRY.ORQ_ZWrite+2;
+	};
+
+};

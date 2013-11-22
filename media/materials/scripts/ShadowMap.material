@@ -1,0 +1,148 @@
+vertex_program ShadowMap/ReceiveShadowMap/VS hlsl
+{
+    source ShadowMap/ShadowMap_Receive.hlsl
+    entry_point Receive_ShadowMap_vp
+    target vs_3_0
+    column_major_matrices false
+}
+
+fragment_program ShadowMap/ReceiveShadowMap/PS/Default hlsl
+{
+    source ShadowMap/ShadowMap_Receive.hlsl
+    entry_point Receive_ShadowMap_fp
+    target ps_3_0
+    column_major_matrices false
+	preprocessor_defines g_Defered=0
+}
+
+fragment_program ShadowMap/ReceiveShadowMap/PS/Defered hlsl
+{
+    source ShadowMap/ShadowMap_Receive.hlsl
+    entry_point Receive_ShadowMap_fp
+    target ps_3_0
+    column_major_matrices false
+	preprocessor_defines g_Defered=1
+}
+
+material ShadowMap/ReceiveShadowMap/Default
+{
+    technique 
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_check off
+
+            vertex_program_ref ShadowMap/ReceiveShadowMap/VS
+            {
+            }
+
+            fragment_program_ref ShadowMap/ReceiveShadowMap/PS/Default
+            {
+            }
+            
+            texture_unit SceneDepth
+            {
+                texture_alias @sceneDepthRT
+                tex_address_mode clamp
+				content_type compositor Main main_buffer
+            }
+  
+            texture_unit ShadowMap_RenderTarget
+            {
+                texture_alias @shadowmap
+                texture ShadowMap_RenderTarget 2d
+                tex_address_mode clamp				
+            }
+
+        }
+    }
+}
+material ShadowMap/ReceiveShadowMap/Defered
+{
+	technique 
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_check off
+
+            vertex_program_ref ShadowMap/ReceiveShadowMap/VS
+            {
+            }
+
+            fragment_program_ref ShadowMap/ReceiveShadowMap/PS/Defered
+            {
+            }
+            
+            texture_unit SceneDepth
+            {
+                texture_alias @sceneDepthRT
+                tex_address_mode clamp
+				content_type compositor Main main_buffer
+            }
+			
+			texture_unit LogicModelMask
+			{
+				tex_address_mode clamp
+				content_type compositor Main swap_buffer2
+			}       
+            
+            texture_unit ShadowMap_RenderTarget
+            {
+                texture_alias @shadowmap
+                texture ShadowMap_RenderTarget 2d
+                tex_address_mode clamp				
+            }
+
+        }
+    }
+}
+
+fragment_program ShadowMap/BlendShadowMap/PS hlsl
+{
+    source ShadowMap/ShadowMap_Blend.hlsl
+    entry_point Blend_ShadowMap_fp
+    target ps_3_0
+    column_major_matrices false
+}
+
+material ShadowMap/BlendShadowMap
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_check off
+
+            vertex_program_ref Quad
+            {
+            }
+
+            fragment_program_ref ShadowMap/BlendShadowMap/PS
+            {
+            }
+            
+            texture_unit
+            {
+                texture_alias @sceneFullRT
+                texture 2d
+                tex_address_mode clamp
+                filtering bilinear
+            }
+            
+            texture_unit
+            {
+                texture_alias @shadowmap
+                texture 2d
+                tex_address_mode clamp
+                filtering bilinear
+            }
+
+        }
+    }
+}

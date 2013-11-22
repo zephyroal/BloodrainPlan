@@ -1,0 +1,44 @@
+ensure_HH = function()
+	return true;
+end;
+
+RT_HeatHaze=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_HeatHaze ) and ensure_HH();
+	doc									=	"水下波动";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"PostFilters/HeatHaze";
+	  identifier					= 14;
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+RT_HeatHazeCopyToMain=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_HeatHaze ) and ensure_HH();
+	doc									=	"水下波动";
+	name								=	"main_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"FrameCopy";
+		
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+	};
+};

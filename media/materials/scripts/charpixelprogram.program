@@ -1,0 +1,29 @@
+fragment_program Char/charOneTextureColor	cg
+{
+	source charpixelprogram.cg
+	entry_point charcolorchangefp
+	profiles ps_2_0 arbfp1
+
+	default_params
+	{
+		//	param_named_auto clrModulate global_env_param 62
+		param_named clrModulate float4 1 1 1 2
+	}
+}
+
+
+
+fragment_program Char/charOneTextureColor_30	cg
+{
+	source charpixelprogram.cg
+	entry_point charcolorchangefp
+	profiles ps_3_0
+	compile_arguments -DHSVADJUST
+
+	default_params
+	{
+	//		param_named_auto clrModulate global_env_param 62
+			param_named clrModulate float4 1 1 1.7 1
+	}
+}
+

@@ -1,0 +1,119 @@
+ensure_ao = function()
+	return ( Hardware_SM3 == 1 ) and ( Hardware_CapsMrtSupport == 1 ) and ( Effect_AOSupport == 1 );
+end;
+
+AOTexDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable ) and ensure_ao();
+			name					=	"ambient_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+AOTexBlurDef = 
+{
+			con						= filterMask( Ogre.FAIRY.Mask_AO ) and ensure_ao();
+			name					=	"ao_buffer";
+			size					=	{0,0,1,1};
+			texture_format=	{Ogre.Global.PF_FLOAT16_RGBA};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+};
+
+RT_ClearAO=
+{
+	con									= true;--filterMask( Ogre.FAIRY.Mask_AO ) and ensure_ao();
+	doc									=	"AO";
+	name								=	"ambient_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(1,1,1,1);
+	};
+};
+
+RT_AO=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_AO ) and ensure_ao();
+	doc									=	"AO";
+	name								=	"ambient_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.Clear
+	{
+		buffers						=	{ Ogre.Global.FBT_COLOUR };
+		colour_value 			= Ogre.ColourValue(0,0,0,1);
+	};
+	
+	_G.Compositor.RenderQuad
+	{
+		material					=	"JoyAO";
+		identifier				= 501;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "main_buffer", 1 };
+		};
+	};
+};
+
+RT_AOBlur0=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_AO ) and ensure_ao();
+	doc									=	"AO";
+	name								=	"ao_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"SSAO_BlurPass0";
+		identifier				= 0;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "ambient_buffer" , 0 };
+			{ "main_buffer", 1 };
+		};
+	};
+};
+
+RT_AOBlur1=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_AO ) and ensure_ao();
+	doc									=	"AO";
+	name								=	"ambient_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"SSAO_BlurPass1";
+		identifier				= 0;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "ao_buffer" , 0 };
+			{ "main_buffer", 1 };
+		};
+	};
+};

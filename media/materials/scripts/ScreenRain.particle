@@ -1,0 +1,48 @@
+Particle/ScreenRain
+{
+	material				PostFilters/Particle/ScreenRainImage
+	//particle_width			0.016
+	//particle_height			0.032
+	particle_width			24
+	particle_height			32
+	cull_each				false
+	quota					1000
+	billboard_type			perpendicular_common
+	common_direction		0 0 -1
+	
+	// Area	emitter
+	emitter	Box
+	{
+		position			0 0 0
+		angle				0
+		emission_rate		5
+		time_to_live_min	0.5
+		time_to_live_min	3
+		direction			0 -1 0
+		velocity_min		20
+		velocity_max		100
+		width				512
+		height				0
+		depth				512
+	}
+
+	affector DirectionRandomiser
+	{
+		randomness		50
+	}
+	
+	affector ColourInterpolator
+	{
+		time0		0
+		colour0		1 1 1 1
+		time1		1
+		colour1		1 1 1 0
+	}
+
+	affector Scaler
+	{
+		rate		-5
+	}
+
+}
+

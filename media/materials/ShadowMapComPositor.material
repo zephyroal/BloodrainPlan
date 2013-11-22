@@ -1,0 +1,23 @@
+fragment_program ShadowMapComPositorFP cg
+{
+  source ShadowMapComPositor.cg
+  entry_point ShadowMapComPositorFP
+  profiles ps_1_1 arbfp1
+}
+
+material ShadowMapComPositor
+{
+  technique
+  {
+    pass
+    {
+      fragment_program_ref ShadowMapComPositorFP
+      {
+      }
+      texture_unit
+      {
+
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+
+
+fragment_program godray/godrayMask/PS hlsl
+{
+  source godray.hlsl
+  entry_point godrayMask_PS
+  target ps_3_0
+}
+
+
+
+fragment_program godray/godray/PS hlsl
+{
+  source godray.hlsl
+  entry_point godray_PS
+  target ps_3_0
+  
+  default_params
+  {
+    param_named_auto viewportSize viewport_size
+    
+    param_named Density float 1.0
+    //param_named NUM_SAMPLES int 64
+    param_named fNUM_SAMPLES float 64
+    param_named Weight float 5.0
+    param_named Exposure float 0.008
+    param_named Decay float 1.0
+    param_named ScreenLightPos float4 0.0 0.0 0.0 0.0
+  }  
+  
+}
+
+
+material godray/godrayMask
+{
+   technique
+   {
+      pass 
+      {
+        lighting off
+        depth_write off
+        depth_check off
+        
+        vertex_program_ref Quad
+        {
+        }
+        fragment_program_ref godray/godrayMask/PS
+        {
+        }
+        
+        texture_unit SceneTex
+        {
+           texture 2d
+           tex_address_mode clamp
+           filtering trilinear          
+        }        
+        texture_unit MaskTex
+        {
+           texture 2d
+           tex_address_mode clamp
+           filtering trilinear  
+        }                
+        texture_unit EnSkyTex
+        {
+           texture yaoshi_qing001_color.tga 2d                   
+           tex_address_mode clamp
+           filtering trilinear           
+        }
+      }
+   }  
+}
+
+material godray/godray
+{
+   technique
+   {
+      pass
+      {
+        lighting off
+        depth_write off
+        depth_check off
+        
+        vertex_program_ref Quad
+        {
+        }
+        fragment_program_ref godray/godray/PS
+        {
+  
+        }
+        
+        texture_unit SceneTex
+        {
+           texture 2d
+           tex_address_mode clamp
+           filtering trilinear  
+        }
+        texture_unit GodRayMaskTex
+        {          
+           texture 2d
+           tex_address_mode clamp
+           filtering trilinear  
+        } 
+      }
+   }
+}
+

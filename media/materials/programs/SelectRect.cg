@@ -1,0 +1,29 @@
+void SelectRectVS(
+float4 position : POSITION,
+out float4 oPosition : POSITION,
+float4 color :COLOR,
+out float4 ocolor :COLOR,
+float2 uv : TEXCOORD0,
+out float2 oUv : TEXCOORD0,
+uniform float4x4 worldViewMatrix,
+uniform float TimeElapsed)
+{
+  oPosition = mul(worldViewMatrix, position);
+  oPosition.x*= (2+sin(TimeElapsed));
+  oPosition.y*= (2+cos(TimeElapsed));
+  ocolor = color;
+  float2 uvadd=float2(0.02f,0.02f)*TimeElapsed;
+  oUv=uv+uvadd;
+}
+
+void SelectRectPS(float4 color : COLOR,
+float2 uv : TEXCOORD0,
+uniform sampler2D texture,
+out float4 oColor : COLOR)
+{
+  float4 tex= tex2D(texture, uv);
+  tex.a=0.8f;
+  oColor = color*tex; 
+//20110525 Feeling Good 脚踏实地 我在路上
+ // oColor=tex;
+}

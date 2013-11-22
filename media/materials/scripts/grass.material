@@ -1,0 +1,279 @@
+
+material Examples/GrassBlades
+{
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			
+			}
+			alpha_rejection greater 150 
+		//	depth_write off
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture gras_02.png 
+		  tex_address_mode clamp
+            }
+        }
+    }
+
+	// Non-vertex program technique (no waving)
+	technique
+    {
+        pass
+        {
+			alpha_rejection greater 150 
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture gras_02.png 
+			tex_address_mode clamp
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades_NOVS
+{
+		technique
+    {
+        pass
+        {
+       // 	polygon_mode wireframe
+					alpha_rejection greater 150 
+					scene_blend alpha_blend
+		    	cull_hardware none
+          cull_software none
+         texture_unit
+        {
+        		//texture riverWater_15.jpg
+               texture gras_02.png 
+			tex_address_mode clamp
+         }
+        }
+    }
+ }
+    
+    
+    
+    material Examples/GrassTest
+{
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			
+			}
+			alpha_rejection greater 150 
+		//	depth_write off
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture grass256.tga 
+		tex_address_mode clamp
+            }
+        }
+    }
+
+	// Non-vertex program technique (no waving)
+	technique
+    {
+        pass
+        {
+			alpha_rejection greater 150 
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture grass256.png
+			tex_address_mode clamp	
+            }
+        }
+    }
+}
+
+
+    material Examples/GrassGreen
+{
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			
+			}
+			alpha_rejection greater 150 
+		//	depth_write off
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture grassgreen.tga 
+		tex_address_mode clamp
+            }
+        }
+    }
+
+	// Non-vertex program technique (no waving)
+	technique
+    {
+        pass
+        {
+			alpha_rejection greater 150 
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture grassgreen.png 
+			tex_address_mode clamp
+            }
+        }
+    }
+}
+
+    material Examples/GrassYellow
+{
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			
+			}
+			alpha_rejection greater 150 
+		//	depth_write off
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture grassyellow.tga 
+			tex_address_mode clamp
+            }
+        }
+    }
+
+	// Non-vertex program technique (no waving)
+	technique
+    {
+        pass
+        {
+			alpha_rejection greater 150 
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture grassyellow.png 
+			tex_address_mode clamp
+            }
+        }
+    }
+}
+
+    material Examples/FlowerRed
+{
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			
+			}
+			alpha_rejection greater 150 
+		//	depth_write off
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture FlowerRed.tga 
+			tex_address_mode clamp
+            }
+        }
+    }
+
+	// Non-vertex program technique (no waving)
+	technique
+    {
+        pass
+        {
+			alpha_rejection greater 150 
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture FlowerRed.png 
+			tex_address_mode clamp
+            }
+        }
+    }
+}
+
+
+    material Examples/FlowerYellow
+{
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			
+			}
+			alpha_rejection greater 150 
+		//	depth_write off
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture FlowerYellow.tga 
+			tex_address_mode clamp
+            }
+        }
+    }
+
+	// Non-vertex program technique (no waving)
+	technique
+    {
+        pass
+        {
+			alpha_rejection greater 150 
+			scene_blend alpha_blend
+		    cull_hardware none
+            cull_software none
+            texture_unit
+            {
+                texture FlowerYellow.tga 
+			tex_address_mode clamp
+            }
+        }
+    }
+}
+
+

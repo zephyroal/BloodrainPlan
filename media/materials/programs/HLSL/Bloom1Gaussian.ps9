@@ -1,0 +1,85 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 8 > --- GaussianBlur
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+#define NUM_SAMPLES 8
+
+//Sample offsets
+static const float4 cSampleOffsets[4] = 
+					{		
+						-6.4353638	,	0	,	-4.4551210	,	0,
+						-2.4750209	,	0	,	-0.49500012	,	0,
+						1.4850044	,	0	,	3.4650571	,	0,
+						5.4452209	,	0	,	7.4255576	,	0
+					};
+
+
+
+static const float4 cSampleWeights[8] = 
+					{
+						0.077351913,0.077351913,0.077351913,0.077351913,
+						0.11957975,0.11957975,0.11957975,0.11957975,
+						0.15777792,0.15777792,0.15777792,0.15777792,
+						0.17768085,0.17768085,0.17768085,0.17768085,
+						0.17078218,0.17078218,0.17078218,0.17078218,
+						0.14010428,0.14010428,0.14010428,0.14010428,
+						0.098098971,0.098098971,0.098098971,0.098098971,
+						0.058624174,0.058624174,0.058624174,0.058624174
+					};
+
+float4 cTargetSize			: register(c19);
+float4 cTargetFactor		: register(c20);
+float4 cSampleDirection	: register(c21);
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D tex: register(s0);			
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// **Interal Methods**
+//-----------------------------------------------------------------------------
+float2 getTexcoordNew( float2 tc, int i)
+{
+    // Note that ps_2_0 don't support .zw swizzling, so we use .wz instead.
+
+	if(cSampleDirection.x < 0.5)
+	{
+		if (i % 2)
+			return tc + cSampleOffsets[i / 2].wz * cTargetSize.zw * cTargetFactor.xy + cTargetSize.zw* cTargetFactor.xy*0.5f;
+		else
+			return tc + cSampleOffsets[i / 2].xy * cTargetSize.zw * cTargetFactor.xy + cTargetSize.zw* cTargetFactor.xy*0.5f;
+	}
+	else
+	{
+		if (i % 2)
+			return tc + cSampleOffsets[i / 2].zw * cTargetSize.zw * cTargetFactor.xy + cTargetSize.zw* cTargetFactor.xy*0.5f;
+		else
+			return tc + cSampleOffsets[i / 2].yx * cTargetSize.zw * cTargetFactor.xy + cTargetSize.zw* cTargetFactor.xy*0.5f;
+	} 
+}
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Bloom1GaussianBlur <8 samples>
+//-----------------------------------------------------------------------------
+void main(   in float4 Pos		: POSITION	,
+			 in float2 Tc		: TEXCOORD0 ,
+			 out float4 Color	:  COLOR
+		 )
+{
+    float4 sum = 0;
+    for (int i = 0; i < NUM_SAMPLES; i++)
+    {
+        float2 tc = getTexcoordNew(Tc, i);
+        sum += tex2D(tex, tc) * cSampleWeights[i];
+    }
+    Color = sum;
+}
+//-----------------------------------------------------------------------------

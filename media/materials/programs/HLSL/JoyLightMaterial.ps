@@ -1,0 +1,162 @@
+#ifndef _JoyLightMaterialPS_H_
+#define _JoyLightMaterialPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyLightMaterial.inc"
+
+/// tmp
+sampler SceneSampler 		: register(SS);
+sampler NormalSampler 	: register(SN);
+sampler LightSampler		: register(SLM);
+
+#if g_LightType == 9
+sampler OccSampler			: register(SO);
+sampler AmbientSampler	: register(SA);
+#endif
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uv1 / IN.uv1.w;
+	FI.vView			= float4( normalize( IN.v.xyz ), 1 );
+	FI.position		= IN.pcw;
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0;
+	OUT.color1 = params.cFinal;
+	return OUT;
+}
+
+float4 calculate_view_pos(in float3 ray, in float sceneDepth)
+{
+	ray = normalize(ray);
+	
+	float cosTheta = dot(ray, float3(0,0,1));
+	
+	float3 viewPos = -sceneDepth / cosTheta * ray;
+
+	return float4(viewPos, 1);
+}
+
+PS_OUT main( VS_OUT IN ) 
+{
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	// uv offset [0.5 pixel]
+	params.FI.baseTC.xy += 0.5 * inverse_texture_size.xy;
+	
+	float4 mixCol = tex2Dlod( SceneSampler, float4(params.FI.baseTC.xy,0,0) );
+	mixCol.rgb = float3(1,1,1);
+	
+	params.cDiffuseRT = mixCol;
+	
+	
+#if g_LightType == 9 // ambient light
+
+	params.cAddionalRT = tex2Dlod( AmbientSampler, float4(params.FI.baseTC.xy,0,0) );
+	float isHuman = tex2Dlod( NormalSampler, float4(params.FI.baseTC.xy,0,0) ).y;
+	if(mixCol.w < 0.001)
+	{
+		params.cFinal = mixCol;
+	}
+	else
+	{
+		if ( isHuman == 2 )
+		{
+			params.cFinal = float4(params.cDiffuseRT.rgb*(params.cAddionalRT.rgb) * ActorParams.yyy * ActorParams.zzz,0);
+		}
+		else
+		{
+			params.cFinal = float4(params.cDiffuseRT.rgb*(params.cAddionalRT.rgb),0);
+		}
+		params.cFinal *= tex2Dlod( OccSampler, float4(params.FI.baseTC.xy,0,0) );
+	}
+		
+	return fmt_output( params );
+	
+#else // others
+
+	clip(mixCol.w - 0.001);
+	float4 lightcolor = g_Diffuse;
+	
+	#if g_LightType == 1 // direction light
+
+		float3 vdir = -mul( view_matrix, float4(g_Direction.xyz,0) ).xyz;
+		float3 l 		= normalize( vdir.xyz );
+		float att 	= 1;
+		
+	#else	
+	
+		params.cPositionRT = calculate_view_pos(IN.ray.xyz / IN.ray.w, mixCol.w);
+		float3 vpos = mul( view_matrix, float4(g_Position.xyz,1) ).xyz;
+		float3 len 	= vpos.xyz - params.cPositionRT.xyz;
+		float3 l 		= normalize( len );
+		float att 	= pow( max( g_Atten.x - length(len), 0 ) / ( g_Atten.x + 0.00001 ), g_Atten.y );
+		
+	#endif
+	
+	#if g_LightType == 2 // spot light
+		float3 vdir = -mul( view_matrix, float4(g_Direction.xyz,0) ).xyz;
+		float spotlightAngle = saturate(dot(vdir.xyz, l));
+		att *= pow(smoothstep(g_Spot.y, g_Spot.x, spotlightAngle), g_Spot.z + 0.00001);
+		
+		#if g_SpotProjTexEnable == 1
+			float4x4 wvp;
+			wvp[0] = g_SpotWvpMatrix0;
+			wvp[1] = g_SpotWvpMatrix1;
+			wvp[2] = g_SpotWvpMatrix2;
+			wvp[3] = g_SpotWvpMatrix3;
+			
+			float4 worldPos = mul( inverse_view_matrix, params.cPositionRT );
+			worldPos /= worldPos.w;
+			float4 porjectPos = mul( wvp, worldPos);
+			float2 texUV = mul( texture_matrix_0, float4( porjectPos.xy / porjectPos.w, 1, 1 ) ).xy;
+			float4 color = tex2Dlod( SpotLightProjSampler, float4(texUV,0,0) );
+			
+			lightcolor *= color;
+		#endif
+		
+	#endif
+	
+		// normal in view space
+		// todo : decode normal
+		float4 tmpNor = tex2Dlod( NormalSampler, float4(params.FI.baseTC.xy,0,0) );
+		params.cNormalRT.xyz = decode_normal(tmpNor.zw);
+		float3 n = normalize( params.cNormalRT.xyz );
+		// 如果是地表草(地表草不接受光照，使用自发光调节)
+		float ndotl = 0.5;
+
+		if(tmpNor.y!=1)
+		{
+			ndotl = max( dot(n,l), 0 );
+		}
+		
+		float3 lightDiffuseCol; 
+		if (tmpNor.y == 2)
+		{
+#if g_LightType == 0
+			lightDiffuseCol = float3(0,0,0);
+#else
+			lightDiffuseCol = ndotl * g_PowerScale * lightcolor.rgb * ActorParams.x * ActorParams.z;
+#endif
+		}
+		else
+		{
+			lightDiffuseCol = ndotl * g_PowerScale * lightcolor.rgb;
+		}
+	
+		params.cFinal = att * float4(params.cDiffuseRT.rgb * lightDiffuseCol * tmpNor.x, 1 );
+	
+	return fmt_output( params ); 
+
+#endif
+	
+}
+
+#endif

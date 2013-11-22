@@ -1,0 +1,101 @@
+#ifndef _JoyAOPS_H_
+#define _JoyAOPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyAO.inc"
+
+/// tmp
+sampler PositionSampler : register(s0);
+sampler NormalSampler 	: register(s1);
+sampler RNormalSampler 	: register(s2);
+
+#define MAX_RAND_SAMPLES 14
+#define NUM_BASE_SAMPLES 6
+
+    const float3 RAND_SAMPLES[MAX_RAND_SAMPLES] =
+    {
+        float3(1, 0, 0),
+        float3(	-1, 0, 0),
+        float3(0, 1, 0),
+        float3(0, -1, 0),
+        float3(0, 0, 1),
+        float3(0, 0, -1),
+        normalize(float3(1, 1, 1)),
+        normalize(float3(-1, 1, 1)),
+        normalize(float3(1, -1, 1)),
+        normalize(float3(1, 1, -1)),
+        normalize(float3(-1, -1, 1)),
+        normalize(float3(-1, 1, -1)),
+        normalize(float3(1, -1, -1)),
+        normalize(float3(-1, -1, -1))
+    };
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= IN.uv1.xyxy;
+	return FI;
+}
+
+PS_OUT fmt_output( FragParams params )
+{
+	PS_OUT OUT = (PS_OUT)0;
+	OUT.color1 = params.cFinal;
+	return OUT;
+}
+
+float ao_range = 0.2;
+float4x4 view_matrix_custom;
+float4x4 proj_matrix_custom;
+float camFar = 1000000;
+
+PS_OUT main( VS_OUT IN ) 
+{
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	// position in view
+	float3 pw = tex2D( PositionSampler, params.FI.baseTC ).xyz;
+	float3 pv = MUL( view_matrix_custom, float4(pw.xyz,1) ).xyz;
+	
+	// normals in view
+	float3 nw = tex2D( NormalSampler, params.FI.baseTC ).rgb;
+	float3 nv = normalize( MUL( view_matrix_custom, float4(nw.xyz,1) ).xyz );
+	nv = 2 * nv - float3(1,1,1);
+	
+	// rand normal
+	float3 rn = normalize( tex2D( RNormalSampler, params.FI.baseTC.xy * 100 ).rgb );
+	rn = 2 * rn - float3(1,1,1);
+	
+	float occ = 0;
+    for (int i = 0; i < NUM_BASE_SAMPLES; ++i)
+    {
+        float3 randomDir = reflect(RAND_SAMPLES[i], rn) + nv.xyz;
+
+        // move new view-space position back into texture space
+        // #define RADIUS 0.2125
+        #define RADIUS 0.2125
+        float4 nuv = mul(proj_matrix_custom, float4(pv.xyz + randomDir * RADIUS, 1));
+        nuv.xy /= nuv.w;
+        
+        nuv.xy = ( nuv.xy * float2( 0.5, -0.5 ) ) + float2( 0.5, 0.5 );
+
+        // compute occlusion based on the (scaled) Z difference
+        float zd = saturate((pv.z - mul( view_matrix_custom, float4(tex2D(PositionSampler, nuv.xy).xyz,1) ).z ));
+        // this is a sample occlusion function, you can always play with
+        // other ones, like 1.0 / (1.0 + zd * zd) and stuff
+        // occ += saturate(pow(1.0 - zd, 11) + zd);
+        occ += saturate(1.0 / (1.0 + zd * zd));
+    }
+	
+	// Average
+	float unOcclusion = ( occ / NUM_BASE_SAMPLES );
+	
+	params.cFinal = float4( unOcclusion.xxx, 1 );
+
+	return fmt_output( params );
+}
+
+#endif

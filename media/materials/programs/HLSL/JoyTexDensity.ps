@@ -1,0 +1,59 @@
+#ifndef _JoyTexDensityPS_H_
+#define _JoyTexDensityPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoyTexDensity.inc"
+
+float4 textureDensityParms = { 1.0, 55.0, 0.0, 0.0 }; // x: texture counts. y: max texture density.
+float4 textureLayersParms[8];
+
+float CalculateDensity( float WorldSpaceArea, float4 TextureUV)
+{
+	float Density = 0;
+
+	for ( int index = 0; index < textureDensityParms.x; ++index )
+	{
+		float TexCoordIndex = textureLayersParms[index].z;
+		float2 TextureSize = textureLayersParms[index].xy;
+		float2 uv = TextureUV.xy;
+		
+		if(TexCoordIndex > 0.1)
+			uv = TextureUV.zw;	
+			
+		float2 TexCoord = uv * TextureSize;	// In texels
+		float2 A = ddx(TexCoord);
+		float2 B = ddy(TexCoord);
+		float2 C = A.xy * B.yx;
+
+		// Area of parallelogram, in texels.
+		float TexelArea = abs( C.x - C.y );
+
+		Density = max( Density, TexelArea / WorldSpaceArea );
+	}
+	Density = Density / textureDensityParms.y;
+	
+	Density = max(0.01, min(0.99, Density));
+	
+	return Density;
+}
+
+PS_OUT main( VS_OUT IN ) 
+{ 
+	PS_OUT OUT = (PS_OUT)0;
+
+	// Area of parallelogram, in world space units.
+	float WorldSpaceArea = length( cross( ddx(IN.pw.xyz), ddy(IN.pw.xyz) ) );
+	WorldSpaceArea = max( WorldSpaceArea, 0.00000001f );
+	
+	float Density = CalculateDensity(WorldSpaceArea, IN.uv1);
+	
+	OUT.color1 = tex1D(ComplexitySampler, Density);
+	
+	//OUT.color1 = float4(IN.uv1.xy,0,1);
+	
+	return OUT;
+}
+
+#endif

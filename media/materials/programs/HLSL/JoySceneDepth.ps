@@ -1,0 +1,37 @@
+#ifndef _JoySceneDepthPS_H_
+#define _JoySceneDepthPS_H_
+
+// Define In PS
+#define __PS__
+
+#include "JoySceneDepth.inc"
+
+FragInput fmt_input( VS_OUT IN )
+{
+	FragInput FI = (FragInput)0;
+	FI.baseTC			= float4( IN.depth.zw,0,0 );
+	return FI;
+}
+
+PS_OUT main( VS_OUT IN ) 
+{ 
+	PS_OUT OUT = (PS_OUT)0;
+
+#if g_AlphaTestEnable == 1    // 需要alpha测试的才采样diffuse图
+
+	FragParams params = (FragParams)0;
+	params.FI = fmt_input( IN );
+	
+	/// diffuse rt
+	Calc_Diffuse_Tex( params );
+	
+	/// alpha rejection
+	Tex_Kill( params );
+#endif
+
+	OUT.color1 = float4( IN.depth.xy, 1, 1 );
+	
+	return OUT;
+}
+
+#endif

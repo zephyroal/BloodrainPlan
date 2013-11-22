@@ -1,0 +1,79 @@
+ensure_godray = function()
+	return ( Hardware_SM3 == 1 ) and ( Effect_GodRaySupport == 1 );
+end;
+
+GodRayMaskTexDef = 
+{
+      con						= filterMask(Ogre.FAIRY.Mask_godrayEnable) and ensure_godray();
+			name					=	"godraymask_buffer";
+			size					=	{0,0,0.25,0.25};
+			texture_format=	{Ogre.Global.PF_R8G8B8A8};
+			pooled				=	false;
+			gamma					=	false;
+			fsaa					=	false;
+			depthBufferId	=	1;
+			scope					=	Ogre.CompositionTechnique.TS_LOCAL;
+}
+
+RT_GodRayMask=
+{
+	con									= filterMask(Ogre.FAIRY.Mask_godrayEnable) and ensure_godray();
+	doc									=	"圣光效果Mask图";
+	name								=	"godraymask_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;	
+	shadows							= false;
+
+  _G.Compositor.RenderQuad
+	{
+		material					=	"godray/godrayMask";
+		identifier				= 46;
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+			{ "main_buffer", 1 };
+		};
+	};
+};
+
+RT_GodRay=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_godrayEnable ) and ensure_godray();
+	doc									=	"圣光效果";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;	
+	shadows							= false;
+
+  _G.Compositor.RenderQuad
+	{
+		material					=	"godray/godray";
+		identifier				= 47;
+		
+		inputs=
+		{
+		  { "main_buffer", 0 };
+			{ "godraymask_buffer", 0 };
+		};
+	};
+};
+
+RT_CopySwapToMain_GR=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_godrayEnable ) and ensure_godray();
+	doc						=	"圣光效果图拷贝到main_buffer中";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+			
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};		
+	};
+};

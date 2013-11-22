@@ -1,0 +1,43 @@
+ensure_hsv = function()
+	return ( Hardware_SM3 == 1 ) and ( Effect_HSVSupport == 1 );
+end;
+
+RT_HSV=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HSVAjust ) and ensure_hsv();
+	doc						= "场景图饱和度、明度调节";
+	name					= "swap_buffer";
+	input					= Ogre.CompositionTargetPass.IM_NONE;
+	output					= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material 		= "HSVAjust";
+		identifier		= 44;
+		
+		inputs=
+		{
+			{"main_buffer", 0};
+		};
+	};
+};
+
+RT_CopySwapToMain_HSV=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_HSVAjust ) and ensure_hsv();
+	doc						=	"高度雾的处理结果拷贝到main_buffer中";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output					= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+			
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

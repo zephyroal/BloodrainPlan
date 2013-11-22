@@ -1,0 +1,58 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 0 > --- Downscale Scene
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+//float4 texToTexParams0	:register(c19);
+//float4 texToTexParams1	:register(c20);
+float4 cTargetSize	:register(c19);
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D scene: register(s0);			//Scene
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Downscale Scene
+//-----------------------------------------------------------------------------
+void  main(
+				in float2 tc		: TEXCOORD0 ,
+				out float4 oColor 	: COLOR)
+{
+  float4 _c0 = 0;
+  float4 _c1 = 0;
+  float4 _c2 = 0;
+  float4 _c3 = 0;
+  float4 _c4 = 0;
+	
+	const float2 offset[5] = 
+	{
+		0.96, 0.25,
+		-0.25, 0.96,
+		-0.96, -0.25,
+		0.25,-0.96,
+		0, 0
+	};
+	
+	float2 sampleTC;
+	oColor = float4(0, 0, 0, 0);
+	for(int i = 0; i < 5; ++i)
+	{
+		sampleTC = tc + offset[i].xy*cTargetSize.zw;
+		oColor += tex2D(scene, sampleTC)*0.2h;
+	}
+  //tc += vCamFrustum.xy*0.5f;
+  //_c0 = tex2D(_tex0, tc);
+  //_c1 = tex2D(_tex0, tc + texToTexParams0.xy);
+  //_c2 = tex2D(_tex0, tc + texToTexParams0.zw);
+  //_c3 = tex2D(_tex0, tc + texToTexParams1.xy);
+  //_c4 = tex2D(_tex0, tc + texToTexParams1.zw);
+  //oColor = (_c0 + _c1 + _c2 + _c3 + _c4) * 0.2h;
+}
+//-----------------------------------------------------------------------------

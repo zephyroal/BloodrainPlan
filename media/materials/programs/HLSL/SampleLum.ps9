@@ -1,0 +1,143 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 1 > --- Sample Lum
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+#define NUM_SAMPLES 9
+
+//luminance coefficients
+static const float3 cLuminanceCoefficients = float3(0.2126, 0.7152, 0.0722);
+
+//Sample offsets
+static const float4 cSampleOffsets[5] = 
+					{
+						-0.33333334 , -0.33333334 , 0 ,-0.33333334 ,
+						0.33333334  , -0.33333334 , -0.33333334 ,0 ,
+						0	,	0	, 0.33333334  , 0			   ,
+						-0.33333334 , 0.33333334  , 0 ,0.33333334  ,
+						0.33333334  , 0.33333334  , 0 , 0
+					};
+
+
+float4 cTargetSize : register(c19);
+float4 cTargetFactor : register(c20);			// x = widthFactor, y = heightFactor
+//float4 cSampleLumParams : register(c21);	//x = cEyeAdaptationClamp,y = cPowerScale
+#define FarClipPlane 10000
+
+
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D scene: register(s0);			//Scene
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// **Interal Methods**
+//-----------------------------------------------------------------------------
+float2 getTexcoordNew( float2 tc, int i)
+{
+    // Note that ps_2_0 don't support .zw swizzling, so we use .wz instead.
+    if (i % 2)
+        return tc + cSampleOffsets[i / 2].wz * cTargetSize.zw * cTargetFactor.xy + cTargetSize.zw * cTargetFactor.xy*0.5f;
+    else
+        return tc + cSampleOffsets[i / 2].xy * cTargetSize.zw * cTargetFactor.xy + cTargetSize.zw * cTargetFactor.xy*0.5f;
+}
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Sample Lum
+//-----------------------------------------------------------------------------
+void main(	in      float4 POS  : POSITION 
+           ,in      float2 TCs  : TEXCOORD0
+           ,out     float4 color    : COLOR
+)
+{
+		float   cEyeAdaptationClamp = UberEyeAdaptionClamp;//cSampleLumParams.x;
+		float   cPowerScale = UberPowerFactor;//cSampleLumParams.y;
+
+    float weight = 1.0 / NUM_SAMPLES;
+    float sum = 0;
+    int i = 0;
+
+    for (; i <= NUM_SAMPLES-4; i += 4)
+    {
+        float4 lum;
+        float4 sceneDepth;
+        for (int j = 0; j < 4; ++j)
+        {
+            float2 tc = getTexcoordNew(TCs, i + j);
+            float4 sc = tex2D(scene, tc);
+            lum[j] = dot(sc.rgb, cLuminanceCoefficients) * cPowerScale;
+            sceneDepth[j] = -sc.w / FarClipPlane;
+        }
+
+        float4 maxLum = cEyeAdaptationClamp + saturate(sceneDepth * 10 - 9);
+        float4 sample = min(lum, maxLum);
+
+        sum += dot(sample, weight);
+    }
+
+    for (; i <= NUM_SAMPLES-3; i += 3)
+    {
+        float3 lum;
+        float3 sceneDepth;
+        for (int j = 0; j < 3; ++j)
+        {
+            float2 tc = getTexcoordNew(TCs, i + j);
+            float4 sc = tex2D(scene, tc);
+            lum[j] = dot(tex2D(scene, tc).rgb, cLuminanceCoefficients) * cPowerScale;
+            sceneDepth[j] = -sc.w / FarClipPlane;
+        }
+
+        float3 maxLum = cEyeAdaptationClamp + saturate(sceneDepth*10 - 9);
+        float3 sample = min(lum, maxLum);
+
+        sum += dot(sample, weight);
+    }
+
+    for (; i <= NUM_SAMPLES-2; i += 2)
+    {
+        float2 lum;
+        float2 sceneDepth;
+        for (int j = 0; j < 2; ++j)
+        {
+            float2 tc = getTexcoordNew(TCs, i + j);
+            float4 sc = tex2D(scene, tc);
+            lum[j] = dot(tex2D(scene, tc).rgb, cLuminanceCoefficients) * cPowerScale;
+            sceneDepth[j] = -sc.w / FarClipPlane;
+        }
+
+        float2 maxLum = cEyeAdaptationClamp + saturate(sceneDepth*10 - 9);
+        float2 sample = min(lum, maxLum);
+
+        sum += dot(sample, weight);
+    }
+
+    for (; i <= NUM_SAMPLES-1; i += 1)
+    {
+        float1 lum;
+        float1 sceneDepth;
+        for (int j = 0; j < 1; ++j)
+        {
+            float2 tc = getTexcoordNew(TCs, i + j);
+            float4 sc = tex2D(scene, tc);
+            lum[j] = dot(tex2D(scene, tc).rgb, cLuminanceCoefficients) * cPowerScale;
+            sceneDepth[j] = -sc.w / FarClipPlane;
+        }
+
+        float1 maxLum = cEyeAdaptationClamp + saturate(sceneDepth*10 - 9);
+        float1 sample = min(lum, maxLum);
+
+        sum += dot(sample, weight);
+    }
+
+    color = sum;
+
+}
+//-----------------------------------------------------------------------------

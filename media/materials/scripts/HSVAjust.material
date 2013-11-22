@@ -1,0 +1,46 @@
+vertex_program HSVAjust_vp hlsl         
+{
+    source HSVAjust.hlsl
+    entry_point HSVAjust_vp
+    target vs_3_0               
+   
+    default_params               
+    {
+        param_named_auto worldViewProj worldviewproj_matrix      
+    }
+}
+
+fragment_program HSVAjust_fp hlsl
+{
+   source HSVAjust.hlsl
+   entry_point HSVAjust_fp
+   target ps_3_0
+   
+   default_params
+   {
+		param_named hsvFactor	float4 0.2 0.2 0.2 0.0
+        param_named_auto farClipDist  far_clip_distance
+   }
+}
+
+material HSVAjust
+{
+  technique
+  {
+    pass
+    {
+      vertex_program_ref HSVAjust_vp
+      {
+      }
+     
+      fragment_program_ref HSVAjust_fp
+      {
+      }
+
+      texture_unit scene
+      {
+        tex_address_mode clamp
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+#ifndef	RENDER_SW_VERSION
+#define	RENDER_SW_VERSION	9
+#endif
+
+#ifndef	RENDER_HW_VERSION
+#define	RENDER_HW_VERSION	9
+#endif
+
+//shader register define
+//-----------------------------------------------
+//	Frame	Register
+//-----------------------------------------------
+int4	vScreen		:	register(i0);
+
+float4	vTime		:	register(c0);	//totaltime,timedelta,daytime,daytime/24
+float4	vFog		:	register(c1);	//xyz=vFog,w=0
+float4	vAmbient	:	register(c2);	//xyz=vAmbient,w=0
+float4	vLightDir	:	register(c3);	//xyz=SunDir,w=0
+float4	vLightDiff	:	register(c4);	//xyz=SunDiffuse,w=0
+float4	vLightSpec	:	register(c5);	//xyz=SunSpec,w=0
+
+
+//-----------------------------------------------
+//	Camera	Register
+//-----------------------------------------------
+float4x4 mViewProjI	:	register(c6);
+float4	vCamPos		:	register(c10);
+float4	vCamDir		:	register(c11);
+float4	vCamUpDir	:	register(c12);
+float4	vCamFarCorner	:	register(c13);
+// float4	vCamFrustum	:	register(c14);	//xy=(1/viewport width, 1/viewport height), zw=(1/near clip, 1/far clip)
+
+//-----------------------------------------------
+//	Object	Register
+//-----------------------------------------------
+float4x4	mWorldI	:	register(c15);
+
+//-----------------------------------------------
+//	Deferred Lighting Texture Register
+//-----------------------------------------------
+//uniform samplerCUBE globalEnvMap  : register(s9);
+//uniform sampler2D waterDepthMap   : register(s10);
+//uniform sampler2D dlDepthMap      : register(s11);
+//uniform sampler2D dlNormalMap     : register(s12);
+//uniform sampler2D shadowMaskMap   : register(s13);
+//uniform sampler2D dlDiffuseMap    : register(s14);
+//uniform sampler2D dlSpecularMap   : register(s15);
+
+/// Common UberLight Params
+#define UberPowerFactor 				1.0f
+#define UberEyeAdaptionClamp	 	0.09f
+#define UberEyeAdaptionFactor 	0.35f
+#define UberEyeAdaptionBias 		0.22f
+#define UberAdationTime					0.975f
+
+#define UberBrightLevel					2.0f
+#define UberBrightOffset				0.81f
+#define UberBeightThrehold			1.0f
+#define UberBloomMultiplier			1.0f
+#define UberBloom1							0.125f
+#define UberBloom2							1.0f
+#define UberBloom3							1.0f

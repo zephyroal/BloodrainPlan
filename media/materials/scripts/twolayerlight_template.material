@@ -1,0 +1,70 @@
+material twolayerlighttemplate
+{
+    technique Dx9
+    {
+				scheme dx9
+        pass 0
+        {
+            texture_unit 0
+            {
+                texture_alias <baseTexture>
+            }
+            texture_unit 1
+       	    {
+              	texture_alias <lightTextue>
+								scroll_anim 0.0 0.5
+								env_map spherical       
+            }
+            
+            texture_unit 2
+            {
+            		texture_alias <alphaTexture> 
+            		tex_address_mode wrap     
+            		env_map spherical
+       	   	}
+       	   
+       	   	fragment_program_ref TWOLayerLight/TWOLayerLightPSOnly
+           	{    		
+           			param_named exposure 							float 			1.0
+           			param_named_auto time_0_x 				time_0_x 		4 
+           			param_named alphaLightVelocity   	float2      1 0
+           	}
+        }       
+    }
+    
+   
+    technique Dx7
+    {
+				scheme dx7
+        pass 0
+        {
+            texture_unit
+            {
+                texture_alias <baseTexture>
+            }
+        }
+        pass 1
+        {
+        		lighting off
+        		scene_blend alpha_blend
+      //  		alpha_rejection greater	128
+            texture_unit
+            {
+               	texture_alias <lightTexture>
+        //       	env_map planar
+        				scroll_anim 0.03 0.03
+				      	rotate_anim 0.03
+          //      colour_op alpha_blend 
+            }
+            
+            texture_unit
+            {
+            		texture_alias <alphaTexture>
+         //   		tex_coord_set 0
+          // 		color_op	add
+          //  		colour_op_ex add src_current src_texture
+            		alpha_op_ex modulate	src_current src_texture
+            }
+        }
+    }
+}

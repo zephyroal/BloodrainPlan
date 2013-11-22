@@ -1,0 +1,10 @@
+<DetailObject>
+	<MaterialName>Examples/FlowerYellow</MaterialName>
+	<SplitNumber>1</SplitNumber>
+	<RandPos>0</RandPos>
+	<Density>0.1</Density>
+	<DetailWidth>90</DetailWidth>
+	<DetailHeight>120</DetailHeight>
+	<DetailRandSize>0.7</DetailRandSize>
+	<DensityImage>grass_density.tga</DensityImage>
+</DetailObject>

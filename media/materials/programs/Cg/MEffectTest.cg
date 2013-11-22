@@ -1,0 +1,33 @@
+
+
+void TestVS(float4 position : POSITION,
+			  float3 normal   : NORMAL,
+			  float2 uv		  : TEXCOORD0,
+			  out float4 oPosition : POSITION,
+			  out float2 oUv	   : TEXCOORD0,
+			  out float4 colour    : COLOR,
+			  
+			  uniform float4x4 worldViewProj
+			  )
+{
+	oPosition = mul(worldViewProj, position);
+	oUv = uv;
+	colour = float4(1,1,1,1);
+}
+
+void TestPS
+(
+		float4 diffuseColor		: COLOR,	
+		float3 specularColor    : COLOR1,		
+		float4 texCoord : TEXCOORD0,	
+		out float4 col					: COLOR,	
+
+		uniform sampler2D baseTexture : register(s0)		
+)
+{
+	float4 texColor = tex2D( baseTexture, texCoord);
+	diffuseColor += (float4(1,1,1,1)-texColor.aaaa);
+	col.xyz = (texColor * diffuseColor).xyz + specularColor;
+	col.a = 1;	
+}
+

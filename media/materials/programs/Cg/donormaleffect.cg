@@ -1,0 +1,128 @@
+
+void
+Normal_TwoLayer_ps(
+    in float2 uv0 : TEXCOORD0,
+    in float2 uv1 : TEXCOORD1,
+    in uniform sampler2D layer0,
+    in uniform sampler2D layer1,
+    in float4 diffuse : COLOR0,
+    in float4 specular : COLOR1,
+    uniform float4 clrModulate,
+    out float4 oColour : COLOR)
+{
+		float4 c0 = tex2D(layer0, uv0);
+    float4 c1 = tex2D(layer1, uv1);
+    float3 texturedColour = lerp(c0.rgb, c1.rgb, c1.a);
+    float4 baseColour = diffuse;// * brightNess * clrModulate;
+    float3 finalColour = baseColour.rgb * texturedColour + specular.rgb * (1-c0.a) * (1-c1.a);
+		finalColour *= clrModulate.xyz;
+    finalColour *= clrModulate.w;
+ //   float3 resultColour = Fogging(finalColour);
+    oColour = float4(finalColour, 1);
+ //   oColour = diffuse;
+}
+
+void
+Normal_TwoLayer_ps_added(
+    in float2 uv0 : TEXCOORD0,
+    in float2 uv1 : TEXCOORD1,
+    in uniform sampler2D layer0,
+    in uniform sampler2D layer1,
+    in float4 diffuse : COLOR0,
+    in float4 specular : COLOR1,
+    uniform float4 clrModulate,
+    out float4 oColour : COLOR)
+{
+		float4 c0 = tex2D(layer0, uv0);
+    float4 c1 = tex2D(layer1, uv1);
+    float3 texturedColour = c1.rgb;
+    float4 baseColour = saturate(diffuse+c0);// * brightNess * clrModulate;
+    float3 finalColour = baseColour.rgb * texturedColour + specular.rgb * (1-c1.a);
+		finalColour *= clrModulate.xyz;
+    finalColour *= clrModulate.w;
+ //   float3 resultColour = Fogging(finalColour);
+    oColour = float4(finalColour, 1);
+ //   oColour = diffuse;
+}
+
+void Normal_OneLayer_ps(
+		in float2 uv0 : TEXCOORD0,
+    in uniform sampler2D layer0,
+    in float4 diffuse : COLOR0,
+    in float4 specular : COLOR1,
+    uniform float4 clrModulate,
+    out float4 oColour : COLOR)
+{
+		float4 c0 = tex2D(layer0, uv0);
+	//	float alpha = c0.a;
+	  float3 texturedColour = c0.rgb;
+    float4 baseColour = diffuse ;
+    float3 finalColour = baseColour.rgb * texturedColour + specular.rgb * (1-c0.a);
+    finalColour *= clrModulate.xyz;
+    finalColour *= clrModulate.w;
+    oColour = float4(finalColour, 1 );
+}
+
+
+void
+Normal_TwoLayer_ps_alpha_blend(
+    in float2 uv0 : TEXCOORD0,
+    in float2 uv1 : TEXCOORD1,
+    in uniform sampler2D layer0,
+    in uniform sampler2D layer1,
+    in float4 diffuse : COLOR0,
+    in float4 specular : COLOR1,
+    uniform float4 clrModulate,
+    out float4 oColour : COLOR)
+{
+		float4 c0 = tex2D(layer0, uv0);
+    float4 c1 = tex2D(layer1, uv1);
+    float3 texturedColour = lerp(c0.rgb, c1.rgb, c1.a);
+    float4 baseColour = diffuse;// * brightNess * clrModulate;
+    float3 finalColour = baseColour.rgb * texturedColour + specular.rgb * (1-c0.a) * (1-c1.a);
+		finalColour *= clrModulate.xyz;
+    finalColour *= clrModulate.w;
+ //   float3 resultColour = Fogging(finalColour);
+    oColour = float4(finalColour, c1.a * diffuse.a);
+ //   oColour = diffuse;
+}
+
+void Normal_OneLayer_ps_alpha_blend(
+		in float2 uv0 : TEXCOORD0,
+    in uniform sampler2D layer0,
+    in float4 diffuse : COLOR0,
+    in float4 specular : COLOR1,
+    uniform float4 clrModulate,
+    out float4 oColour : COLOR)
+{
+		float4 c0 = tex2D(layer0, uv0);
+	  float3 texturedColour = c0.rgb;
+    float4 baseColour = diffuse ;
+    float3 finalColour = baseColour.rgb * texturedColour + specular.rgb * (1-c0.a);
+    finalColour *= clrModulate.xyz;
+    finalColour *= clrModulate.w;
+    oColour = float4(finalColour, c0.a * diffuse.a );  
+}
+
+void
+Normal_TwoLayer_ps_added_alpha_blend(
+    in float2 uv0 : TEXCOORD0,
+    in float2 uv1 : TEXCOORD1,
+    in uniform sampler2D layer0,
+    in uniform sampler2D layer1,
+    in float4 diffuse : COLOR0,
+    in float4 specular : COLOR1,
+    uniform float4 clrModulate,
+    out float4 oColour : COLOR)
+{
+		float4 c0 = tex2D(layer0, uv0);
+    float4 c1 = tex2D(layer1, uv1);
+    float3 texturedColour = c1.rgb;
+    float4 baseColour = saturate(diffuse + c0);// * brightNess * clrModulate;
+    float3 finalColour = baseColour.rgb * texturedColour + specular.rgb * (1-c1.a);
+		finalColour *= clrModulate.xyz;
+    finalColour *= clrModulate.w;
+ //   float3 resultColour = Fogging(finalColour);
+    oColour = float4(finalColour, c1.a * diffuse.a);
+ //   oColour = diffuse;
+}

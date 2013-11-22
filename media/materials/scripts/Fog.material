@@ -1,0 +1,101 @@
+vertex_program Fog/Volumetric_vs hlsl
+{
+	source Fog/VolumetricFog.vs9
+	entry_point main
+	target vs_3_0
+}
+
+fragment_program Fog/VolumetricFog_fp hlsl
+{
+	source Fog/VolumetricFog.ps9
+	entry_point main
+	target ps_3_0
+	default_params
+	{
+		param_named_auto cTargetSize viewport_size
+		//param_named_auto cInverseViewMatrixTest inverse_view_matrix
+	}
+}
+
+material Fog/VolumetricFog
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+			//scene_blend alpha_blend
+
+			vertex_program_ref Fog/Volumetric_vs
+			{
+			}
+			fragment_program_ref Fog/VolumetricFog_fp
+			{
+			}
+			
+			texture_unit
+			{
+				texture_alias @sceneTex
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}
+
+vertex_program Quad hlsl
+{
+	source Quad.vs9
+	entry_point main
+	target vs_3_0
+}
+fragment_program Fog/Blend_fp hlsl
+{
+	source Fog/VolumetricFogBlend.ps9
+	entry_point main
+	target ps_3_0
+	default_params
+	{
+		param_named_auto cTargetSize viewport_size
+	}
+}
+
+material Fog/Blend
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref Quad
+			{
+			}
+			fragment_program_ref Fog/Blend_fp
+			{
+			}
+
+			texture_unit
+			{
+				texture_alias @sceneTexture
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			
+			texture_unit
+			{
+				texture_alias @fogColor
+				tex_address_mode clamp
+				filtering bilinear
+			}
+		}
+	}
+}

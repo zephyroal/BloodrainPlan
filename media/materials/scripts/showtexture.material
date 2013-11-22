@@ -1,0 +1,14 @@
+material Core/OgreShowTextureMaterial
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{		
+//				texture <ShowTexInput>		
+			}
+		}
+	}
+}

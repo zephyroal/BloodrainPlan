@@ -1,0 +1,43 @@
+ensure_fxaa = function()
+	return (Hardware_SM3 == 1);
+end;
+
+RT_FXAA=
+{
+	con									= filterMask( Ogre.FAIRY.Mask_AntiAlising ) and ensure_fxaa();
+	doc									=	"FXAA";
+	name								=	"swap_buffer";
+	input								=	Ogre.CompositionTargetPass.IM_NONE;
+	output							= Ogre.CompositionTargetPass.OM_NONE;
+	shadows							= false;
+
+	_G.Compositor.RenderQuad
+	{
+		material					=	"PostFilter/AntiAliasing/FXAA_NOLUMA";
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+	};
+};
+
+RT_CopySwapToMain_AA=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_AntiAlising ) and ensure_fxaa();
+	doc						=	"抗锯齿处理结果拷贝到main_buffer中";
+	name					=	"main_buffer";
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NONE;
+	
+	_G.Compositor.RenderQuad
+	{
+		material		=	"FrameCopy";
+			
+		inputs=
+		{
+			{ "swap_buffer", 0 };
+		};
+		
+	};
+};

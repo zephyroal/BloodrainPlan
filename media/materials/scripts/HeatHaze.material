@@ -1,0 +1,45 @@
+fragment_program PostFilters/Compositor/HeatWaveHLSL_fp hlsl
+{
+	source HeatHaze.hlsl
+	entry_point psHeatWave
+	target ps_3_0
+}
+
+material PostFilters/HeatHaze
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/HeatWaveHLSL_fp
+			{
+				param_named fSpeed float 0.05
+				
+				param_named_auto fTime time
+				param_named_auto vvp viewport_size
+			}
+
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit heathazenoise
+			{
+				texture HeatHazeNoise_high.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering none
+			}
+		}
+	}
+}

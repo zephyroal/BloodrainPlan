@@ -1,0 +1,15 @@
+void emissiveOneTexture
+(
+		float4 diffuseColor		: COLOR,	
+		float3 specularColor    : COLOR1,		
+		float4 texCoord : TEXCOORD0,	
+		out float4 col					: COLOR,	
+
+		uniform sampler2D baseTexture : register(s0)		
+)
+{
+	float4 texColor = tex2D( baseTexture, texCoord);
+	diffuseColor += (float4(1,1,1,1)-texColor.aaaa);
+	col.xyz = (texColor * diffuseColor).xyz + specularColor;
+	col.a = 1;	
+}

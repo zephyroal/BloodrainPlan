@@ -1,0 +1,33 @@
+	void TwoLayerLight_GeneralPSOnly(
+		float4 diffuseColor		: COLOR,	
+		float2 baseTexCoord : TEXCOORD0,	
+		float2 lightTexCoord : TEXCOORD1,
+		out float4 outColor					: COLOR,
+		uniform float  exposure,	
+		uniform float  time_0_x,
+		uniform float2	 alphaLightVelocity,		
+		uniform sampler2D baseTexture : register(s0),
+		uniform sampler2D lightTexture : register(s1),
+		uniform sampler2D alphaTexture : register(s2)
+		 )
+	{					
+		float4 baseColor = tex2D(baseTexture,baseTexCoord);
+		float4 alphaColor = tex2D(alphaTexture,baseTexCoord);
+		float4 lightColor = tex2D(lightTexture,lightTexCoord);
+		
+		lightColor *= lightColor.a;
+		
+		outColor = baseColor + float4(lightColor.r,lightColor.g,lightColor.b,0.0) * exposure;
+		
+		//以下做周期闪光控制[31/3/2008/JiangWei]
+		//横向闪光
+		if(time_0_x > 2 && time_0_x < 2.3)
+		{
+			float4 alphaLightColor = tex2D(alphaTexture,float2(baseTexCoord.x,baseTexCoord.y));
+			
+			outColor += float4(alphaLightColor.b,alphaLightColor.b,alphaLightColor.b,0.0) * alphaColor.g;
+		}
+		
+		
+		outColor.a = baseColor.a * diffuseColor.a;
+	}

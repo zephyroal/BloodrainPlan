@@ -1,0 +1,59 @@
+// Effect: ColourControl
+
+vertex_program PostFilters/ColourControl/ColourControl_vp hlsl
+{
+	source ColourControl.cg
+	entry_point ColourControl_vp
+	target vs_3_0
+
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+fragment_program PostFilters/ColourControl/ColourControl_fp hlsl
+{
+	source ColourControl.cg
+	entry_point ColourControl_fp
+	target ps_3_0
+
+	default_params
+	{
+		param_named params float4 1.0 1.0 1.0 1.0
+	}
+}
+
+///////////////////////////////////
+//	colour control post material
+///////////////////////////////////
+
+material PostFilters/ColourControl/Saturation
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			vertex_program_ref PostFilters/ColourControl/ColourControl_vp
+			{
+			}
+			fragment_program_ref PostFilters/ColourControl/ColourControl_fp
+			{
+			}
+
+			texture_unit
+			{
+				texture <input>
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

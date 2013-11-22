@@ -1,0 +1,76 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 9 > --- Bright Pass Scene
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+float4 cTargetSize	 : register(c19);
+float4 cTargetFactor : register(c20);
+//float4 cBrightParams : register(c21);
+
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D baseMap: register(s0);
+sampler2D lumMap: register(s1);	
+sampler2D maskMap: register(s2);			
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Bright Pass Scene
+//-----------------------------------------------------------------------------
+void main(   in     float4 POS  : POSITION 
+			,in     float2 TC	: TEXCOORD0
+			,out    float4 color   : COLOR
+						)
+{
+	float cBrightLevel = UberBrightLevel;//cBrightParams.x;
+	float cBrightOffset = UberBrightOffset;//cBrightParams.y;
+	float cBrightThreshold = UberBeightThrehold;//cBrightParams.z;
+	float cPowerScale = UberBloomMultiplier;//cBrightParams.w;
+
+    float2 tc = TC +cTargetSize.zw*cTargetFactor.xy*0.5f;
+
+    float3 sample = tex2D(baseMap, tc).rgb;
+
+		//change comment
+		sample *= cPowerScale;
+   
+    // Because some NAN value presents in the scene (e.g pixels in the
+    // sun center as seen on NVIDIA GeForce 7600 card), clamp to a huge
+    // value here for eliminate them safely.
+    sample = min(sample, 10000);
+
+    // Due lum map is 1x1 texture, we don't care what texture coordinate
+    // are used. So use exists value instead load from constant.
+    //float2 lumTC = float2(0,0);
+    float fAdaptedLum = tex2D(lumMap, float2(0.5,0.5)).g;
+    
+    // Determine what the pixel's value will be after tone-mapping occurs
+    sample *= cBrightLevel / (fAdaptedLum + 0.001);
+
+		// mask
+   	sample *= tex2D( maskMap, TC ).r / 100;
+   	
+    // sample = fAdaptedLum + 0.001;
+    // Subtract out dark pixels
+    sample -= cBrightThreshold;
+
+    // Clamp to zero
+    sample = max(sample, 0);
+
+    // Map the resulting value into the range [0, 1]. Higher value will
+    // isolate lights from illuminated scene objects.
+    sample /= (cBrightOffset + sample);
+
+    // Add lightshafts
+    //sample += tex2D(lightShaftMap, tc) / cBloomScale;
+
+    color.rgb = sample;
+    color.a = 1;
+}
+//-----------------------------------------------------------------------------

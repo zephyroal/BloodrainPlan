@@ -1,0 +1,49 @@
+
+fragment_program CombileLight_Ps hlsl
+{
+    source CombineLights.ps
+    entry_point main
+    target ps_3_0
+    default_params
+    {
+
+    }
+}
+
+material CombineLights
+{
+  technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+            depth_check off
+            cull_hardware none
+
+            vertex_program_ref Quad
+            {
+            		
+            }
+
+            fragment_program_ref CombileLight_Ps
+            {
+            	param_named_auto inverse_texture_size inverse_texture_size
+            }
+
+            texture_unit
+            {
+                texture 2d
+                tex_address_mode clamp
+                filtering none
+            }
+            
+            texture_unit
+            {
+                texture 2d
+                tex_address_mode clamp
+                filtering none
+            }
+        }
+    }
+}

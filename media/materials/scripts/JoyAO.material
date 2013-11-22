@@ -1,0 +1,65 @@
+
+vertex_program SSAO_AO_VS hlsl
+{
+	source 			JoyAO.vs
+	entry_point main
+	target 			vs_3_0
+	column_major_matrices false
+	
+	default_params
+	{
+		
+	}
+}
+
+fragment_program SSAO_AO_PS hlsl
+{
+	source 			JoyAO.ps
+	entry_point main
+	target 			ps_3_0
+	column_major_matrices false
+		
+	default_params
+	{
+		param_named ao_range float 0.2
+	}
+}
+
+material JoyAO
+{
+	technique
+	{
+
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref SSAO_AO_VS
+			{
+			}
+
+			fragment_program_ref SSAO_AO_PS
+			{
+      }
+      
+			texture_unit 0
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+			}
+			
+			texture_unit 1
+			{
+        tex_coord_set 0
+				tex_address_mode clamp
+			}
+			
+			texture_unit 2
+			{
+        tex_coord_set 0
+				filtering none
+				texture RANDOMNORMAL.png
+			}
+		}
+	}
+}

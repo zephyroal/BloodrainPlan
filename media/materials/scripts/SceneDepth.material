@@ -1,0 +1,33 @@
+fragment_program PostFilters/ClearSceneDepth/clear_fp hlsl
+{
+	source SceneDepth.hlsl
+	target ps_3_0
+	entry_point scenedepth_clear_fp
+
+	default_params
+	{
+		//param_named blurColourScale float 0.95
+		//param_named_auto vvp viewport_size
+	}
+}
+
+material PostFilters/ClearSceneDepthRT
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true
+			cull_hardware none
+			cull_software none
+			depth_check off
+			depth_write off
+
+			fragment_program_ref PostFilters/ClearSceneDepth/clear_fp
+			{
+			}
+		}
+	}
+}
+

@@ -1,0 +1,73 @@
+fragment_program NormalEffect/Normal_TwoLayer_ps cg
+{
+	source donormaleffect.cg
+	entry_point Normal_TwoLayer_ps
+	profiles ps_2_0 arbfp2
+	
+	default_params
+	{
+			param_named_auto clrModulate global_env_param 62
+	}
+}
+
+fragment_program NormalEffect/Normal_TwoLayer_ps_added cg
+{
+	source donormaleffect.cg
+	entry_point Normal_TwoLayer_ps_added
+	profiles ps_2_0 arbfp2
+	
+	default_params
+	{
+			param_named_auto clrModulate global_env_param 62
+	}
+}
+
+fragment_program NormalEffect/Normal_OneLayer_ps cg
+{
+	source donormaleffect.cg
+	entry_point Normal_OneLayer_ps
+	profiles ps_2_0 arbfp2
+	
+	default_params
+	{
+			param_named_auto clrModulate global_env_param 62
+	}
+}
+
+
+fragment_program NormalEffect/Normal_TwoLayer_ps_alpha_blend cg
+{
+	source donormaleffect.cg
+	entry_point Normal_TwoLayer_ps_alpha_blend
+	profiles ps_2_0 arbfp2
+	
+	default_params
+	{
+			param_named_auto clrModulate global_env_param 62
+	}
+}
+
+fragment_program NormalEffect/Normal_OneLayer_ps_alpha_blend cg
+{
+	source donormaleffect.cg
+	entry_point Normal_OneLayer_ps_alpha_blend
+	profiles ps_2_0 arbfp2
+	
+	default_params
+	{
+			param_named_auto clrModulate global_env_param 62
+	}
+}
+
+
+fragment_program NormalEffect/Normal_TwoLayer_ps_added_alpha_blend cg
+{
+	source donormaleffect.cg
+	entry_point Normal_TwoLayer_ps_added_alpha_blend
+	profiles ps_2_0 arbfp2
+	
+	default_params
+	{
+			param_named_auto clrModulate global_env_param 62
+	}
+}

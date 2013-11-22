@@ -1,0 +1,51 @@
+fragment_program PostFilters/Compositor/EnergyWaveMaskHLSL_fp hlsl
+{
+	source EnergyWaveMask.hlsl
+	entry_point psEnergyWaveMask
+	target ps_3_0
+}
+
+material PostFilters/EnergyWaveMask
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_check off
+			lighting off
+
+			vertex_program_ref PostFilters/std_quad_vs
+			{
+			}
+			fragment_program_ref PostFilters/Compositor/EnergyWaveMaskHLSL_fp
+			{
+				param_named_auto fTime time
+				param_named_auto vvp viewport_size
+			}
+
+			texture_unit texMask
+			{
+				texture Energy_Wave_Mask
+				//texture 
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}
+			texture_unit
+			{
+				texture EnergyWaveMaskNoise_high.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering bilinear
+			}
+		}
+	}
+}

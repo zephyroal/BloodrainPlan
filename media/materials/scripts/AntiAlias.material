@@ -1,0 +1,556 @@
+//---------------------------    Anti-Aliasing Materials     -----------------------//
+
+//////////////////////////////////////////////////////////////////////////////////////
+//																																									//
+//																			M.L.A.A.																		//
+//															Morphological Anti-Aliasing													//
+//////////////////////////////////////////////////////////////////////////////////////
+
+vertex_program PostFilter/AntiAliasing/vp_MLAA_VS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_VS
+	target vs_3_0
+	
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_MLAA_EdgeDetectionLuminancePS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_EdgeDetectionLuminancePS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_MLAA_EdgeDetectionDepthPS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_EdgeDetectionDepthPS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_MLAA_BlendingWeightCalculationPS_LOD4 hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_BlendingWeightCalculationPS
+	target ps_3_0
+	preprocessor_defines MAX_SEARCHSTEPS=16
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_MLAA_BlendingWeightCalculationPS_LOD2 hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_BlendingWeightCalculationPS
+	target ps_3_0
+	preprocessor_defines MAX_SEARCHSTEPS=8
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_MLAA_BlendingWeightCalculationPS_LOD1 hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_BlendingWeightCalculationPS
+	target ps_3_0
+	preprocessor_defines MAX_SEARCHSTEPS=4
+
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_MLAA_NeighbourhoodBlendingPS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point MLAA_NeighbourhoodBlendingPS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+
+material PostFilter/AntiAliasing/MLAA/EdgeDetectionLuminance
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_MLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_MLAA_EdgeDetectionLuminancePS
+			{
+			}
+			
+			texture_unit
+			{
+				// colorTex
+				texture <scene>
+				tex_address_mode clamp
+				filtering point point point
+			}
+		}
+	}
+}
+
+material PostFilter/AntiAliasing/MLAA/EdgeDetectionDepth
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write on
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_MLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_MLAA_EdgeDetectionDepthPS
+			{
+			}
+			
+			texture_unit
+			{
+				// depthTex之前渲染流程中产生
+				texture <depthTex>
+				tex_address_mode clamp
+				filtering point point point
+			}
+		}
+	}
+}
+
+material PostFilter/AntiAliasing/MLAA/BlendingWeightCalculation
+{
+	technique
+	{
+		scheme SearchLOD4
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_MLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_MLAA_BlendingWeightCalculationPS_LOD4
+			{
+			}
+			
+			texture_unit
+			{
+				//Target 0: edgesTex
+				texture <edgesTex>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+
+			texture_unit
+			{
+				//areaTex
+				texture AreaMap.bmp
+				tex_address_mode clamp
+				filtering point point point
+			}
+		}
+	}
+	
+	technique
+	{
+		scheme SearchLOD2
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_MLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_MLAA_BlendingWeightCalculationPS_LOD2
+			{
+			}
+			
+			texture_unit
+			{
+				//Target 0: edgesTex
+				texture <edgesTex>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+
+			texture_unit
+			{
+				//areaTex
+				texture AreaMap.bmp
+				tex_address_mode clamp
+				filtering point point point
+			}
+		}
+	}
+
+	technique
+	{
+		scheme SearchLOD1
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_MLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_MLAA_BlendingWeightCalculationPS_LOD1
+			{
+			}
+			
+			texture_unit
+			{
+				//Target 0: edgesTex
+				texture <edgesTex>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+
+			texture_unit
+			{
+				//areaTex
+				texture AreaMap.bmp
+				tex_address_mode clamp
+				filtering point point point
+			}
+		}
+	}
+	
+}
+
+material PostFilter/AntiAliasing/MLAA/NeighbourhoodBlending
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_MLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_MLAA_NeighbourhoodBlendingPS
+			{
+			}
+			
+			texture_unit
+			{
+				//colorTex
+				texture <scene>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+			
+			texture_unit
+			{
+				//Target 1: blendTex
+				texture <blendTex>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+		}
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//																																									//
+//																			D.L.A.A.																		//
+//												Directionally Localized Anti-Aliasing											//
+//////////////////////////////////////////////////////////////////////////////////////
+
+vertex_program PostFilter/AntiAliasing/vp_DLAA_VS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point DLAA_VS
+	target vs_3_0
+	
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_DLAA_EdgeDetectionPS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point DLAA_EdgeDetectionPS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_DLAA_BlendingColorPS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point DLAA_BlendingColorPS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto cTargetSize	viewport_size
+	}
+}
+
+material PostFilter/AntiAliasing/DLAA/EdgeDetection
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_DLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_DLAA_EdgeDetectionPS
+			{
+			}
+			
+			texture_unit
+			{
+				// original tex
+				texture <scene>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+		}
+	}
+}
+
+material PostFilter/AntiAliasing/DLAA/BlendingColor
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_DLAA_VS
+			{
+			}
+			fragment_program_ref PostFilter/AntiAliasing/fp_DLAA_BlendingColorPS
+			{
+			}
+			
+			texture_unit
+			{
+				// target
+				texture <target>
+				tex_address_mode clamp
+				filtering linear linear point
+			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+//																																									//
+//																			FXAA      																	//
+//											    Fast Approximate Anti-Aliasing      										//
+//////////////////////////////////////////////////////////////////////////////////////
+
+vertex_program PostFilter/AntiAliasing/vp_FXAA_VS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point FXAA_VS
+	target vs_3_0
+	
+	default_params
+	{
+		param_named_auto  worldViewProj     worldviewproj_matrix
+		//param_named_auto  viewportSize      viewport_size
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_FXAA_PS hlsl
+{
+	source AntiAlias.hlsl
+	entry_point FXAA_PS
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto viewportSize    viewport_size
+	}
+}
+
+material PostFilter/AntiAliasing/FXAA
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+			depth_check off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_FXAA_VS
+			{
+				
+			}	
+			
+			fragment_program_ref PostFilter/AntiAliasing/fp_FXAA_PS
+			{
+				
+			}
+			
+			texture_unit lumaScene
+			{
+				//filtering point point point
+			}
+		}		
+	}	
+}
+
+
+vertex_program PostFilter/AntiAliasing/vp_FXAA_luma hlsl
+{
+	source AntiAlias.hlsl
+	entry_point FXAA_VS_LUMA
+	target vs_3_0
+	
+	default_params
+	{
+		param_named_auto worldViewProj  worldviewproj_matrix
+	}
+}
+			
+fragment_program PostFilter/AntiAliasing/fp_FXAA_luma hlsl
+{
+	source AntiAlias.hlsl
+	entry_point FXAA_PS_LUMA
+	target ps_3_0
+	
+	default_params
+	{
+	}
+}
+			
+material PostFilter/AntiAliasing/FXAA_LUMA
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_check off
+			depth_write off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_FXAA_luma
+			{
+			
+			}
+			
+			fragment_program_ref PostFilter/AntiAliasing/fp_FXAA_luma
+			{
+			
+			}
+			
+			texture_unit scene
+			{
+				
+			}
+		}
+	}
+}
+
+vertex_program PostFilter/AntiAliasing/vp_FXAA_NOLUMA hlsl
+{
+	source AntiAlias.hlsl
+	entry_point FXAA_VS_NOLUMA
+	target vs_3_0
+	
+	default_params
+	{
+		param_named_auto worldViewProj  worldviewproj_matrix
+	}
+}
+
+fragment_program PostFilter/AntiAliasing/fp_FXAA_NOLUMA hlsl
+{
+	source AntiAlias.hlsl
+	entry_point FXAA_PS_NOLUMA
+	target ps_3_0
+	
+	default_params
+	{
+		param_named_auto viewportSize viewport_size
+	}
+}
+
+material PostFilter/AntiAliasing/FXAA_NOLUMA
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+			depth_check off
+			
+			vertex_program_ref PostFilter/AntiAliasing/vp_FXAA_NOLUMA
+			{
+				
+			}	
+			
+			fragment_program_ref PostFilter/AntiAliasing/fp_FXAA_NOLUMA
+			{
+				
+			}
+			
+			texture_unit Scene
+			{
+				
+			}
+		}		
+	}	
+}

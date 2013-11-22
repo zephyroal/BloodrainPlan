@@ -1,0 +1,61 @@
+
+vertex_program EdgeHighLightVS hlsl
+{
+    source EdgeHighLight.cg
+    entry_point EdgeHighLight_vp
+    target vs_1_1
+    
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+        param_named_auto TimeElapsed time
+    }
+}
+fragment_program EdgeHighLightPS hlsl
+{
+    source EdgeHighLight.cg
+    entry_point EdgeHighLight_fp
+    target ps_2_0
+    
+    default_params
+    {
+    }
+}
+
+material Examples/EnvMappedRustySteelEdgeHighLight
+{
+    technique
+    {    
+        pass
+        {
+            cull_hardware anticlockwise
+            
+            vertex_program_ref EdgeHighLightVS
+            {
+            }
+            
+            fragment_program_ref EdgeHighLightPS
+            {
+            }
+        }
+        
+        pass
+        {
+            cull_hardware none
+            //polygon_mode wireframe
+           
+            texture_unit
+            {
+                texture RustySteel.jpg
+            }
+
+            texture_unit
+            {
+                texture spheremap.png
+                colour_op_ex add src_texture src_current
+                colour_op_multipass_fallback one one
+                env_map spherical
+            }
+        }
+    }
+}

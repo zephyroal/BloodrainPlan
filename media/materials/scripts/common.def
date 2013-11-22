@@ -1,0 +1,34 @@
+
+-- Utility Function For Mask
+filterMask = function( m )
+	return Ogre.CompositorManager.getSingletonPtr():testCustomMask(m);
+end;
+
+local Compositor	=	_G.Compositor.Compositor;
+local Technique		=	_G.Compositor.Technique;
+local Texture			=	_G.Compositor.Texture;
+local Target			=	_G.Compositor.Target;
+local Clear				=	_G.Compositor.Clear;
+local Stencil			=	_G.Compositor.Stencil;
+local RenderScene	=	_G.Compositor.RenderScene;
+local RenderQuad	=	_G.Compositor.RenderQuad;
+
+RT_FinalOutput=
+{
+	con						= filterMask( Ogre.FAIRY.Mask_sceneContentEnable );
+	doc						=	"Êä³ömain_bufferÄÚÈÝ";
+	name					=	"";--output
+	input					=	Ogre.CompositionTargetPass.IM_NONE;
+	output				= Ogre.CompositionTargetPass.OM_NEXT;
+
+	_G.Compositor.RenderQuad
+	{
+		material		=	"PostFilters/FinalOutput";
+		
+		inputs=
+		{
+			{ "main_buffer", 0 };
+		};
+		
+	};
+};

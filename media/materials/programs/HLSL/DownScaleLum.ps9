@@ -1,0 +1,66 @@
+//---------------------------------------------------------------------------
+//	Shader Type: PS
+//	Shader Desc: HDR< Pass 2 - 5 > --- Downscale Lum
+//---------------------------------------------------------------------------
+#include "ShaderDefinePS.hlsl9"
+//-----------------------------------------------------------------------------
+// **GLOBALS AND CONSTANTS**
+//-----------------------------------------------------------------------------
+#define NUM_SAMPLES 4
+
+//Sample offsets
+static const float4 cSampleOffsets[3] = 
+					{
+						-0.25	,	-0.25	,	0.25	,	-0.25 ,
+						-0.25	,	0.25	,	0.25	,	-0.25 ,
+						0		,	0		,	0		,	0
+					};
+
+static const float4 cSampleWeights[4] = 
+					{
+						0.25,0.25,0.25,0.25,
+						0.25,0.25,0.25,0.25,
+						0.25,0.25,0.25,0.25,
+						0.25,0.25,0.25,0.25
+					};
+
+float4 cTargetSize : register(c19);
+
+//-----------------------------------------------------------------------------
+// **Sampler Declaration**
+//-----------------------------------------------------------------------------
+sampler2D tex: register(s0);			
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// **Interal Methods**
+//-----------------------------------------------------------------------------
+float2 getTexcoordNew( float2 tc, int i)
+{
+    // Note that ps_2_0 don't support .zw swizzling, so we use .wz instead.
+    if (i % 2)
+        return tc + cSampleOffsets[i / 2].wz * cTargetSize.zw +cTargetSize.zw*0.5f;
+    else
+        return tc + cSampleOffsets[i / 2].xy * cTargetSize.zw +cTargetSize.zw*0.5f;
+}
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// Pixel Shader: main
+// Desc: Downscale Lum
+//-----------------------------------------------------------------------------
+void main(   in 	float4 POS	: POSITION	,
+			 in 	float2 Tc	: TEXCOORD0 ,
+			 out 	float4 colour: COLOR
+		 )
+{
+    float4 sum = 0;
+    for (int i = 0; i < NUM_SAMPLES; i++)
+    {
+        float2 tc = getTexcoordNew(Tc, i);
+        sum += tex2D(tex, tc) * cSampleWeights[i];
+    }
+    colour = sum;
+}
+//-----------------------------------------------------------------------------
