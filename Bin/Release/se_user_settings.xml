@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Settings">
+    <Settings>
+        <Property key="ColourBackground" value="0 0 0 0"/>
+        <Property key="ColourSelector" value="0 1 0 1"/>
+        <Property key="ColourSelectorInactive" value="0 0 0 0.5"/>
+        <Property key="Grid" value="1"/>
+        <Property key="MaxRecentFiles" value="10"/>
+        <Property key="MaxRecentFolders" value="10"/>
+        <Property key="SaveLastTexture" value="true"/>
+    </Settings>
+    <TextureScale>
+        <Property key="ScaleValue.0" value="50"/>
+        <Property key="ScaleValue.1" value="100"/>
+        <Property key="ScaleValue.2" value="200"/>
+        <Property key="ScaleValue.3" value="400"/>
+        <Property key="ScaleValue.4" value="800"/>
+        <Property key="ScaleValue.5" value="1600"/>
+    </TextureScale>
+    <Files>
+        <Property key="RecentFiles.0" value="F:\MyGUI\Media\UnitTests\UnitTest_Layers\MyGUI_Core.xml"/>
+        <Property key="RecentFiles.0" value="F:\MyGUI\Media\UnitTests\UnitTest_Layers\Skins.xml"/>
+        <Property key="RecentFiles.1" value="F:\MyGUI\Media\MyGUI_Media\MyGUI_CommonSkins.xml"/>
+        <Property key="RecentFiles.2" value="F:\MyGUI\Media\MyGUI_Media\MyGUI_BlueWhiteImages.xml"/>
+        <Property key="RecentFiles.3" value="F:\MyGUI\Media\MyGUI_Media\MyGUI_Pointers.xml"/>
+        <Property key="RecentFolder" value="F:\MyGUI\Media\UnitTests\UnitTest_Layers"/>
+        <Property key="RecentFolders.0" value="F:\MyGUI\Media\UnitTests\UnitTest_Layers"/>
+        <Property key="RecentFolders.1" value="F:\MyGUI\Media\MyGUI_Media"/>
+        <Property key="RecentFolders.2" value="F:\MyGUI\bin\debug"/>
+    </Files>
+</MyGUI>
