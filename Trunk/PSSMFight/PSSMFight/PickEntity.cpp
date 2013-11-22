@@ -6,7 +6,7 @@ using namespace std;
 
 PickEntity::PickEntity()
 {
-	m_pSceneMgr = NULL;
+	m_pMainSceneMgr = NULL;
 	m_pCamera = NULL;
 	m_pSingleSceneQuery = NULL;
 	m_pMultiSceneQuery = NULL;
@@ -22,13 +22,13 @@ PickEntity::~PickEntity()
 {
 	if ( m_pSingleSceneQuery )
 	{
-		m_pSceneMgr->destroyQuery( m_pSingleSceneQuery );
+		m_pMainSceneMgr->destroyQuery( m_pSingleSceneQuery );
 		m_pSingleSceneQuery = NULL;
 	}
 
 	if ( m_pMultiSceneQuery )
 	{
-		m_pSceneMgr->destroyQuery( m_pMultiSceneQuery );
+		m_pMainSceneMgr->destroyQuery( m_pMultiSceneQuery );
 		m_pMultiSceneQuery = NULL;
 	}
 }
@@ -41,22 +41,22 @@ void	PickEntity::BindScene( Ogre::SceneManager* pSceneMgr, Ogre::Camera* pCamera
 	//	销毁之前的查询器
 	if ( m_pSingleSceneQuery )
 	{
-		m_pSceneMgr->destroyQuery( m_pSingleSceneQuery );
+		m_pMainSceneMgr->destroyQuery( m_pSingleSceneQuery );
 		m_pSingleSceneQuery = NULL;
 	}
 
 	if ( m_pMultiSceneQuery )
 	{
-		m_pSceneMgr->destroyQuery( m_pMultiSceneQuery );
+		m_pMainSceneMgr->destroyQuery( m_pMultiSceneQuery );
 		m_pMultiSceneQuery = NULL;
 	}
 
 	//	绑定当前场景
-	m_pSceneMgr = pSceneMgr;
+	m_pMainSceneMgr = pSceneMgr;
 	m_pCamera = pCamera;
 
-	m_pSingleSceneQuery = m_pSceneMgr->createRayQuery( Ogre::Ray() );
-	m_pMultiSceneQuery = m_pSceneMgr->createPlaneBoundedVolumeQuery( Ogre::PlaneBoundedVolumeList() );
+	m_pSingleSceneQuery = m_pMainSceneMgr->createRayQuery( Ogre::Ray() );
+	m_pMultiSceneQuery = m_pMainSceneMgr->createPlaneBoundedVolumeQuery( Ogre::PlaneBoundedVolumeList() );
 }
 
 void	PickEntity::OnMousePressed( int mouseX, int mouseY )
@@ -174,7 +174,7 @@ void	PickEntity::OnMouseReleased( int mouseX, int mouseY )
 
 bool	PickEntity::PickSubEntity( int mouseX, int mouseY, Ogre::SubEntity** pResult, Ogre::Vector3 &hitposition, unsigned long mask )
 {
-	if ( m_pSceneMgr == NULL || m_pCamera == NULL )
+	if ( m_pMainSceneMgr == NULL || m_pCamera == NULL )
 	{
 		return false;
 	}
@@ -453,7 +453,7 @@ void	PickEntity::_getMeshData( const Ogre::MeshPtr mesh, size_t& vertex_count, s
 
 bool	PickEntity::_pickSubEntity( const Ogre::Vector2& vPoint1, Ogre::SubEntity** pResult, Ogre::Vector3 &hitposition, unsigned long mask )
 {
-	if ( m_pSceneMgr == NULL || m_pCamera == NULL )
+	if ( m_pMainSceneMgr == NULL || m_pCamera == NULL )
 	{
 		return false;
 	}
@@ -463,7 +463,7 @@ bool	PickEntity::_pickSubEntity( const Ogre::Vector2& vPoint1, Ogre::SubEntity**
 	m_pSingleSceneQuery->setQueryMask( mask );
 	m_pSingleSceneQuery->setSortByDistance( true );
 
-	unsigned int visibilityMask = m_pSceneMgr->getVisibilityMask();
+	unsigned int visibilityMask = m_pMainSceneMgr->getVisibilityMask();
 
 	if ( m_pSingleSceneQuery->execute().size() <= 0 ) 
 	{
@@ -548,7 +548,7 @@ Str_Entity	PickEntity::_pickRect( const Ogre::Vector2& vPoint1, const Ogre::Vect
 {
 	using namespace Ogre;
 	Str_Entity entitisMap;
-	if ( m_pSceneMgr == NULL || m_pCamera == NULL )
+	if ( m_pMainSceneMgr == NULL || m_pCamera == NULL )
 	{
 		return entitisMap;
 	}
@@ -574,7 +574,7 @@ Str_Entity	PickEntity::_pickRect( const Ogre::Vector2& vPoint1, const Ogre::Vect
 	PlaneBoundedVolumeList volList; 
 	volList.push_back( vol ); 
 
-	unsigned int visibilityMask = m_pSceneMgr->getVisibilityMask();
+	unsigned int visibilityMask = m_pMainSceneMgr->getVisibilityMask();
 
 	m_pMultiSceneQuery->setVolumes( volList );
 	m_pMultiSceneQuery->setQueryMask( mask );

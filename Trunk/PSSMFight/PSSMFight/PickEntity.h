@@ -51,7 +51,7 @@ private:
 	Vec_Entity		_findEraseEntitis( Str_Entity oldMap, Str_Entity newMap );
 
 private:
-	Ogre::SceneManager*							m_pSceneMgr;
+	Ogre::SceneManager*							m_pMainSceneMgr;
 	Ogre::Camera*								m_pCamera;
 	Ogre::RaySceneQuery*						m_pSingleSceneQuery;
 	Ogre::PlaneBoundedVolumeListSceneQuery*		m_pMultiSceneQuery;

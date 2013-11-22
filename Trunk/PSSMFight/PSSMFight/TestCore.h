@@ -40,7 +40,7 @@ private:
 	bool	_loadScene();
 
 	void	_updateCameraRamble();
-	bool		setupResources();
+	bool	setupResources();
 
 private:
 	HWND			m_hTopLevelWnd;
@@ -49,17 +49,17 @@ private:
 	int				m_Height;
 	Option*			m_pOption;
 	PickEntity*		m_pPickEntity;
-	bool					m_bIni;
+	bool			m_bIni;
 public:
 	Ogre::Root*											m_pRoot;
-	Ogre::RenderWindow*						m_pRenderWindow;
-	Ogre::Viewport*									m_pViewPort;
-	Ogre::SceneManager*							m_pSceneMgr;
+	Ogre::RenderWindow*									m_pRenderWindow;
+	Ogre::Viewport*										m_pMainViewPort;
+	Ogre::SceneManager*									m_pMainSceneMgr;
 	Ogre::Camera*										m_pMainCamera;
-	Ogre::RTShader::ShaderGenerator*		m_pShaderGenerator;
-	OIS::InputManager*								m_pInputMgr;
-	OIS::Keyboard*									m_pKeyboard;
-	OIS::Mouse*										m_pMouse;
-	DeferredSystem*									m_pDeferredSystem;
-	Ogre::WaterManager*							m_pWaterMgr;
+	Ogre::RTShader::ShaderGenerator*					m_pShaderGenerator;
+	OIS::InputManager*									m_pInputMgr;
+	OIS::Keyboard*										m_pKeyboard;
+	OIS::Mouse*											m_pMouse;
+	DeferredSystem*										m_pDeferredSystem;
+	Ogre::WaterManager*									m_pWaterMgr;
 };

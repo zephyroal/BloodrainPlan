@@ -55,6 +55,6 @@
 
 
 #include	"Ogre.h"
-#include	"ois/OIS.h"
-#include	"RTShaderSystem/OgreRTShaderSystem.h"
+#include	"OIS.h"
+#include	"OgreRTShaderSystem.h"
 

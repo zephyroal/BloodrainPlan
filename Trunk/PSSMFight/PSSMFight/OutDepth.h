@@ -1,6 +1,6 @@
 #pragma once
-#include	"RTShaderSystem/OgreShaderSubRenderState.h"
-#include	"RTShaderSystem/ogreshaderprogramset.h"
+#include	"OgreShaderSubRenderState.h"
+#include	"ogreshaderprogramset.h"
 
 
 namespace Ogre

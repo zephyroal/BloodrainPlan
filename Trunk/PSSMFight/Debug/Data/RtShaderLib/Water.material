@@ -14,10 +14,12 @@ material WaterPlane
 			{
 			
 			}
+			
 			fragment_program_ref DeferredShading/post/Ambient_ps
 			{
 			
 			}
+			
 			texture_unit
 			{
 
@@ -29,24 +31,22 @@ material WaterPlane
 				tex_address_mode clamp
 				filtering none
 			}
-      texture_unit
+			texture_unit
 			{
 
 				tex_address_mode clamp
 				filtering none
 			}
-      texture_unit
+			texture_unit
 			{
 				tex_address_mode clamp
 				filtering none
 			}
-      texture_unit
+			texture_unit
 			{
 				tex_address_mode clamp
 				filtering none
 			}
-			
-			
 			
 		}
 	}

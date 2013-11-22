@@ -5,16 +5,16 @@
 namespace	Ogre
 {
 	WaterManager::WaterManager( DeferredSystem* pDeferredSys, Ogre::SceneManager* pSceneMgr, Ogre::Camera* pMainCamera, Ogre::Viewport* pMainViewport ) : 
-	m_pDeferredSystem( pDeferredSys ),
-	m_pSceneMgr( pSceneMgr ),
-	m_pMainCamera( pMainCamera ),
-	m_pMainViewport( pMainViewport )
+		m_pDeferredSystem( pDeferredSys ),
+		m_pMainSceneMgr( pSceneMgr ),
+		m_pMainCamera( pMainCamera ),
+		m_pMainViewport( pMainViewport )
 	{
 		Plane plane;
 		plane.normal = Vector3::UNIT_Y;
 		plane.d = 0;
 		MeshManager::getSingleton().createPlane( "WaterMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 100,100,10,10,true,1,60,60,Vector3::UNIT_Z );
-		m_pWaterPlane = m_pSceneMgr->createEntity( "WaterPlane", "WaterMesh" );
+		m_pWaterPlane = m_pMainSceneMgr->createEntity( "WaterPlane", "WaterMesh" );
 
 		// MaterialManager::getSingleton().create( "WaterPlane","General");
 		pMtlWater = MaterialManager::getSingleton().getByName( "WaterPlane" );
@@ -28,7 +28,7 @@ namespace	Ogre
 		//	创建一个临时的水
 		m_pWaterPlane->setMaterialName( "WaterPlane" );
 		m_pWaterPlane->setCastShadows( false );
-		m_pSceneMgr->getRootSceneNode()->createChildSceneNode( Vector3( 0, 10, 0 ) )->attachObject( m_pWaterPlane );
+		m_pMainSceneMgr->getRootSceneNode()->createChildSceneNode( Vector3( 0, 10, 0 ) )->attachObject( m_pWaterPlane );
 		m_pWaterPlane->setRenderQueueGroup( DeferredSystem::RenderQueue_Alpha );
 
 		//	创建一个临时反射纹理
@@ -37,18 +37,18 @@ namespace	Ogre
 		TextureManager* pTexMgr = TextureManager::getSingletonPtr();
 
 		m_pReflectTex = TextureManager::getSingleton().createManual( "WaterPlane_Reflect", 
-																ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-																TEX_TYPE_2D,
-																screen_width,
-																screen_height,
-																0,
-																PF_A8R8G8B8,
-																TU_RENDERTARGET );
+			ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			TEX_TYPE_2D,
+			screen_width,
+			screen_height,
+			0,
+			PF_A8R8G8B8,
+			TU_RENDERTARGET );
 
 		m_pReflectTex->getBuffer()->getRenderTarget()->setAutoUpdated( false );
-		
+
 		m_pReflectViewport = m_pReflectTex->getBuffer()->getRenderTarget()->addViewport( m_pMainCamera );
-		
+
 		m_pReflectViewport->setClearEveryFrame( true );
 		m_pReflectViewport->setOverlaysEnabled( false );
 		m_pReflectViewport->setBackgroundColour( ColourValue::White );
@@ -65,7 +65,7 @@ namespace	Ogre
 
 		m_pReflectViewport->setRenderQueueInvocationSequenceName( pSolid->getName() );
 
-		
+
 		//	设置反射纹理
 		pPass->getTextureUnitState( 4 )->setTextureName( m_pReflectTex->getName() );
 
@@ -115,7 +115,7 @@ namespace	Ogre
 		if ( iter == m_mapHeihgtReflect.end() )
 		{
 			//	创建新的
-			
+
 		}
 		else
 		{

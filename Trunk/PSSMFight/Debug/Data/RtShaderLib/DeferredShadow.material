@@ -1,34 +1,4 @@
-// Post processors VS
-vertex_program ScreenSM_VS cg
-{
-	source ScreenSM.cg
-	profiles vs_1_1 arbvp1
-	entry_point ScreenSM_VS_main
-	default_params
-	{
-		//param_named_auto invProj inverse_projection_matrix
-		param_named_auto flip render_target_flipping
-		param_named farCorner float3 1 1 1
-    param_named farRightTopCorner
-	}
-}
-//PS
-fragment_program ScreenSM_PS cg
-{
-	source ScreenSM.cg
-	profiles ps_2_0 arbfp1
-	entry_point ScreenSM_PS_main
-	
-	default_params
-	{
-		param_named_auto ambientColor ambient_light_colour 0		
-		param_named_auto proj projection_matrix
-		param_named_auto farClipDistance far_clip_distance
-    param_named matViewToShadowProj
-	}
-}
-
- // Post processors
+// Post processors
 material DeferredShadow
 {
     technique
@@ -36,24 +6,33 @@ material DeferredShadow
 		pass
 		{
 			lighting off
-			
 			depth_write off
 			depth_check off
-      //cull_hardware    none
-      //scene_blend alpha_blend
-			vertex_program_ref ScreenSM_VS
-      {
-      
-      }
-      fragment_program_ref ScreenSM_PS
-      {
-      
-      }
+			//cull_hardware    none
+			//scene_blend alpha_blend
+			
+			vertex_program_ref DeferredShadow_VS
+			{
+
+			}
+			
+			fragment_program_ref DeferredShadow_PS
+			{
+
+			}
+			
 			texture_unit
 			{
 				tex_address_mode clamp
 				filtering none
 			}
+			
+			texture_unit
+			{
+				tex_address_mode clamp
+				filtering none
+			}
+			
 			texture_unit
 			{
 				tex_address_mode clamp

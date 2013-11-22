@@ -6,32 +6,28 @@ class	DeferredShadow
 {
 public:
 	//shadowMap存于此
-	struct	ShadowInfo
+	struct	ShadowMapInfo
 	{
-		Ogre::TexturePtr		pShadowTex;
-		Ogre::Camera*			pShadowCamera;
-		Ogre::Viewport*		pShadowViewport;
+		Ogre::TexturePtr		pShadowMapTex;
+		Ogre::Camera*			pShadowMapCamera;
+		Ogre::Viewport*			pShadowMapViewport;
 	};
 public:
 	DeferredShadow( DeferredSystem* pDeferredSys, Ogre::SceneManager* pSceneMgr, Ogre::Camera* pMainCamera, Ogre::Viewport* pMainViewport );
 	~DeferredShadow();
 	//	准备阴影深度图
-	void						PrepareShadow();
-	Ogre::Texture*		GetTexCastShadow();
+	void						PrepareShadowMap();
+	Ogre::Texture*				GetShadowMap();
 
 protected:
 	void	_parserShadowLightInfo();
 	void	_ensureShadowInfo();
 private:
-	DeferredSystem*											m_pDeferredSys;
-	Ogre::Rectangle2D*									m_pShadowQuad;
-	Ogre::MaterialPtr											m_pMtlShadowQuad;
-	Ogre::GpuProgramParametersSharedPtr	m_pParameterVP;
-	Ogre::GpuProgramParametersSharedPtr	m_pParameterFP;
-	Ogre::SceneManager*									m_pSceneMgr;
-	Ogre::Camera*												m_pMainCamera;
-	Ogre::Viewport*											m_pMainViewport;
-	Ogre::Light*													m_pSunLight;
-	ShadowInfo													m_ShadowInfo;
-	Ogre::FocusedShadowCameraSetup			m_ShadowCameraSetup;
+	DeferredSystem*										m_pDeferredSys;
+	Ogre::SceneManager*									m_pMainSceneMgr;
+	Ogre::Camera*										m_pMainCamera;
+	Ogre::Viewport*										m_pMainViewport;
+	Ogre::Light*										m_pSunLight;
+	ShadowMapInfo										m_ShadowInfo;
+	Ogre::FocusedShadowCameraSetup						m_ShadowCameraSetup;
 };

@@ -32,7 +32,7 @@ namespace	Ogre
 
 	private:
 		DeferredSystem*		m_pDeferredSystem; 
-		SceneManager*		m_pSceneMgr; 
+		SceneManager*		m_pMainSceneMgr; 
 		Camera*				m_pMainCamera; 
 		Viewport*			m_pMainViewport;
 		WaterList			m_WaterList;

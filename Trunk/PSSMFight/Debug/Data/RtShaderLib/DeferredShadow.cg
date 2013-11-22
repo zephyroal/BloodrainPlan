@@ -1,4 +1,4 @@
-void ScreenSM_VS_main(
+void DeferredShadow_VS_main(
 	float4 Pos: POSITION,
 	out float4 oPos: POSITION,
 	out float2 oTexCoord: TEXCOORD0,
@@ -35,7 +35,7 @@ float finalDepth(float4 p)
     return p.z / p.w;
 }
 
-void ScreenSM_PS_main(
+void DeferredShadow_PS_main(
 	float2 texCoord: TEXCOORD0, 
 	float3 ray : TEXCOORD1,
 	out float4 oColour : COLOR,
@@ -46,7 +46,7 @@ void ScreenSM_PS_main(
 	uniform float4x4 proj,
 	uniform float3 farCorner,
 	uniform float farClipDistance,
-    uniform float4x4 matViewToShadowProj
+	uniform float4x4 matViewToShadowProj
 	)
 {
 	float4 a0 = tex2D(Tex0, texCoord); // Diffuse
@@ -59,14 +59,13 @@ void ScreenSM_PS_main(
 	// Calculate depth of fragment;
 	float3 viewPos = normalize(ray) * farClipDistance * a1.w;
 	float4 projPos = mul( proj, float4(viewPos, 1) );
+	
 	oDepth = finalDepth(projPos);
 	
-	float4 ScenePixel=mul( matViewToShadowProj,a2 );
+	float4 inLightViewPos = mul( matViewToShadowProj,a1 );
 	
-	if( ScenePixel.r < oDepth )
+	if( inLightViewPos.z <  a2.z )
 		oColour =a0*float4(1,0,0,0.5); // in light
     else
 		oColour =a0*float4(0,1,0,0.5); // in Shadow
-		
-	oColour = a0;
 }

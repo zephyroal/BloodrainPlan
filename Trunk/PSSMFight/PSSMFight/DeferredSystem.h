@@ -90,29 +90,37 @@ public:
 
 	Ogre::Texture*	GetDeferredTexDepth();
 	Ogre::Texture*	GetDeferredTexDiffuse();
+    Ogre::Texture*	GetShadowMap();
 
 private:
 	bool	_initailize();
 
 private:
 	Ogre::Root*									m_pRoot;
-	Ogre::SceneManager*					m_pSceneMgr;
+	Ogre::SceneManager*							m_pMainSceneMgr;
 	Ogre::Camera*								m_pMainCamera;
-	Ogre::Viewport*							m_pMainViewport;
-	Ogre::CompositorManager*		m_pCompositorMgr;
-	DeferredLightMtlGenerator*		m_pDeferredLightMtlGenerator;
-	DeferredShadow*						m_pDeferredShadow;
+	Ogre::Viewport*								m_pMainViewport;
+	Ogre::CompositorManager*					m_pCompositorMgr;
+	DeferredLightMtlGenerator*					m_pDeferredLightMtlGenerator;
+	DeferredShadow*								m_pDeferredShadow;
 
 	//	实心
-	Ogre::MultiRenderTarget*	m_pMultiTargetDiff_Depth_Normal;
-	Ogre::TexturePtr					m_pTexDiff;
-	Ogre::TexturePtr					m_pTexDepth;
-	Ogre::Viewport*					m_pViewportDiff_Depth_Normal;
+	Ogre::MultiRenderTarget*					m_pMultiTargetDiff_Depth_Normal;
+	Ogre::TexturePtr							m_pTexDiff;
+	Ogre::TexturePtr							m_pTexDepth;
+	Ogre::Viewport*								m_pViewportDiff_Depth_Normal;
 	
-	Ogre::TexturePtr			m_pTexLightSpaceDepth;
-	//	上色 + 半透明
-	Ogre::MultiRenderTarget*	m_pMultiTargetLighting_Trans;
-	Ogre::TexturePtr			m_pTexLighting_Trans;
-	Ogre::TexturePtr			m_pTexBackupLighting_Trans;
-	Ogre::Viewport*				m_pViewportLighting_Trans;
+	Ogre::TexturePtr							m_pTexLightSpaceDepth;
+	
+    //	上色 + 半透明
+	Ogre::MultiRenderTarget*					m_pMultiTargetLighting_Trans;
+	Ogre::TexturePtr							m_pTexLighting_Trans;
+	Ogre::TexturePtr							m_pTexBackupLighting_Trans;
+	Ogre::Viewport*								m_pViewportLighting_Trans;
+
+    Ogre::Rectangle2D*							m_pShadowMapQuad;
+	Ogre::MaterialPtr							m_pMtlShadowQuad;
+public:
+    Ogre::GpuProgramParametersSharedPtr			m_pParameterVP;
+	Ogre::GpuProgramParametersSharedPtr			m_pParameterFP;
 };

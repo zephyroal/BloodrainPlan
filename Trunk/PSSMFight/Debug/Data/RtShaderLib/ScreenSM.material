@@ -1,0 +1,40 @@
+// Post processors
+material ScreenSM
+{
+    technique
+    {
+      pass
+      {
+			lighting off
+			depth_write off
+			depth_check off
+			cull_hardware    none
+			scene_blend alpha_blend
+
+			vertex_program_ref ScreenSM_VS
+			{
+			
+			}
+			fragment_program_ref ScreenSM_PS
+			{
+			
+			}
+			
+			texture_unit
+			{
+			  tex_address_mode clamp
+			  filtering none
+			}
+			texture_unit
+			{
+			  tex_address_mode clamp
+			  filtering none
+			}
+			texture_unit
+			{
+			  tex_address_mode clamp
+			  filtering none
+			}
+		}
+	}
+}

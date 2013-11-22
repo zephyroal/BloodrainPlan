@@ -25,6 +25,6 @@ out float4 oColor : COLOR)
   //float4 tex= tex2D(texture, uv);
   //tex.a=0.8f;
   //oColor = color*tex; 
-//20110525 Feeling Good 脚踏实地 我在路上
- // oColor=tex;
+  //20110525 Feeling Good 脚踏实地 我在路上
+  // oColor=tex;
 }

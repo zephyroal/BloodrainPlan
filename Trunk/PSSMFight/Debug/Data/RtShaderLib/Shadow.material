@@ -53,28 +53,29 @@ fragment_program ogre/texture/depthshadow/receiver/fp cg
     profiles ps_2_x arbfp1
     entry_point ogre_texture_depthshadow_receiver_fp_main
 }
+
 //-----------------------------------------------------------
 material ShadowCaster
 {
  technique
  {
-  pass
-  {
-     vertex_program_ref ogre/texture/depthshadow/caster/vp
-     {         
-                param_named_auto worldViewProj worldviewproj_matrix
-     }
-     fragment_program_ref ogre/texture/depthshadow/caster/fp
-     {
-     }
-  }
+	  pass
+	  {
+		 vertex_program_ref ogre/texture/depthshadow/caster/vp
+		 {         
+					param_named_auto worldViewProj worldviewproj_matrix
+		 }
+		 fragment_program_ref ogre/texture/depthshadow/caster/fp
+		 {
+		 }
+	  }
  }
 
 }
 
 material ReceiveShadow
 {
-    lod_values 3875 5000
+   lod_values 3875 5000
     //-----------------------------------------------------------------------------
    technique
    {
@@ -156,20 +157,19 @@ material ReceiveShadow
     }
    //-----------------------------------------------------------------------------
    technique
-    {
+   {
       lod_index 2
       pass
       {
-
-
          vertex_program_ref ogre/far/fog/vp
          {
              param_named_auto worldViewProj   worldviewproj_matrix
          }
+		 
          fragment_program_ref ogre/far/fog/fp
          {
              param_named fogColour float4 0.2 0.2 0.2 0.2
          }
       }
-    }
+   }
 }

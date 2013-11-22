@@ -6,42 +6,44 @@
 #include	"OutDepth.h"
 #include	"Water.h"
 
-
-template<> 
-TestCore*	Ogre::Singleton< TestCore >::ms_Singleton = 0;
+template<> TestCore*	Ogre::Singleton< TestCore >::msSingleton = 0;
 
 TestCore::TestCore()
 {
-	m_hTopLevelWnd = NULL;
-	m_hRenderWnd = NULL;
-	m_Widht = 0;
-	m_Height = 0;
-	m_pRoot = NULL;
-	m_pOption = NULL;
-	m_pPickEntity = NULL;
+	m_hTopLevelWnd  = NULL;
+	m_hRenderWnd    = NULL;
+	m_Widht         = 0;
+	m_Height        = 0;
+	m_pRoot         = NULL;
+	m_pOption       = NULL;
+	m_pPickEntity   = NULL;
 
 	m_pRenderWindow = NULL;
-	m_pViewPort = NULL;
-	m_pSceneMgr = NULL;
-	m_pMainCamera = NULL;
-	m_bIni=false;
+	m_pMainViewPort = NULL;
+	m_pMainSceneMgr     = NULL;
+	m_pMainCamera   = NULL;
+	m_bIni          = false;
+
 	AllocConsole();
-// 	freopen( "CONOUT$","w",stdout );
+	// 	freopen( "CONOUT$","w",stdout );
 }
+
 TestCore::~TestCore()
 {
 
 }
+
 bool	TestCore::Initialize( HWND hTopLevelWnd, HWND hRenderWnd, int width, int height )
 {
 	//	支持中文目录
 	::setlocale( LC_ALL,"Chinese-simplified" );
-	m_hTopLevelWnd = hTopLevelWnd;
-	m_hRenderWnd = hRenderWnd;
-	m_Widht = width;
-	m_Height = height;
-	m_pOption = new Option;
-	m_pPickEntity = new PickEntity;
+	m_hTopLevelWnd      = hTopLevelWnd;
+	m_hRenderWnd        = hRenderWnd;
+	m_Widht             = width;
+	m_Height            = height;
+	m_pOption           = new Option;
+	m_pPickEntity       = new PickEntity;
+
 	m_pPickEntity->AddListener( this );
 	if ( m_pOption->Initialize() == false )
 	{
@@ -59,7 +61,8 @@ bool	TestCore::Initialize( HWND hTopLevelWnd, HWND hRenderWnd, int width, int he
 	{
 		return false;
 	}
-	m_bIni=true;
+	m_bIni              = true;
+
 	return true;
 }
 
@@ -76,11 +79,11 @@ void	TestCore::Finalize()
 		Ogre::RTShader::ShaderGenerator::finalize();
 		m_pShaderGenerator = NULL;
 	}
-	if ( m_pSceneMgr )
+	if ( m_pMainSceneMgr )
 	{
-		m_pSceneMgr->clearScene();
-		m_pRoot->destroySceneManager( m_pSceneMgr );
-		m_pSceneMgr = NULL;
+		m_pMainSceneMgr->clearScene();
+		m_pRoot->destroySceneManager( m_pMainSceneMgr );
+		m_pMainSceneMgr = NULL;
 	}
 	if ( m_pRenderWindow )
 	{
@@ -94,6 +97,7 @@ void	TestCore::Finalize()
 		m_pRoot = NULL;
 	}
 }
+
 void	TestCore::Resize( int width, int height )
 {
 	if ( m_pMouse )
@@ -103,6 +107,7 @@ void	TestCore::Resize( int width, int height )
 		mouseState.height = m_Height;
 	}
 }
+
 void	TestCore::Update( float lapseTime )
 {
 	if(!m_bIni)
@@ -110,14 +115,47 @@ void	TestCore::Update( float lapseTime )
 	m_pKeyboard->capture();
 	m_pMouse->capture();
 	_updateCameraRamble();
-	//m_pWaterMgr->PrepareReflectTexture();
+	m_pWaterMgr->PrepareReflectTexture();
 	m_pDeferredSystem->Render();
 }
+
+void	TestCore::_updateCameraRamble()
+{
+	using namespace Ogre;
+	float cameraSpeed = 2.f;
+	Vector3 moveRelative( Vector3::ZERO );
+
+	if ( m_pKeyboard->isKeyDown( OIS::KC_W ) )
+	{
+		moveRelative.z -= cameraSpeed;
+	}
+	if ( m_pKeyboard->isKeyDown( OIS::KC_S ) )
+	{
+		moveRelative.z += cameraSpeed;
+	}
+	if ( m_pKeyboard->isKeyDown( OIS::KC_A ) )
+	{
+		moveRelative.x -= cameraSpeed;
+	}
+	if ( m_pKeyboard->isKeyDown( OIS::KC_D ) )
+	{
+		moveRelative.x += cameraSpeed;
+	}
+	const OIS::MouseState& mouseState = m_pMouse->getMouseState();
+	if ( mouseState.buttonDown( OIS::MB_Right ) )
+	{
+		m_pMainCamera->yaw( Degree( -mouseState.X.rel * 0.2f ) );
+		m_pMainCamera->pitch( Degree( -mouseState.Y.rel * 0.2f ) );
+	}
+	m_pMainCamera->moveRelative( moveRelative );
+}
+
 bool	TestCore::mouseMoved( const OIS::MouseEvent &arg )
 {
 	m_pPickEntity->OnMouseMoved( arg.state.X.abs, arg.state.Y.abs );
 	return true;
 }
+
 bool	TestCore::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 	if ( id == OIS::MB_Left )
@@ -127,6 +165,7 @@ bool	TestCore::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 
 	return true;
 }
+
 bool	TestCore::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 	if ( id == OIS::MB_Left )
@@ -136,6 +175,7 @@ bool	TestCore::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id 
 
 	return true;
 }
+
 bool	TestCore::keyPressed( const OIS::KeyEvent &arg )
 {
 	if ( arg.key == OIS::KC_ESCAPE )
@@ -145,11 +185,13 @@ bool	TestCore::keyPressed( const OIS::KeyEvent &arg )
 
 	return true;
 }
+
 bool	TestCore::keyReleased( const OIS::KeyEvent &arg )
 {
 
 	return true;
 }
+
 void	TestCore::FindObj( Ogre::Entity* pEntity )
 {
 	pEntity->getParentSceneNode()->showBoundingBox( true );
@@ -160,7 +202,7 @@ void	TestCore::EraseObj( Ogre::Entity* pEntity )
 	pEntity->getParentSceneNode()->showBoundingBox( false );
 }
 
- bool	TestCore::setupResources(void)
+bool	TestCore::setupResources(void)
 {
 	using namespace Ogre;
 	// Load resource paths from config file
@@ -205,19 +247,26 @@ void	TestCore::EraseObj( Ogre::Entity* pEntity )
 	}
 	return true;
 }
+
 bool	TestCore::_loadOgre()
 {
 	using namespace Ogre;
-	m_pRoot = new Root("plugins_d.cfg", 
-		  "ogre.cfg",  "Ogre.log");
-/*
+
 #ifdef _DEBUG
+	m_pRoot = new Root("plugins_d.cfg", 
+		"ogre.cfg",  "Ogre.log");
+#else
+	m_pRoot = new Root("plugins.cfg", 
+		"ogre.cfg",  "Ogre.log");
+#endif
+	/*
+	#ifdef _DEBUG
 	m_pRoot->loadPlugin( "Plugin_OctreeSceneManager_d" );
 	m_pRoot->loadPlugin( "RenderSystem_Direct3D9_d" );
-#else
+	#else
 	m_pRoot->loadPlugin( "Plugin_OctreeSceneManager" );
 	m_pRoot->loadPlugin( "RenderSystem_Direct3D9" );	
-#endif*/
+	#endif*/
 
 	RenderSystem* pRenderSys = m_pRoot->getRenderSystemByName( "Direct3D9 Rendering Subsystem" );
 
@@ -239,14 +288,12 @@ bool	TestCore::_loadOgre()
 	winParams["depthBuffer"] = "false";
 	winParams["externalWindowHandle"] = Ogre::StringConverter::toString( (size_t)m_hRenderWnd );
 
-
-
 	//	parser resource
-	m_pRoot->addResourceLocation( m_pOption->GetWorkingPath() + "Data\\RTShaderLib", "FileSystem", m_pOption->GetResGroupName() );
-	m_pRoot->addResourceLocation( m_pOption->GetWorkingPath() + "Data\\Scene", "FileSystem", m_pOption->GetResGroupName() );
+	m_pRoot->addResourceLocation( m_pOption->GetWorkingPath() + "../Data\\RTShaderLib", "FileSystem", m_pOption->GetResGroupName() );
+	m_pRoot->addResourceLocation( m_pOption->GetWorkingPath() + "../Data\\Scene", "FileSystem", m_pOption->GetResGroupName() );
 	setupResources();
-	m_pRenderWindow = m_pRoot->createRenderWindow( "TestCore", m_Widht, m_Height, false, &winParams );
 
+	m_pRenderWindow = m_pRoot->createRenderWindow( "PSSMFightMainWindow", m_Widht, m_Height, false, &winParams );
 
 	if ( RTShader::ShaderGenerator::initialize() == false )
 	{
@@ -259,10 +306,11 @@ bool	TestCore::_loadOgre()
 
 	//	资源初始化放在创建主窗口和初始化之后. 因为创建了主窗口才初始化了D3D
 	ResourceGroupManager::getSingletonPtr()->initialiseAllResourceGroups();
-	m_pSceneMgr = m_pRoot->createSceneManager( "OctreeSceneManager", "TestMgr" );
-	m_pShaderGenerator->addSceneManager( m_pSceneMgr );
-	m_pMainCamera = m_pSceneMgr->createCamera( "TestCamera" );
-	m_pPickEntity->BindScene( m_pSceneMgr, m_pMainCamera );
+	m_pMainSceneMgr = m_pRoot->createSceneManager( "OctreeSceneManager", "MainSceneMgr" );
+	m_pShaderGenerator->addSceneManager( m_pMainSceneMgr );
+
+	m_pMainCamera = m_pMainSceneMgr->createCamera( "MainCamera" );
+	m_pPickEntity->BindScene( m_pMainSceneMgr, m_pMainCamera );
 	m_pMainCamera->setAspectRatio( static_cast< float >( m_Widht ) / static_cast< float >( m_Height ) );
 	m_pMainCamera->setFOVy( Radian( 45.f ) );
 	m_pMainCamera->setNearClipDistance( 5.0f );
@@ -270,17 +318,19 @@ bool	TestCore::_loadOgre()
 	m_pMainCamera->setPosition( 0, 30, -30 );
 	m_pMainCamera->lookAt( Vector3::ZERO );
 
-	m_pViewPort = m_pRenderWindow->addViewport( m_pMainCamera );
-	m_pViewPort->setBackgroundColour( ColourValue::Black );
+	m_pMainViewPort = m_pRenderWindow->addViewport( m_pMainCamera );
+	m_pMainViewPort->setBackgroundColour( ColourValue::Black );
+	m_pMainViewPort->setClearEveryFrame( true, FBT_COLOUR );
 
-	RenderQueueInvocationSequence* pMainRenderQueueSequ = m_pRoot->createRenderQueueInvocationSequence( "MainWindow" );
-	pMainRenderQueueSequ->add( DeferredSystem::RenderQueue_MainWindow, "MainWindow" );
-	m_pViewPort->setRenderQueueInvocationSequenceName( pMainRenderQueueSequ->getName() );
+	RenderQueueInvocationSequence* pMainRenderQueueSequ = m_pRoot->createRenderQueueInvocationSequence( "MainWindowRQIvcocationSequence" );
+	pMainRenderQueueSequ->add( DeferredSystem::RenderQueue_MainWindow, "RenderQueue_MainWindow" );
+
+	m_pMainViewPort->setRenderQueueInvocationSequenceName( pMainRenderQueueSequ->getName() );
 
 	m_pDeferredSystem = new DeferredSystem;
-	m_pDeferredSystem->BindScene( m_pSceneMgr, m_pMainCamera, m_pViewPort );
+	m_pDeferredSystem->BindScene( m_pMainSceneMgr, m_pMainCamera, m_pMainViewPort );
 
-	//m_pWaterMgr = new Ogre::WaterManager( m_pDeferredSystem, m_pSceneMgr, m_pMainCamera, m_pViewPort );
+	m_pWaterMgr = new Ogre::WaterManager( m_pDeferredSystem, m_pMainSceneMgr, m_pMainCamera, m_pMainViewPort );
 
 	return true;
 }
@@ -316,75 +366,48 @@ bool	TestCore::_loadOIS()
 bool	TestCore::_loadScene()
 {
 	using namespace Ogre;
-	m_pSceneMgr->setAmbientLight( ColourValue( 0.5f, 0.5f, 0.5f ) );
-
-	//	实心
- 	Plane planeTerrain;
- 	planeTerrain.normal = Vector3::UNIT_Y;
- 	planeTerrain.d = 0;
- 	MeshManager::getSingleton().createPlane( "EarthMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, planeTerrain, 100,100,25,25,true,1,60,60,Vector3::UNIT_Z );
-	
-
-	Entity* pTemp= NULL;
+    Entity* pTemp= NULL;
 	SceneNode* pNode = NULL;
-	pTemp = m_pSceneMgr->createEntity( "head1", "ninja.mesh" );
-	pNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode( Vector3::ZERO );
+
+	m_pMainSceneMgr->setAmbientLight( ColourValue( 0.5f, 0.5f, 0.5f ) );
+
+
+	Plane planeTerrain;
+	planeTerrain.normal = Vector3::UNIT_Y;
+	planeTerrain.d = 0;
+	MeshManager::getSingleton().createPlane( "EarthMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, planeTerrain, 100,100,25,25,true,1,60,60,Vector3::UNIT_Z );
+
+    pTemp = m_pMainSceneMgr->createEntity( "Terrain", "EarthMesh" );
+	pNode = m_pMainSceneMgr->getRootSceneNode()->createChildSceneNode( Vector3::ZERO );
+	pNode->attachObject( pTemp );
+	pTemp->setRenderQueueGroup( DeferredSystem::RenderQueue_WorldGeom );
+	pTemp->setCastShadows( false );
+	pTemp->setMaterialName( "Examples/SceneCubeMap1" );
+	
+	pTemp = m_pMainSceneMgr->createEntity( "head1", "ninja.mesh" );
+	pNode = m_pMainSceneMgr->getRootSceneNode()->createChildSceneNode( Vector3::ZERO );
 	pNode->attachObject( pTemp );
 	pNode->scale( 0.1f, 0.1f, 0.1f );
 	pTemp->setRenderQueueGroup( DeferredSystem::RenderQueue_WorldGeom );
 	pTemp->setCastShadows( false );
 
-	pTemp = m_pSceneMgr->createEntity( "Terrain", "EarthMesh" );
-	pNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode( Vector3::ZERO );
-	pNode->attachObject( pTemp );
-	pTemp->setRenderQueueGroup( DeferredSystem::RenderQueue_WorldGeom );
-	pTemp->setCastShadows( false );
-	pTemp->setMaterialName( "Examples/SceneCubeMap1" );
 
 	//	屏幕四边形
-	{
-		Ogre::Rectangle2D* pShadowQuad = new Rectangle2D; 
-		pShadowQuad->setCorners( -1.0f, 1.0f, 1.0f, -1.0f );
-		pShadowQuad->setRenderQueueGroup( DeferredSystem::RenderQueue_MainWindow );
-		m_pSceneMgr->getRootSceneNode()->attachObject( pShadowQuad );
-		MaterialPtr pMtl = MaterialManager::getSingleton().getByName( "DeferredMainQuadMtl" );
-		Pass* pPass = NULL;
-		pPass = pMtl->getTechnique( 0 )->getPass( 0 );
-		pPass->getTextureUnitState( 0 )->setTextureName( m_pDeferredSystem->GetDeferredTexDiffuse()->getName() );
-		pPass->getTextureUnitState( 1 )->setTextureName( m_pDeferredSystem->GetDeferredTexDepth()->getName() );
-		pPass->getTextureUnitState( 2 )->setTextureName( "DeferredShadow");
-		pShadowQuad->setMaterial( "DeferredMainQuadMtl" );
-	}
-	return true;
-}
-void	TestCore::_updateCameraRamble()
-{
-	using namespace Ogre;
-	float cameraSpeed = 2.f;
-	Vector3 moveRelative( Vector3::ZERO );
+	Ogre::Rectangle2D* pMainWindowQuad = new Rectangle2D; 
+	pMainWindowQuad->setCorners( -1.0f, 1.0f, 1.0f, -1.0f );
+    //MainViewport RQIS 只对它进行渲染 
+	pMainWindowQuad->setRenderQueueGroup( DeferredSystem::RenderQueue_MainWindow );
+	m_pMainSceneMgr->getRootSceneNode()->attachObject( pMainWindowQuad );
+	MaterialPtr pMtl = MaterialManager::getSingleton().getByName( "ScreenSM" );
+	
+    Pass* pPass = NULL;
+	pPass = pMtl->getTechnique( 0 )->getPass( 0 );
+	pPass->getTextureUnitState( 0 )->setTextureName( m_pDeferredSystem->GetDeferredTexDiffuse()->getName() );
+	pPass->getTextureUnitState( 1 )->setTextureName( m_pDeferredSystem->GetDeferredTexDepth()->getName() );
+	pPass->getTextureUnitState( 2 )->setTextureName( m_pDeferredSystem->GetShadowMap()->getName());
+	pMainWindowQuad->setMaterial( pMtl->getName() );
 
-	if ( m_pKeyboard->isKeyDown( OIS::KC_W ) )
-	{
-		moveRelative.z -= cameraSpeed;
-	}
-	if ( m_pKeyboard->isKeyDown( OIS::KC_S ) )
-	{
-		moveRelative.z += cameraSpeed;
-	}
-	if ( m_pKeyboard->isKeyDown( OIS::KC_A ) )
-	{
-		moveRelative.x -= cameraSpeed;
-	}
-	if ( m_pKeyboard->isKeyDown( OIS::KC_D ) )
-	{
-		moveRelative.x += cameraSpeed;
-	}
- 	const OIS::MouseState& mouseState = m_pMouse->getMouseState();
-	if ( mouseState.buttonDown( OIS::MB_Right ) )
-	{
-		m_pMainCamera->yaw( Degree( -mouseState.X.rel * 0.2f ) );
-		m_pMainCamera->pitch( Degree( -mouseState.Y.rel * 0.2f ) );
-	}
-	m_pMainCamera->moveRelative( moveRelative );
+
+	return true;
 }
 

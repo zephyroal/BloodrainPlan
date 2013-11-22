@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PSSMFight", "PSSMFight\PSSMFight.vcproj", "{DB1B5E02-FFE6-46A8-8BA7-E73020F61AF4}"
+Microsoft Visual Studio Solution File, Format Version 13.00
+# Visual Studio 2013
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PSSMFight", "PSSMFight\PSSMFight.vcxproj", "{DB1B5E02-FFE6-46A8-8BA7-E73020F61AF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
