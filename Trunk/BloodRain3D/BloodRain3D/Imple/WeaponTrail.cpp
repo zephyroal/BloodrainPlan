@@ -1,241 +1,240 @@
 #include "WeaponTrail.h"
-//---------------------------------------------------------------------------//
-WeaponTrail::WeaponTrail(Ogre::String  name, SceneManager* s )
-:m_TrailObject(0),
-m_MaxSegmentCount(30),
-mSceneMgr(s),
-m_IsActive(true)
+// ---------------------------------------------------------------------------//
+WeaponTrail::WeaponTrail(Ogre::String name, SceneManager* s)
+    : m_TrailObject(0),
+    m_MaxSegmentCount(30),
+    mSceneMgr(s),
+    m_IsActive(true)
 {
-	m_SegmentStartColorChange = Ogre::ColourValue(1.0,1.0,1.0,1.0);
-	m_SegmentEndColorChange = Ogre::ColourValue(1.0,1.0,1.0,1.0);
-	m_SegmentStartInitialColor = Ogre::ColourValue(0.6,0.5,0.8,1);
-	m_SegmentEndInitialColor = Ogre::ColourValue(1.0,0.2,1.0,1);
+    m_SegmentStartColorChange  = Ogre::ColourValue(1.0, 1.0, 1.0, 1.0);
+    m_SegmentEndColorChange    = Ogre::ColourValue(1.0, 1.0, 1.0, 1.0);
+    m_SegmentStartInitialColor = Ogre::ColourValue(0.6, 0.5, 0.8, 1);
+    m_SegmentEndInitialColor   = Ogre::ColourValue(1.0, 0.2, 1.0, 1);
 
-	m_SegmentStartColorChange *= 3.0;
-	m_SegmentEndColorChange *= 3.0;
+    m_SegmentStartColorChange *= 3.0;
+    m_SegmentEndColorChange   *= 3.0;
 
-	m_Width = 30.0;
+    m_Width = 30.0;
 
-	setWeaponEntity(0);
-	init();
+    setWeaponEntity(0);
+    init();
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 WeaponTrail::~WeaponTrail()
 {
-	uninit();
+    uninit();
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::init()
 {
-	// create object
-	m_TrailObject =
-		mSceneMgr->createManualObject(mName);
-	m_TrailObject->estimateVertexCount(m_MaxSegmentCount * 2);
-	m_TrailObject->setDynamic(true);
+    // create object
+    m_TrailObject =
+        mSceneMgr->createManualObject(mName);
+    m_TrailObject->estimateVertexCount(m_MaxSegmentCount * 2);
+    m_TrailObject->setDynamic(true);
 
-	m_TrailObject->begin("mat_trail", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    m_TrailObject->begin("mat_trail", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
 
-	// fill the object (the actual data does not matter here)
-	for(int i=0; i<m_MaxSegmentCount; ++i)
-	{
-		m_TrailObject->position(0, 0, -i*20);
-		m_TrailObject->textureCoord(0,0);
-		m_TrailObject->colour(1,0,0,1);
-		m_TrailObject->position(0, 30, -i*20);
-		m_TrailObject->textureCoord(1,0);
-		m_TrailObject->colour(1,0,0,1);
-	}
-	m_TrailObject->end();
+    // fill the object (the actual data does not matter here)
+    for (int i = 0; i < m_MaxSegmentCount; ++i)
+    {
+        m_TrailObject->position(0, 0, -i * 20);
+        m_TrailObject->textureCoord(0, 0);
+        m_TrailObject->colour(1, 0, 0, 1);
+        m_TrailObject->position(0, 30, -i * 20);
+        m_TrailObject->textureCoord(1, 0);
+        m_TrailObject->colour(1, 0, 0, 1);
+    }
+    m_TrailObject->end();
 
-	// create node and attach object
-	m_TrailNode =
-		mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	m_TrailNode->attachObject(m_TrailObject);
-	m_TrailObject->setVisible(false);
+    // create node and attach object
+    m_TrailNode =
+        mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    m_TrailNode->attachObject(m_TrailObject);
+    m_TrailObject->setVisible(false);
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::uninit()
 {
-	m_IsActive = false;
+    m_IsActive = false;
 
-	// detach object and remove node
-	m_TrailNode->detachObject(m_TrailObject);
-	mSceneMgr->getRootSceneNode()->
-		removeAndDestroyChild(m_TrailNode->getName());
+    // detach object and remove node
+    m_TrailNode->detachObject(m_TrailObject);
+    mSceneMgr->getRootSceneNode()->
+    removeAndDestroyChild(m_TrailNode->getName());
 
-	// remove object
-	m_TrailObject->setVisible(false);
-	mSceneMgr->destroyManualObject(m_TrailObject); 
+    // remove object
+    m_TrailObject->setVisible(false);
+    mSceneMgr->destroyManualObject(m_TrailObject);
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setWeaponEntity(Entity* p_WeaponEntity)
 {
-	m_WeaponEntity = p_WeaponEntity;
-	if (m_WeaponEntity)
-	{   
-		m_WeaponNode = m_WeaponEntity->getParentNode();
-	}
-	else
-	{
-		m_WeaponNode = 0;
-	}
+    m_WeaponEntity = p_WeaponEntity;
+    if (m_WeaponEntity)
+    {
+        m_WeaponNode = m_WeaponEntity->getParentNode();
+    }
+    else
+    {
+        m_WeaponNode = 0;
+    }
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::onUpdate(float p_DeltaT)
 {
-	// early out
-	if(!isActive() && !isVisible())
-	{
-		return;
-	}
-	if (!m_WeaponEntity || !m_WeaponNode)
-	{
-		return;
-	}
-	if (!m_TrailObject)
-	{
-		return;
-	}
+    // early out
+    if (!isActive() && !isVisible())
+    {
+        return;
+    }
+    if (!m_WeaponEntity || !m_WeaponNode)
+    {
+        return;
+    }
+    if (!m_TrailObject)
+    {
+        return;
+    }
 
-	m_TrailObject->setVisible(true);
+    m_TrailObject->setVisible(true);
 
-	// iterate over the current segments, apply alpha change
-	for(TrailSegmentList::iterator it = m_SegmentList.begin();
-		it != m_SegmentList.end();)
-	{
-		(*it).segmentStartColor -= m_SegmentStartColorChange * p_DeltaT;
-		(*it).segmentEndColor -= m_SegmentEndColorChange * p_DeltaT;
-		(*it).segmentStartColor.saturate();
-		(*it).segmentEndColor.saturate();
-		if((*it).segmentStartColor == Ogre::ColourValue::ZERO && (*it).segmentEndColor == Ogre::ColourValue::ZERO)
-		{
-			it = m_SegmentList.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-	}
+    // iterate over the current segments, apply alpha change
+    for (TrailSegmentList::iterator it = m_SegmentList.begin();
+         it != m_SegmentList.end(); )
+    {
+        (*it).segmentStartColor -= m_SegmentStartColorChange * p_DeltaT;
+        (*it).segmentEndColor   -= m_SegmentEndColorChange * p_DeltaT;
+        (*it).segmentStartColor.saturate();
+        (*it).segmentEndColor.saturate();
+        if ((*it).segmentStartColor == Ogre::ColourValue::ZERO && (*it).segmentEndColor == Ogre::ColourValue::ZERO)
+        {
+            it = m_SegmentList.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 
-	// throw away the last element if the maximum number of segments is used
-	if(m_SegmentList.size() >= m_MaxSegmentCount)
-	{
-		m_SegmentList.pop_back();
-	}
+    // throw away the last element if the maximum number of segments is used
+    if (m_SegmentList.size() >= m_MaxSegmentCount)
+    {
+        m_SegmentList.pop_back();
+    }
 
-	// only add a new segment if active
-	if(isActive())
-	{
-		// the segment to add to the trail
-		TrailSegment newSegment;
-		// initial the trail
-		newSegment.segmentStartColor = getSegmentStartInitialColor();
-		newSegment.segmentEndColor = getSegmentEndInitialColor();
-		newSegment.segmentStart  = m_WeaponNode->_getDerivedPosition();
-		Vector3 pos = m_WeaponNode->getPosition();
-		// probably quite costly way to get the second position
-		m_WeaponNode->translate(Vector3(0, m_Width, 0), SceneNode::TS_LOCAL);
-		newSegment.segmentEnd = m_WeaponNode->_getDerivedPosition();
-		m_WeaponNode->setPosition(pos);
+    // only add a new segment if active
+    if (isActive())
+    {
+        // the segment to add to the trail
+        TrailSegment newSegment;
+        // initial the trail
+        newSegment.segmentStartColor = getSegmentStartInitialColor();
+        newSegment.segmentEndColor   = getSegmentEndInitialColor();
+        newSegment.segmentStart      = m_WeaponNode->_getDerivedPosition();
+        Vector3      pos = m_WeaponNode->getPosition();
+        // probably quite costly way to get the second position
+        m_WeaponNode->translate(Vector3(0, m_Width, 0), SceneNode::TS_LOCAL);
+        newSegment.segmentEnd = m_WeaponNode->_getDerivedPosition();
+        m_WeaponNode->setPosition(pos);
 
-		Vector3 _verDir = newSegment.segmentEnd - newSegment.segmentStart;
-		_verDir.normalise();
+        Vector3      _verDir = newSegment.segmentEnd - newSegment.segmentStart;
+        _verDir.normalise();
 
-		newSegment.segmentEnd = newSegment.segmentStart + _verDir *  m_Width;
+        newSegment.segmentEnd = newSegment.segmentStart + _verDir *  m_Width;
 
-		m_SegmentList.push_front(newSegment);
-
-	}
-	// update the manual object
-	m_TrailObject->beginUpdate(0);
-	int segmentCount = 0;
-	for(TrailSegmentList::iterator it = m_SegmentList.begin();
-		it != m_SegmentList.end(); ++it)
-	{
-		m_TrailObject->position((*it).segmentStart);
-		m_TrailObject->textureCoord(0,0);
-		m_TrailObject->colour((*it).segmentStartColor);
-		m_TrailObject->position((*it).segmentEnd);
-		m_TrailObject->textureCoord(1,0);
-		m_TrailObject->colour((*it).segmentEndColor);
-		++segmentCount;
-	}
-	// use the last position to render the invisible part of the trail
-	// as degenerate triangles
-	Vector3 lastPos = Vector3::ZERO;
-	if(!m_SegmentList.empty())
-	{
-		lastPos = m_SegmentList.back().segmentStart;
-	}
-	for(int i=segmentCount*2;i<m_MaxSegmentCount * 2;++i)
-	{
-		m_TrailObject->position(lastPos);
-	}
-	// end the update
-	m_TrailObject->end();
+        m_SegmentList.push_front(newSegment);
+    }
+    // update the manual object
+    m_TrailObject->beginUpdate(0);
+    int     segmentCount = 0;
+    for (TrailSegmentList::iterator it = m_SegmentList.begin();
+         it != m_SegmentList.end(); ++it)
+    {
+        m_TrailObject->position((*it).segmentStart);
+        m_TrailObject->textureCoord(0, 0);
+        m_TrailObject->colour((*it).segmentStartColor);
+        m_TrailObject->position((*it).segmentEnd);
+        m_TrailObject->textureCoord(1, 0);
+        m_TrailObject->colour((*it).segmentEndColor);
+        ++segmentCount;
+    }
+    // use the last position to render the invisible part of the trail
+    // as degenerate triangles
+    Vector3 lastPos = Vector3::ZERO;
+    if (!m_SegmentList.empty())
+    {
+        lastPos = m_SegmentList.back().segmentStart;
+    }
+    for (int i = segmentCount * 2; i < m_MaxSegmentCount * 2; ++i)
+    {
+        m_TrailObject->position(lastPos);
+    }
+    // end the update
+    m_TrailObject->end();
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setMaterialName(const String& p_MaterialName)
 {
-	m_MaterialName = p_MaterialName;
-	if(m_TrailObject)
-	{
-		m_TrailObject->setMaterialName(0, m_MaterialName);
-	}
+    m_MaterialName = p_MaterialName;
+    if (m_TrailObject)
+    {
+        m_TrailObject->setMaterialName(0, m_MaterialName);
+    }
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setSegmentStartColorChange(const Ogre::ColourValue& p_ColorChange)
 {
-	m_SegmentStartColorChange = p_ColorChange;
+    m_SegmentStartColorChange = p_ColorChange;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 const Ogre::ColourValue& WeaponTrail::getSegmentStartColorChange() const
 {
-	return m_SegmentStartColorChange;
+    return m_SegmentStartColorChange;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setSegmentEndColorChange(const Ogre::ColourValue& p_ColorChange)
 {
-	m_SegmentEndColorChange = p_ColorChange;
+    m_SegmentEndColorChange = p_ColorChange;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 const Ogre::ColourValue& WeaponTrail::getSegmentEndColorChange() const
 {
-	return m_SegmentEndColorChange;
+    return m_SegmentEndColorChange;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setSegmentStartInitialColor(const Ogre::ColourValue& p_Color)
 {
-	m_SegmentStartInitialColor = p_Color;
+    m_SegmentStartInitialColor = p_Color;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 const Ogre::ColourValue& WeaponTrail::getSegmentStartInitialColor() const
 {
-	return m_SegmentStartInitialColor;
+    return m_SegmentStartInitialColor;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setSegmentEndInitialColor(const Ogre::ColourValue& p_Color)
 {
-	m_SegmentEndInitialColor = p_Color;
+    m_SegmentEndInitialColor = p_Color;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 const Ogre::ColourValue& WeaponTrail::getSegmentEndInitialColor() const
 {
-	return m_SegmentEndInitialColor;
+    return m_SegmentEndInitialColor;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 void WeaponTrail::setActive(bool p_Active)
 {
-	m_IsActive = p_Active;
+    m_IsActive = p_Active;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 bool WeaponTrail::isActive() const
 {
-	return m_IsActive;
+    return m_IsActive;
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//
 bool WeaponTrail::isVisible() const
 {
-	return !m_SegmentList.empty();
+    return !m_SegmentList.empty();
 }
-//---------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------//

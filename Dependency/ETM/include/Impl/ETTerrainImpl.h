@@ -129,7 +129,7 @@ private:
     TerrainInfo         mInfo;
     TileTerrainInfo     mTileTerrainInfo;
     Options             mOpt;
-    std::string        mInstanceName;
+    std::string         mInstanceName;
     int                 mViewportHeight;
     Ogre::MaterialPtr   mMaterial;
     Ogre::MaterialPtr   mTileTerrainMaterial;

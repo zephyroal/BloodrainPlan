@@ -175,8 +175,8 @@ void TerrainImpl::createTiles()
     }
 
     // create the tile grid
-    size_t       numTilesCol = (mInfo.getWidth() - 1) / (mOpt.tileSize - 1);
-    size_t       numTilesRow = (mInfo.getHeight() - 1) / (mOpt.tileSize - 1);
+    size_t      numTilesCol = (mInfo.getWidth() - 1) / (mOpt.tileSize - 1);
+    size_t      numTilesRow = (mInfo.getHeight() - 1) / (mOpt.tileSize - 1);
     mTiles.assign(numTilesCol, TileCol(numTilesRow, (Tile*)0));
 
     // for each tile, create a scene node to attach to and create the tile
@@ -185,7 +185,7 @@ void TerrainImpl::createTiles()
         for (size_t j = 0; j < numTilesRow; ++j)
         {
             std::string name = nodeName + "/Tile[" + StringConverter::toString(i) + "][" + StringConverter::toString(j) + "]";
-            SceneNode*   node = 0;
+            SceneNode*  node = 0;
 
             if (mSceneMgr->hasSceneNode(name))
             {

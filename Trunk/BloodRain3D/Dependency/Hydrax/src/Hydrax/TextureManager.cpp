@@ -29,130 +29,130 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 namespace Hydrax
 {
-	TextureManager::TextureManager(Hydrax *h)
-		: mCreated(false)
-		, mHydrax(h)
-	{
-		for (int k = 0; k < 1; k++)
-		{
-			mTextures[k].setNull();
-		}
-		
-		mTextureNames[0] = "HydraxNormalMap";
-	}
+TextureManager::TextureManager(Hydrax* h)
+    : mCreated(false)
+    , mHydrax(h)
+{
+    for (int k = 0; k < 1; k++)
+    {
+        mTextures[k].setNull();
+    }
 
-	TextureManager::~TextureManager()
-	{
-		remove();
-	}
+    mTextureNames[0] = "HydraxNormalMap";
+}
 
-	void TextureManager::create(const Size &Size)
-	{
-		remove();
+TextureManager::~TextureManager()
+{
+    remove();
+}
 
-		for (int k = 0; k < 1; k++)
-		{
-		     _createTexture(mTextures[k], mTextureNames[k], Size);
-		}
+void TextureManager::create(const Size& Size)
+{
+    remove();
 
-		mHydrax->getMaterialManager()->reload(MaterialManager::MAT_WATER);
+    for (int k = 0; k < 1; k++)
+    {
+        _createTexture(mTextures[k], mTextureNames[k], Size);
+    }
 
-		mCreated = true;
-	}
+    mHydrax->getMaterialManager()->reload(MaterialManager::MAT_WATER);
 
-	void TextureManager::remove()
-	{
-		if (!mCreated)
-		{
-			return;
-		}
+    mCreated = true;
+}
 
-		for (int k = 0; k < 1; k++)
-		{
-		     Ogre::TextureManager::getSingleton().remove(mTextureNames[k]);
-			 mTextures[k].setNull();
-		}
+void TextureManager::remove()
+{
+    if (!mCreated)
+    {
+        return;
+    }
 
-		mCreated = false;
-	}
+    for (int k = 0; k < 1; k++)
+    {
+        Ogre::TextureManager::getSingleton().remove(mTextureNames[k]);
+        mTextures[k].setNull();
+    }
 
-	bool TextureManager::_updateNormalMap(Image &Image)
-	{
-		if (!mCreated)
-		{
-			HydraxLOG("Error in TextureManager::_updateNormalMap, create() does not called.");
+    mCreated = false;
+}
 
-			return false;
-		}
+bool TextureManager::_updateNormalMap(Image& Image)
+{
+    if (!mCreated)
+    {
+        HydraxLOG("Error in TextureManager::_updateNormalMap, create() does not called.");
 
-		if (Image.getType() != Image::TYPE_RGB)
-		{
-			HydraxLOG("Error in TextureManager::_updateNormalMap, Image type isn't correct.");
+        return false;
+    }
 
-			return false;
-		}
+    if (Image.getType() != Image::TYPE_RGB)
+    {
+        HydraxLOG("Error in TextureManager::_updateNormalMap, Image type isn't correct.");
 
-		Ogre::TexturePtr &Texture = getTexture(TEX_NORMAL_ID);
+        return false;
+    }
 
-		Size ImageSize = Image.getSize();
-		
-		if (Texture->getWidth()  != ImageSize.Width ||
-			Texture->getHeight() != ImageSize.Height)
-		{
-			HydraxLOG("Error in TextureManager::update, Update size doesn't correspond to " + getTextureName(TEX_NORMAL_ID) + " texture size");
+    Ogre::TexturePtr&                  Texture = getTexture(TEX_NORMAL_ID);
 
-			return false;
-		}
+    Size                               ImageSize = Image.getSize();
 
-		Ogre::HardwarePixelBufferSharedPtr pixelBuffer = Texture->getBuffer();
+    if (Texture->getWidth()  != ImageSize.Width ||
+        Texture->getHeight() != ImageSize.Height)
+    {
+        HydraxLOG("Error in TextureManager::update, Update size doesn't correspond to " + getTextureName(TEX_NORMAL_ID) + " texture size");
 
-        pixelBuffer->lock(Ogre::HardwareBuffer::HBL_NORMAL);
-        const Ogre::PixelBox& pixelBox = pixelBuffer->getCurrentLock();
+        return false;
+    }
 
-        Ogre::uint8* pDest = static_cast<Ogre::uint8*>(pixelBox.data);
+    Ogre::HardwarePixelBufferSharedPtr pixelBuffer = Texture->getBuffer();
 
-        int x, y;
+    pixelBuffer->lock(Ogre::HardwareBuffer::HBL_NORMAL);
+    const Ogre::PixelBox&              pixelBox = pixelBuffer->getCurrentLock();
 
-        for (x = 0; x < ImageSize.Width; x++)
+    Ogre::uint8*                       pDest = static_cast<Ogre::uint8*>(pixelBox.data);
+
+    int                                x, y;
+
+    for (x = 0; x < ImageSize.Width; x++)
+    {
+        for (y = 0; y < ImageSize.Height; y++)
         {
-            for (y = 0; y < ImageSize.Height; y++)
-            {
-                *pDest++ =   Image.getValue(x,y,2); // B
-                *pDest++ =   Image.getValue(x,y,1); // G
-                *pDest++ =   Image.getValue(x,y,0); // R
-				*pDest++ =   255;                   // A
-            }
+            *pDest++ =   Image.getValue(x, y, 2);   // B
+            *pDest++ =   Image.getValue(x, y, 1);   // G
+            *pDest++ =   Image.getValue(x, y, 0);   // R
+            *pDest++ =   255;                                       // A
         }
+    }
 
-        pixelBuffer->unlock();
+    pixelBuffer->unlock();
 
-		return true;
-	}
+    return true;
+}
 
-	bool TextureManager::_createTexture(Ogre::TexturePtr &Texture, const Ogre::String &Name, const Size &Size)
-	{
-		try
-		{
-			Ogre::TextureManager::getSingleton().remove(Name);
+bool TextureManager::_createTexture(Ogre::TexturePtr& Texture, const Ogre::String& Name, const Size& Size)
+{
+    try
+    {
+        Ogre::TextureManager::getSingleton().remove(Name);
 
-			Texture = Ogre::TextureManager::getSingleton().
-				createManual(Name,
-				HYDRAX_RESOURCE_GROUP, 
-				Ogre::TEX_TYPE_2D,
-				Size.Width, Size.Height,
-				0,
-				Ogre::PF_BYTE_BGRA,
-				Ogre::TU_DYNAMIC_WRITE_ONLY_DISCARDABLE);
+        Texture = Ogre::TextureManager::getSingleton().
+                  createManual(Name,
+                               HYDRAX_RESOURCE_GROUP,
+                               Ogre::TEX_TYPE_2D,
+                               Size.Width, Size.Height,
+                               0,
+                               Ogre::PF_BYTE_BGRA,
+                               Ogre::TU_DYNAMIC_WRITE_ONLY_DISCARDABLE);
 
-			Texture->load();
-		}
-		catch(Ogre::Exception &e)
-		{
-			HydraxLOG(e.getFullDescription());
+        Texture->load();
+    }
+    catch (Ogre::Exception& e)
+    {
+        HydraxLOG(e.getFullDescription());
 
-			return false;
-		}
+        return false;
+    }
 
-		return true;
-	}
+    return true;
+}
 }

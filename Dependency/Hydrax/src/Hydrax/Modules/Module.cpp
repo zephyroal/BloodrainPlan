@@ -26,7 +26,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 namespace Hydrax {namespace Module
                   {
-                  Module::Module(const std::string&                Name,
+                  Module::Module(const std::string&                 Name,
                                  Noise::Noise*                      n,
                                  const Mesh::Options&               MeshOptions,
                                  const MaterialManager::NormalMode& NormalMode)

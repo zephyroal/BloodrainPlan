@@ -126,7 +126,7 @@ private:
     /// Our Ogre::TexturePtr array
     Ogre::TexturePtr mTextures[1];
     /// Our std::string array for store texture's names
-    std::string     mTextureNames[1];
+    std::string      mTextureNames[1];
 
     /// Have been created already called?
     bool             mCreated;

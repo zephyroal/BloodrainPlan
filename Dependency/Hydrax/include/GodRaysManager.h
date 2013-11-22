@@ -226,7 +226,7 @@ private:
     {
 public:
         /// God rays manager pointer
-        GodRaysManager*          mGodRaysManager;
+        GodRaysManager*         mGodRaysManager;
 
         /// std::string to store entity's original materials name
         std::queue<std::string> mMaterials;

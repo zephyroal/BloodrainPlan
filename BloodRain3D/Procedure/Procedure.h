@@ -60,7 +60,7 @@ public:
     void selectObject(MovableObject* obj);
     void SwithMode(EditType newType, bool bChangedFromKeyBoard = false);
     void OnGUITreeItemSelected(MyGUI::TreeControl* pTreeControl, MyGUI::TreeControl::Node* pNode);
-    void SetSceneAddType( std::string ObjectName);
+    void SetSceneAddType(std::string ObjectName);
     void OnGUISwitchMode();
     virtual bool keyPressed(const OIS::KeyEvent& arg);
     virtual bool keyReleased(const OIS::KeyEvent& arg);
@@ -76,7 +76,7 @@ public:
     virtual bool frameRenderingQueued(const FrameEvent& evt);
     virtual bool frameEnded(const FrameEvent& evt);
 protected:
-    std::vector<std::string>                    m_OldMaterialVec;
+    std::vector<std::string>                     m_OldMaterialVec;
     std::vector<MaterialPtr>                     m_NewMaterialVec;
     int                                          m_iMtrNum;
     Entity*                                      m_pSelectedEntity;
@@ -87,7 +87,7 @@ protected:
     std::vector<Ogre::AnimationState*>::iterator iter;
     int                                          m_iLayer;
     ET::TileBrush                                mBrush;
-    std::string                                 mNewEntityName;
+    std::string                                  mNewEntityName;
     BloodRainBites::Button*                      mButton;
     BloodRainBites::TextBox*                     mHelpText;
     BloodRainBites::ParamsPanel*                 mDetailsPanel;
@@ -150,16 +150,16 @@ private:
     diagnostic::StatisticInfo*  mInfo;
     diagnostic::InputFocusInfo* mFocusInfo;
     MyGUI::Widget*              mMainWidget;
-    std::string                mPrefix;
-    std::string                mLayoutName;
+    std::string                 mPrefix;
+    std::string                 mLayoutName;
     typedef std::vector<wraps::BaseLayout*> VectorBasePtr;
     MyGUI::VectorWidgetPtr      mListWindowRoot;
     VectorBasePtr               mListBase;
-    std::string                mResourcePath;
-    std::string                mPluginCfgName;
-    std::string                mResourceXMLName;
-    std::string                mResourceFileName;
-    std::string                mRootMedia;
+    std::string                 mResourcePath;
+    std::string                 mPluginCfgName;
+    std::string                 mResourceXMLName;
+    std::string                 mResourceFileName;
+    std::string                 mRootMedia;
     Ogre::SceneNode*            mNode;
 protected:
     virtual void updateStats(void)

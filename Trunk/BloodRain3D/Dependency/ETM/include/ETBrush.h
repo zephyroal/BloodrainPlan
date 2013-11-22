@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETBRUSH_H__
 #define __ETBRUSH_H__
 
@@ -42,16 +42,16 @@ the GNU General Public License.
 // forward declarations
 namespace Ogre
 {
-  class Image;
+class Image;
 }
 
 
 namespace ET
 {
-  /** This class represents a brush used to deform terrain or edit splatting coverage */
-  class _ETManagerExport Brush
-  {
-  public:
+/** This class represents a brush used to deform terrain or edit splatting coverage */
+class _ETManagerExport Brush
+{
+public:
     /** Default constructor */
     Brush();
     /** Constructs a brush from a given array of floats */
@@ -65,59 +65,66 @@ namespace ET
     /** Copy assignment */
     Brush& operator=(const Brush& other);
 
-    size_t getWidth() const { return mWidth; }
-    size_t getHeight() const { return mHeight; }
+    size_t getWidth() const
+    {
+        return mWidth;
+    }
+    size_t getHeight() const
+    {
+        return mHeight;
+    }
 
     /** Access to the brush array */
     float& at(size_t x, size_t y)
     {
-      return mBrushArray[x + y*mWidth];
+        return mBrushArray[x + y * mWidth];
     }
     /** Const access to the brush array */
     const float at(size_t x, size_t y) const
     {
-      return mBrushArray[x + y*mWidth];
+        return mBrushArray[x + y * mWidth];
     }
 
     /** Exception-safe swap function */
     void swap(Brush& other);
 
-  private:
+private:
     /** The actual brush array containing the brush values */
     float* mBrushArray;  // would have used vector<float>, but gives warnings with dll export
     /** The brush's dimensions */
     size_t mWidth, mHeight;
-  };
+};
 
-  /** Loads a brush from a grayscale image */
-  Brush _ETManagerExport loadBrushFromImage(const Ogre::Image& image);
+/** Loads a brush from a grayscale image */
+Brush _ETManagerExport loadBrushFromImage(const Ogre::Image& image);
 
-  /** Saves a brush to a grayscale image */
-  void _ETManagerExport saveBrushToImage(const Brush& brush, Ogre::Image& image);
+/** Saves a brush to a grayscale image */
+void _ETManagerExport saveBrushToImage(const Brush& brush, Ogre::Image& image);
 
 
 
-  struct TileBrush
-  {	
-	  enum TILE_BRUSH_TYPE{
-			POINT,	// 一块
-			H_TOW,	// 水平两块
-			V_TOW,	// 竖直两块
-			FOUR,	// 4块
-	  };
+struct TileBrush
+{
+    enum TILE_BRUSH_TYPE
+    {
+        POINT,                  // 一块
+        H_TOW,                  // 水平两块
+        V_TOW,                  // 竖直两块
+        FOUR,                   // 4块
+    };
 
-	  TileBrush()
-	  {
-			layer = 0;
-			op = 0;
-			brushType = POINT;
-	  }
-	  int layer;	// layer0 or layer1
-	  int imageID;
-	  mutable int op;//可接受const量
-	  unsigned int brushType;
-	  std::vector<int> selectedPix;
-  };
+    TileBrush()
+    {
+        layer     = 0;
+        op        = 0;
+        brushType = POINT;
+    }
+    int              layer; // layer0 or layer1
+    int              imageID;
+    mutable int      op; // 可接受const量
+    unsigned int     brushType;
+    std::vector<int> selectedPix;
+};
 }
 
 

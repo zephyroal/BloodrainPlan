@@ -8,10 +8,10 @@ CPPUNIT_NS_BEGIN
 #if defined(CPPUNIT_HAVE_NAMESPACES)
 namespace MfcUi
 {
-  /*! Mfc TestRunner (DEPRECATED).
-   * \deprecated Use CppUnit::MfcTestRunner instead.
-   */
-  typedef CPPUNIT_NS::MfcTestRunner TestRunner;
+/*! Mfc TestRunner (DEPRECATED).
+ * \deprecated Use CppUnit::MfcTestRunner instead.
+ */
+typedef CPPUNIT_NS::MfcTestRunner TestRunner;
 }
 #endif // defined(CPPUNIT_HAVE_NAMESPACES)
 

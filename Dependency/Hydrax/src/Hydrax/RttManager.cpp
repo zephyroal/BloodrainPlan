@@ -557,9 +557,9 @@ void RttManager::CReflectionListener::postRenderTargetUpdate(const Ogre::RenderT
     mRttManager->_invokeRttListeners(RTT_REFLECTION, false);
 }
 
-void RttManager::CReflectionListener::CReflectionQueueListener::renderQueueStarted(Ogre::uint8         queueGroupId,
+void RttManager::CReflectionListener::CReflectionQueueListener::renderQueueStarted(Ogre::uint8        queueGroupId,
                                                                                    const std::string& invocation,
-                                                                                   bool&               skipThisInvocation)
+                                                                                   bool&              skipThisInvocation)
 {
     if (mRttManager->_isRenderQueueInList(mRttManager->mDisableReflectionCustomNearClipPlaneRenderQueues,
                                           static_cast<Ogre::RenderQueueGroupID>(queueGroupId)) && mActive)
@@ -569,9 +569,9 @@ void RttManager::CReflectionListener::CReflectionQueueListener::renderQueueStart
     }
 }
 
-void RttManager::CReflectionListener::CReflectionQueueListener::renderQueueEnded(Ogre::uint8         queueGroupId,
+void RttManager::CReflectionListener::CReflectionQueueListener::renderQueueEnded(Ogre::uint8        queueGroupId,
                                                                                  const std::string& invocation,
-                                                                                 bool&               skipThisInvocation)
+                                                                                 bool&              skipThisInvocation)
 {
     if (mRttManager->_isRenderQueueInList(mRttManager->mDisableReflectionCustomNearClipPlaneRenderQueues,
                                           static_cast<Ogre::RenderQueueGroupID>(queueGroupId)) && mActive)
@@ -721,7 +721,7 @@ void RttManager::CDepthListener::postRenderTargetUpdate(const Ogre::RenderTarget
     Ogre::Entity*                             CurrentEntity;
     unsigned int                              k;
 
-    std::string                              Mat;
+    std::string                               Mat;
 
     while (EntityIterator.hasMoreElements())
     {
@@ -854,7 +854,7 @@ void RttManager::CDepthReflectionListener::postRenderTargetUpdate(const Ogre::Re
     Ogre::Entity*                             CurrentEntity;
     unsigned int                              k;
 
-    std::string                              Mat;
+    std::string                               Mat;
 
     while (EntityIterator.hasMoreElements())
     {

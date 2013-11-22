@@ -1,13 +1,13 @@
 #ifndef HydraxListenerHead
 #define HydraxListenerHead
 #pragma  once
-//************************************
+// ************************************
 // 函数名称: BloodRain3D
 // 函数说明：千里之行始于足下
 // 作 成 者：何牧
 // 加入日期：2011/05/07
-//************************************
-//你看你，都搁置多久了？！
+// ************************************
+// 你看你，都搁置多久了？！
 
 /*
 --------------------------------------------------------------------------------
@@ -69,26 +69,26 @@ http://www.gnu.org/copyleft/lesser.txt.
 // 'createScene' method which is where you set up your own personal scene.
 // ----------------------------------------------------------------------------
 
-class CHydraxListener : public ExampleFrameListener,public OIS::KeyListener
+class CHydraxListener : public ExampleFrameListener, public OIS::KeyListener
 {
 private:
-	SceneManager *mSceneMgr;
-	Real mKeyBuffer;
-	Camera* mCamera;
-	RenderWindow* mWindow;
-	bool			m_bPause;//是否暂停渲染HydraX
+    SceneManager* mSceneMgr;
+    Real          mKeyBuffer;
+    Camera*       mCamera;
+    RenderWindow* mWindow;
+    bool          m_bPause;              // 是否暂停渲染HydraX
 public:
-	CHydraxListener(RenderWindow* win, Camera* cam, SceneManager *sm);
-	// Just override the mandatory create scene method
-	void createScene(void);
-	// Create text area to show skyboxes information
-	void createTextArea();
-	virtual bool mouseMoved( const OIS::MouseEvent &arg );
-	//bool frameRenderingQueued(const FrameEvent& evt);
-	bool frameStarted(const FrameEvent &e);
-	virtual bool keyPressed(const OIS::KeyEvent& arg);
-	virtual bool keyReleased(const OIS::KeyEvent& arg);
-	void changeSkyBox();
+    CHydraxListener(RenderWindow* win, Camera* cam, SceneManager* sm);
+    // Just override the mandatory create scene method
+    void createScene(void);
+    // Create text area to show skyboxes information
+    void createTextArea();
+    virtual bool mouseMoved(const OIS::MouseEvent& arg);
+    // bool frameRenderingQueued(const FrameEvent& evt);
+    bool frameStarted(const FrameEvent& e);
+    virtual bool keyPressed(const OIS::KeyEvent& arg);
+    virtual bool keyReleased(const OIS::KeyEvent& arg);
+    void changeSkyBox();
 };
 
 

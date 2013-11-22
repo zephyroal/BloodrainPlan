@@ -88,7 +88,7 @@ protected:
     Entity*           m_WeaponEntity;       // !< the entity representing the weapon;
     Node*             m_WeaponNode;         // !< the node the tracked entity is attached to
     SceneNode*        m_TrailNode;          // !< the node the manual object is attached to
-    std::string      m_MaterialName;             // !< the name of the material to use
+    std::string       m_MaterialName;            // !< the name of the material to use
     const int         m_MaxSegmentCount;    // !< the maximum number of segments the trail will consist of
     Ogre::ColourValue m_SegmentStartInitialColor;       // !< the initial color of start segments
     Ogre::ColourValue m_SegmentEndInitialColor;         // !< the initial color of end segments
@@ -98,5 +98,5 @@ protected:
     bool              m_IsActive;           // !< flag indicating whether new segments are generated
 
     SceneManager*     mSceneMgr;
-    std::string      mName;
+    std::string       mName;
 }; // end of WeaponTrail class declaration

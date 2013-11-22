@@ -55,7 +55,7 @@ struct Options
 
     bool         useLODMorph;
     float        lodMorphStart;
-    std::string lodMorphParam;
+    std::string  lodMorphParam;
 };
 }
 }

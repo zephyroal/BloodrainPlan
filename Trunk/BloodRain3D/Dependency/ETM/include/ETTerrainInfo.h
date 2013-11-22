@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETTERRAININFO_H__
 #define __ETTERRAININFO_H__
 
@@ -48,90 +48,91 @@ using std::vector;
 // forward declarations
 namespace Ogre
 {
-  class AxisAlignedBox;
-  class Image;
-  class ColourValue;
-  class DataStream;
-  class Ray;
+class AxisAlignedBox;
+class Image;
+class ColourValue;
+class DataStream;
+class Ray;
 }
 
 
 namespace ET
 {
-  /**
-   * This class stores all basic information about the terrain, i. e. its heightmap,
-   * its extents and the scaling.
-   */
-	
-	//  [10/14/2009 KingMars]
-	// 拼接地形的纹理每块长宽为256
-	const unsigned int SPLICE_IMAGE_SIZE = 256;
-	// 拼接地形纹理有SPLICE_ROW*SPLICE_COL块。
-	const unsigned int SPLICE_ROW = 8;//行
-	const unsigned int SPLICE_COL = 4;//列
+/**
+ * This class stores all basic information about the terrain, i. e. its heightmap,
+ * its extents and the scaling.
+ */
 
-	typedef unsigned char uchar;
-	typedef unsigned short ushort;
+//  [10/14/2009 KingMars]
+// 拼接地形的纹理每块长宽为256
+const unsigned int SPLICE_IMAGE_SIZE = 256;
+// 拼接地形纹理有SPLICE_ROW*SPLICE_COL块。
+const unsigned int SPLICE_ROW = 8;        // 行
+const unsigned int SPLICE_COL = 4;        // 列
 
-	typedef struct 
-	{
-		float left;
-		float right;
-		float top;
-		float bottom;
-		int id;
-	} PixMap;//纹理Brush在Atlas中的uv坐标及其ID(用了哪一张地表纹理)
-	
-	typedef struct 
-	{
-		Ogre::String fileName;
-		float row_scale;
-		float col_scale;
-	} ImageInfo;//相应brush的缩放值，如tl的大多数原图为128*256，这里则为（0.5 1），很蛋疼是不？要改！
+typedef unsigned char uchar;
+typedef unsigned short ushort;
 
-	typedef struct 
-	{
-		ushort layer0;//对应一个PixMap
-		ushort layer1;
-		uchar op0;
-		uchar op1;
-		uchar tri;
-		int iBrushCount;
-	}g_info;//对应记录每个grid所用的bursh及相应的混合值
+typedef struct
+{
+    float left;
+    float right;
+    float top;
+    float bottom;
+    int   id;
+} PixMap;        // 纹理Brush在Atlas中的uv坐标及其ID(用了哪一张地表纹理)
 
-	class _ETManagerExport TileTerrainInfo
-	{
-	public:
-		TileTerrainInfo()
-			:heightMapData( NULL )
-		{}
+typedef struct
+{
+    Ogre::String fileName;
+    float        row_scale;
+    float        col_scale;
+} ImageInfo;        // 相应brush的缩放值，如tl的大多数原图为128*256，这里则为（0.5 1），很蛋疼是不？要改！
 
-		void LoadTerrain( const Ogre::String& sceneDir, const Ogre::String& terrainFileName);
+typedef struct
+{
+    ushort layer0;            // 对应一个PixMap
+    ushort layer1;
+    uchar  op0;
+    uchar  op1;
+    uchar  tri;
+    int    iBrushCount;
+}g_info;        // 对应记录每个grid所用的bursh及相应的混合值
 
-		int width;
-		int height;
-		int tileSize;
-		 std:: vector<g_info> gridInfoArray;
-		 std:: vector<ImageInfo> imageArray;
-		 std:: vector<PixMap> pixMapArray;
-		 std:: vector<bool> availableArray;
-		Ogre::String sceneDir;
-		float* heightMapData;
-		int scale_x,scale_y,scale_z;		
-		
-	private:
+class _ETManagerExport TileTerrainInfo
+{
+public:
+    TileTerrainInfo()
+        : heightMapData(NULL)
+    {
+    }
 
-		void Clear();
-		void LoadGridInfo( const char* fileName, const char* type );
-		void LoadLightMap( const char* fileName, const char* type );
-		void LoadHightMap( const char* fileNaem, const char* type );
-		void AddImageIntoTexture( Ogre::TexturePtr pTexture, int index, const Ogre::Image& image, int size );
-		void AddImageIntoTexture( Ogre::HardwarePixelBufferSharedPtr pTexturePtr, int index, const Ogre::Image& image, int size );
-	};
+    void LoadTerrain(const Ogre::String& sceneDir, const Ogre::String& terrainFileName);
 
-  class _ETManagerExport TerrainInfo
-  {
-  public:
+    int                    width;
+    int                    height;
+    int                    tileSize;
+    std::vector<g_info>    gridInfoArray;
+    std::vector<ImageInfo> imageArray;
+    std::vector<PixMap>    pixMapArray;
+    std::vector<bool>      availableArray;
+    Ogre::String           sceneDir;
+    float*                 heightMapData;
+    int                    scale_x, scale_y, scale_z;
+
+private:
+
+    void Clear();
+    void LoadGridInfo(const char* fileName, const char* type);
+    void LoadLightMap(const char* fileName, const char* type);
+    void LoadHightMap(const char* fileNaem, const char* type);
+    void AddImageIntoTexture(Ogre::TexturePtr pTexture, int index, const Ogre::Image& image, int size);
+    void AddImageIntoTexture(Ogre::HardwarePixelBufferSharedPtr pTexturePtr, int index, const Ogre::Image& image, int size);
+};
+
+class _ETManagerExport TerrainInfo
+{
+public:
     /** Default constructor */
     TerrainInfo();
     /** Constructs with a heightmap given as an array of floats. */
@@ -145,40 +146,76 @@ namespace ET
     void setHeightmap(size_t width, size_t height, const std::vector<float>& heightmap);
 
     /** Retrieves the raw heightmap data. */
-    const std::vector<float>& getHeightmapData() const { return mHeightmap; }
+    const std::vector<float>& getHeightmapData() const
+    {
+        return mHeightmap;
+    }
 
     /** Retrieves a value from the heightmap. */
-    float& at(size_t x, size_t y) { return mHeightmap[x + y*mWidth]; }
+    float& at(size_t x, size_t y)
+    {
+        return mHeightmap[x + y * mWidth];
+    }
     /** Retrieves a const value from the heightmap. */
-    const float at(size_t x, size_t y) const { return mHeightmap[x + y*mWidth]; }
+    const float at(size_t x, size_t y) const
+    {
+        return mHeightmap[x + y * mWidth];
+    }
 
     /** Retrieves the width of the heightmap. */
-    size_t getWidth() const { return mWidth; }
+    size_t getWidth() const
+    {
+        return mWidth;
+    }
     /** Retrieves the height of the heightmap. */
-    size_t getHeight() const { return mHeight; }
+    size_t getHeight() const
+    {
+        return mHeight;
+    }
 
     /** Sets the extents of the terrain in Ogre units. */
     void setExtents(const Ogre::AxisAlignedBox& extents);
     /** Retrieves the terrain extents in Ogre units. */
     Ogre::AxisAlignedBox getExtents() const;
-	
-	//  [10/7/2009 KingMars]
-	void setBounding( const Ogre::AxisAlignedBox& box ) { boundingBox = box; }
+
+    //  [10/7/2009 KingMars]
+    void setBounding(const Ogre::AxisAlignedBox& box)
+    {
+        boundingBox = box;
+    }
 
     /** Retrieves the scaling of one vertex in Ogre units. */
-    const Ogre::Vector3& getScaling() const { return mScale; }
+    const Ogre::Vector3& getScaling() const
+    {
+        return mScale;
+    }
 
     /** Retrieves the offset point of the terrain. */
-    const Ogre::Vector3& getOffset() const { return mOffset; }
+    const Ogre::Vector3& getOffset() const
+    {
+        return mOffset;
+    }
 
     /** Scales from Ogre positions to vertex indexes. */
-    int posToVertexX(float x) const { return (int) ((x-mOffset.x)/mScale.x); }
+    int posToVertexX(float x) const
+    {
+        return (int) ((x - mOffset.x) / mScale.x);
+    }
     /** Scales from Ogre positions to vertex indexes. */
-    int posToVertexZ(float z) const { return (int) ((z-mOffset.z)/mScale.z); }
+    int posToVertexZ(float z) const
+    {
+        return (int) ((z - mOffset.z) / mScale.z);
+    }
     /** Scales from vertex indexes to Ogre positions. */
-    float vertexToPosX(int x) const { return mOffset.x + x*mScale.x; }
+    float vertexToPosX(int x) const
+    {
+        return mOffset.x + x * mScale.x;
+    }
     /** Scales from vertex indexes to Ogre positions. */
-    float vertexToPosZ(int z) const { return mOffset.z + z*mScale.z; }
+    float vertexToPosZ(int z) const
+    {
+        return mOffset.z + z * mScale.z;
+    }
 
     /** Calculates the height at the given coordinates. */
     float getHeightAt(float x, float z) const;
@@ -196,53 +233,52 @@ namespace ET
      */
     std::pair<bool, Ogre::Vector3> rayIntersects(const Ogre::Ray& ray) const;
 
-  private:
+private:
     /** extents of the heightmap */
-    size_t mWidth, mHeight;
+    size_t               mWidth, mHeight;
     /** the heightmap */
-    std::vector<float> mHeightmap; // why does this NOT generate warnings?! it did with Brush
+    std::vector<float>   mHeightmap; // why does this NOT generate warnings?! it did with Brush
 
     /** offset at which the (0, 0) point of the terrain is placed in Ogre */
-    Ogre::Vector3 mOffset;
+    Ogre::Vector3        mOffset;
     /** scale of a terrain vertex */
-    Ogre::Vector3 mScale;
+    Ogre::Vector3        mScale;
 
-	// used to ray trace [10/7/2009 KingMars]
-	Ogre::AxisAlignedBox boundingBox;
-  };
-
-
-  /** Loads a heightmap from an image and stores it in the given TerrainInfo. */
-  void _ETManagerExport loadHeightmapFromImage(TerrainInfo& info, const Ogre::Image& image);
-
-  /** Saves a heightmap to image. */
-  void _ETManagerExport saveHeightmapToImage(const TerrainInfo& info, Ogre::Image& image, unsigned int bpp = 2);
-
-  /** Loads a heightmap from a raw data file and stores it in the given TerrainInfo. */
-  void _ETManagerExport loadHeightmapFromRawData(TerrainInfo& info, Ogre::DataStream& stream,
-    size_t width, size_t height);
-
-  /** Saves a heightmap to a raw data file. */
-  void _ETManagerExport saveHeightmapToRawData(const TerrainInfo& info, std::ostream& stream, unsigned int bpp = 2);
+    // used to ray trace [10/7/2009 KingMars]
+    Ogre::AxisAlignedBox boundingBox;
+};
 
 
+/** Loads a heightmap from an image and stores it in the given TerrainInfo. */
+void _ETManagerExport loadHeightmapFromImage(TerrainInfo& info, const Ogre::Image& image);
 
-  /**
-   * Derives a lightmap from the terrain described by the given TerrainInfo.
-   * The lightmap is stored in the passed image.
-   * @param info      Terrain info to generate the lightmap for
-   * @param image     The image to store the lightmap into
-   * @param width     The width of the resulting lightmap
-   * @param height    The height of the resulting lightmap
-   * @param lightDir  The direction from which the light is coming
-   * @param lightCol  The colour of the light
-   * @param ambient   Ambient colour
-   * @param shadowed  Whether to include terrain self-shadows in the lightmap
-   */
-  void _ETManagerExport createTerrainLightmap(const TerrainInfo& info, Ogre::Image& image,
-    size_t width, size_t height, Ogre::Vector3 lightDir, const Ogre::ColourValue& lightCol,
-    const Ogre::ColourValue& ambient, bool shadowed = true);
+/** Saves a heightmap to image. */
+void _ETManagerExport saveHeightmapToImage(const TerrainInfo& info, Ogre::Image& image, unsigned int bpp = 2);
 
+/** Loads a heightmap from a raw data file and stores it in the given TerrainInfo. */
+void _ETManagerExport loadHeightmapFromRawData(TerrainInfo& info, Ogre::DataStream& stream,
+                                               size_t width, size_t height);
+
+/** Saves a heightmap to a raw data file. */
+void _ETManagerExport saveHeightmapToRawData(const TerrainInfo& info, std::ostream& stream, unsigned int bpp = 2);
+
+
+
+/**
+ * Derives a lightmap from the terrain described by the given TerrainInfo.
+ * The lightmap is stored in the passed image.
+ * @param info      Terrain info to generate the lightmap for
+ * @param image     The image to store the lightmap into
+ * @param width     The width of the resulting lightmap
+ * @param height    The height of the resulting lightmap
+ * @param lightDir  The direction from which the light is coming
+ * @param lightCol  The colour of the light
+ * @param ambient   Ambient colour
+ * @param shadowed  Whether to include terrain self-shadows in the lightmap
+ */
+void _ETManagerExport createTerrainLightmap(const TerrainInfo& info, Ogre::Image& image,
+                                            size_t width, size_t height, Ogre::Vector3 lightDir, const Ogre::ColourValue& lightCol,
+                                            const Ogre::ColourValue& ambient, bool shadowed = true);
 }
 
 

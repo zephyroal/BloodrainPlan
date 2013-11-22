@@ -85,8 +85,8 @@ typedef struct
 typedef struct
 {
     std::string fileName;
-    float        row_scale;
-    float        col_scale;
+    float       row_scale;
+    float       col_scale;
 } ImageInfo;        // 相应brush的缩放值，如tl的大多数原图为128*256，这里则为（0.5 1），很蛋疼是不？要改！
 
 typedef struct
@@ -116,7 +116,7 @@ public:
     std::vector<ImageInfo> imageArray;
     std::vector<PixMap>    pixMapArray;
     std::vector<bool>      availableArray;
-    std::string           sceneDir;
+    std::string            sceneDir;
     float*                 heightMapData;
     int                    scale_x, scale_y, scale_z;
 

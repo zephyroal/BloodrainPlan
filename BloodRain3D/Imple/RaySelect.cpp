@@ -123,7 +123,7 @@ bool PickEntity(Ogre::RaySceneQuery* mRaySceneQuery,
                 Ogre::Vector3&       hitpoint,
                 Ogre::uint32         mask,
                 bool                 excludeInVisible,
-                const std::string&  excludeobject,
+                const std::string&   excludeobject,
                 Ogre::Real           max_distance)
 {
     mRaySceneQuery->setRay(ray);

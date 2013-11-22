@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
 EDITABLE TERRAIN MANAGER for Ogre
 Copyright (C) 2007  Holger Frydrych <h.frydrych@gmx.de>
@@ -44,60 +44,60 @@ using Ogre::ushort;
 
 namespace ET
 {
-  Brush::Brush()
-  : mWidth(0), mHeight(0), mBrushArray(0)
-  {
-  }
+Brush::Brush()
+    : mWidth(0), mHeight(0), mBrushArray(0)
+{
+}
 
-  Brush::Brush(const float* brush, size_t width, size_t height)
-  : mWidth(width), mHeight(height)
-  {
-    mBrushArray = new float[width*height];
-    memcpy(mBrushArray, brush, width*height*sizeof(float));
-  }
+Brush::Brush(const float* brush, size_t width, size_t height)
+    : mWidth(width), mHeight(height)
+{
+    mBrushArray = new float[width * height];
+    memcpy(mBrushArray, brush, width * height * sizeof(float));
+}
 
-  Brush::Brush(const  std:: vector<float>& brush, size_t width, size_t height)
-  : mWidth(width), mHeight(height)
-  {
-    mBrushArray = new float[width*height];
+Brush::Brush(const std::vector<float>& brush, size_t width, size_t height)
+    : mWidth(width), mHeight(height)
+{
+    mBrushArray = new float[width * height];
     copy(brush.begin(), brush.end(), mBrushArray);
-  }
+}
 
-  Brush::Brush(const Brush& other)
-  : mWidth(other.mWidth), mHeight(other.mHeight)
-  {
-    mBrushArray = new float[mWidth*mHeight];
-    memcpy(mBrushArray, other.mBrushArray, mWidth*mHeight*sizeof(float));
-  }
+Brush::Brush(const Brush& other)
+    : mWidth(other.mWidth), mHeight(other.mHeight)
+{
+    mBrushArray = new float[mWidth * mHeight];
+    memcpy(mBrushArray, other.mBrushArray, mWidth * mHeight * sizeof(float));
+}
 
-  Brush::~Brush()
-  {
+Brush::~Brush()
+{
     delete[] mBrushArray;
-  }
+}
 
 
-  Brush& Brush::operator=(const Brush& other)
-  {
-    Brush tmp (other);
+Brush& Brush::operator=(const Brush& other)
+{
+    Brush tmp(other);
     tmp.swap(*this);
     return *this;
-  }
+}
 
-  void Brush::swap(Brush& other)
-  {
+void Brush::swap(Brush& other)
+{
     std::swap(mWidth, other.mWidth);
     std::swap(mHeight, other.mHeight);
     std::swap(mBrushArray, other.mBrushArray);
-  }
+}
 
-  Brush loadBrushFromImage(const Image& image)
-  {
-    size_t width = image.getWidth();
-    size_t height = image.getHeight();
-   std:: vector<float> brush (width*height);
+Brush loadBrushFromImage(const Image& image)
+{
+    size_t             width  = image.getWidth();
+    size_t             height = image.getHeight();
+    std::vector<float> brush(width * height);
 
     // determine the bytes per pixel used in the image
-    int bpp = int(image.getSize() / (width*height));
+    int                bpp = int(image.getSize() / (width * height));
     /*switch (image.getFormat())
     {
     case PF_BYTE_A: bpp = 1; break;
@@ -107,35 +107,39 @@ namespace ET
     default: OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Don't know what to do with the given image format, sorry.", "loadBrushFromImage");
     }*/
     // from the bpp, calculate the relevant max value for one pixel
-    uint maxValue = (1 << (bpp*8)) - 1;
+    uint               maxValue = (1 << (bpp * 8)) - 1;
 
     // now fill the brush array
-    const uchar* imageData = image.getData();
+    const uchar*       imageData = image.getData();
     for (size_t i = 0; i < brush.size(); ++i)
     {
-      uint val = 0;
-      memcpy(&val, imageData, bpp);
-      imageData += bpp;
-      brush[i] = float(val) / maxValue;
+        uint val = 0;
+        memcpy(&val, imageData, bpp);
+        imageData += bpp;
+        brush[i]   = float(val) / maxValue;
     }
 
     return Brush(brush, width, height);
-  }
+}
 
 
-  void saveBrushToImage(const Brush& brush, Image& image)
-  {
+void saveBrushToImage(const Brush& brush, Image& image)
+{
     // save brush as a 16bit grayscale image
 #if OGRE_VERSION_MINOR > 4
-    ushort* data = (ushort*)OGRE_ALLOC_T(uchar, brush.getWidth()*brush.getHeight()*sizeof(ushort), MEMCATEGORY_GENERAL);
+    ushort* data = (ushort*)OGRE_ALLOC_T(uchar, brush.getWidth() * brush.getHeight() * sizeof(ushort), MEMCATEGORY_GENERAL);
 #else
-    ushort* data = (ushort*)new uchar[brush.getWidth()*brush.getHeight()*sizeof(ushort)];
+    ushort* data = (ushort*)new uchar[brush.getWidth() * brush.getHeight() * sizeof(ushort)];
 #endif
     for (size_t x = 0; x < brush.getWidth(); ++x)
-      for (size_t y = 0; y < brush.getHeight(); ++y)
-        data[y*brush.getWidth() + x] = ushort(brush.at(x, y) * 0xffff);
+    {
+        for (size_t y = 0; y < brush.getHeight(); ++y)
+        {
+            data[y * brush.getWidth() + x] = ushort(brush.at(x, y) * 0xffff);
+        }
+    }
 
     // pass the data to the image, image takes over ownership
     image.loadDynamicImage((uchar*)data, brush.getWidth(), brush.getHeight(), 1, PF_L16, true);
-  }
+}
 }

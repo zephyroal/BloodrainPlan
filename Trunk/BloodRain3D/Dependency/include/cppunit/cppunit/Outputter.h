@@ -13,10 +13,12 @@ CPPUNIT_NS_BEGIN
 class CPPUNIT_API Outputter
 {
 public:
-  /// Destructor.
-  virtual ~Outputter() {}
+    /// Destructor.
+    virtual ~Outputter()
+    {
+    }
 
-  virtual void write() =0;
+    virtual void write() = 0;
 };
 
 

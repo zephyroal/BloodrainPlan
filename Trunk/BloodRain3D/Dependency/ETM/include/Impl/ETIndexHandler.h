@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETINDEXHANDLER_H__
 #define __ETINDEXHANDLER_H__
 
@@ -42,40 +42,38 @@ the GNU General Public License.
 
 namespace ET
 {
-  namespace Impl
-  {
+namespace Impl
+{
+/** Manages the vertex LOD index buffers shared among the tiles */
+class IndexHandler
+{
+public:
+    IndexHandler(size_t tileSize, unsigned int maxLOD);
+    ~IndexHandler();
 
-    /** Manages the vertex LOD index buffers shared among the tiles */
-    class IndexHandler
+    Ogre::IndexData* requestIndexData(unsigned int lod, unsigned int neighbourState);
+
+private:
+    Ogre::IndexData* createIndexes(unsigned int lod, unsigned int neighbourState);
+    int stitchEdge(int direction, unsigned int hiLOD, unsigned int loLOD, bool omitFirstTri,
+                   bool omitLastTri, unsigned short** ppIdx);
+    unsigned short index(size_t x, size_t z) const;
+
+    enum
     {
-    public:
-      IndexHandler(size_t tileSize, unsigned int maxLOD);
-      ~IndexHandler();
-
-      Ogre::IndexData* requestIndexData(unsigned int lod, unsigned int neighbourState);
-
-    private:
-      Ogre::IndexData* createIndexes(unsigned int lod, unsigned int neighbourState);
-      int stitchEdge(int direction, unsigned int hiLOD, unsigned int loLOD, bool omitFirstTri,
-        bool omitLastTri, unsigned short** ppIdx);
-      unsigned short index(size_t x, size_t z) const;
-
-      enum
-      {
         NORTH = 0,
-        EAST = 1,
+        EAST  = 1,
         SOUTH = 2,
-        WEST = 3
-      };
-
-
-      typedef std::map<unsigned int, Ogre::IndexData*> IndexMap;
-      typedef std::vector<IndexMap> LODArray;
-      LODArray mIndexes;
-      size_t mTileSize;
+        WEST  = 3
     };
 
-  }
+
+    typedef std::map<unsigned int, Ogre::IndexData*> IndexMap;
+    typedef std::vector<IndexMap> LODArray;
+    LODArray mIndexes;
+    size_t   mTileSize;
+};
+}
 }
 
 #endif

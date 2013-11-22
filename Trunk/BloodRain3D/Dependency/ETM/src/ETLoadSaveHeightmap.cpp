@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
 EDITABLE TERRAIN MANAGER for Ogre
 Copyright (C) 2007  Holger Frydrych <h.frydrych@gmx.de>
@@ -47,131 +47,138 @@ using Ogre::ushort;
 
 namespace ET
 {
-  void loadHeightmapFromImage(TerrainInfo& info, const Image& image)
-  {
-    uint bpp = 0;
+void loadHeightmapFromImage(TerrainInfo& info, const Image& image)
+{
+    uint bpp  = 0;
     bool flip = false;
 
     switch (image.getFormat())
     {
     case PF_BYTE_A: case PF_BYTE_L:
-      bpp = 1; break;
+        bpp = 1; break;
     case PF_BYTE_LA: case PF_L16:
-      bpp = 2; break;
+        bpp = 2; break;
     case PF_BYTE_RGB:
-      bpp = 3; break;
+        bpp = 3; break;
     case PF_BYTE_BGR:
-      bpp = 3; flip = true; break;
+        bpp = 3; flip = true; break;
     case PF_BYTE_RGBA:
-      bpp = 4; break;
+        bpp = 4; break;
     case PF_BYTE_BGRA:
-      bpp = 4; flip = true; break;
+        bpp = 4; flip = true; break;
     default:
-      OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Can't use the given image's format.", "loadHeightmapFromImage");
+        OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Can't use the given image's format.", "loadHeightmapFromImage");
     }
 
-    size_t size = image.getWidth() * image.getHeight();
-    unsigned int maxVal = (1 << (bpp*8)) - 1;
-   std:: vector<float> data (size);
-    const uchar* imageData = image.getData();
+    size_t             size   = image.getWidth() * image.getHeight();
+    unsigned int       maxVal = (1 << (bpp * 8)) - 1;
+    std::vector<float> data(size);
+    const uchar*       imageData = image.getData();
 
     for (size_t i = 0; i < size; ++i)
     {
-      uchar read[4] = {0, 0, 0, 0};
-      // TODO: Make this big endian aware/compatible
-      memcpy(read, imageData, bpp);
-      imageData += bpp;
-      if (flip)
-        swap(read[0], read[2]);
-      unsigned int val = * ((unsigned int*)read);
-      data[i] = float(val) / maxVal;
+        uchar        read[4] = {0, 0, 0, 0};
+        // TODO: Make this big endian aware/compatible
+        memcpy(read, imageData, bpp);
+        imageData += bpp;
+        if (flip)
+        {
+            swap(read[0], read[2]);
+        }
+        unsigned int val = *((unsigned int*)read);
+        data[i] = float(val) / maxVal;
     }
 
     info.setHeightmap(image.getWidth(), image.getHeight(), data);
-  }
+}
 
 
-  void saveHeightmapToImage(const TerrainInfo& info, Ogre::Image& image, unsigned int bpp)
-  {
+void saveHeightmapToImage(const TerrainInfo& info, Ogre::Image& image, unsigned int bpp)
+{
     PixelFormat pf;
     // decide on the image format to use
     switch (bpp)
     {
     case 1:
-      pf = PF_BYTE_L; break;
+        pf = PF_BYTE_L; break;
     case 2:
-      pf = PF_L16; break;
+        pf = PF_L16; break;
     case 3:
-      pf = PF_BYTE_RGB; break;
+        pf = PF_BYTE_RGB; break;
     case 4:
-      pf = PF_BYTE_RGBA; break;
+        pf = PF_BYTE_RGBA; break;
     default:
-      OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Bpp must be between 1 and 4.", "saveHeightmapToImage");
+        OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Bpp must be between 1 and 4.", "saveHeightmapToImage");
     }
 
-    uint maxVal = (1 << (bpp*8)) - 1;
+    uint        maxVal = (1 << (bpp * 8)) - 1;
 
 #if OGRE_VERSION_MINOR > 4
-    uchar* data = OGRE_ALLOC_T(uchar, info.getWidth()*info.getHeight()*bpp, MEMCATEGORY_GENERAL);
+    uchar*      data = OGRE_ALLOC_T(uchar, info.getWidth() * info.getHeight() * bpp, MEMCATEGORY_GENERAL);
 #else
-    uchar* data = new uchar[info.getWidth()*info.getHeight()*bpp];
+    uchar*      data = new uchar[info.getWidth() * info.getHeight() * bpp];
 #endif
-    uchar* pos = data;
+    uchar*      pos = data;
 
     // fill data array
     for (size_t j = 0; j < info.getHeight(); ++j)
     {
-      for (size_t i = 0; i < info.getWidth(); ++i)
-      {
-        uint val = uint (maxVal * info.at(i, j));
-        memcpy(pos, &val, bpp);
-        pos += bpp;
-      }
+        for (size_t i = 0; i < info.getWidth(); ++i)
+        {
+            uint val = uint(maxVal * info.at(i, j));
+            memcpy(pos, &val, bpp);
+            pos += bpp;
+        }
     }
 
     image.loadDynamicImage(data, info.getWidth(), info.getHeight(), 1, pf, true);
     // given ownership of data to image
-  }
+}
 
 
 
 
-  void loadHeightmapFromRawData(TerrainInfo& info, DataStream& stream, size_t width, size_t height)
-  {
-    size_t size = width*height;
-    size_t bpp = stream.size() / size;
+void loadHeightmapFromRawData(TerrainInfo& info, DataStream& stream, size_t width, size_t height)
+{
+    size_t             size = width * height;
+    size_t             bpp  = stream.size() / size;
     if (bpp < 1 || bpp > 4 || stream.size() % size != 0)
-      OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Size of the given data stream does not match with specified dimensions.", "loadHeightmapFromRawData");
+    {
+        OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS,
+                    "Size of the given data stream does not match with specified dimensions.",
+                    "loadHeightmapFromRawData");
+    }
 
-    unsigned int maxVal = (1 << (bpp*8)) - 1;
-   std:: vector<float> data (size);
+    unsigned int       maxVal = (1 << (bpp * 8)) - 1;
+    std::vector<float> data(size);
 
     for (size_t i = 0; i < size; ++i)
     {
-      unsigned int val = 0;
-      // TODO: What about big endian compatibility?
-      stream.read((void*)&val, bpp);
-      data[i] = float(val) / maxVal;
+        unsigned int val = 0;
+        // TODO: What about big endian compatibility?
+        stream.read((void*)&val, bpp);
+        data[i] = float(val) / maxVal;
     }
 
     info.setHeightmap(width, height, data);
-  }
+}
 
 
-  void saveHeightmapToRawData(const TerrainInfo& info, ostream& stream, uint bpp)
-  {
+void saveHeightmapToRawData(const TerrainInfo& info, ostream& stream, uint bpp)
+{
     if (bpp < 1 || bpp > 4)
-      OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Bpp must be between 1 and 4.", "saveHeightmapToRawData");
+    {
+        OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Bpp must be between 1 and 4.", "saveHeightmapToRawData");
+    }
 
-    uint maxVal = (1 << (bpp*8)) - 1;
+    uint maxVal = (1 << (bpp * 8)) - 1;
     for (size_t j = 0; j < info.getHeight(); ++j)
     {
-      for (size_t i = 0; i < info.getWidth(); ++i)
-      {
-        uint val = (uint) (maxVal * info.at(i, j));
-        stream.write(reinterpret_cast<char*>(&val), bpp);
-      }
+        for (size_t i = 0; i < info.getWidth(); ++i)
+        {
+            uint val = (uint) (maxVal * info.at(i, j));
+            stream.write(reinterpret_cast<char*>(&val), bpp);
+        }
     }
-  }
-
+}
 }

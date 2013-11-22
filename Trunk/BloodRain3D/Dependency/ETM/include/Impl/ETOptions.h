@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETOPTIONS_H__
 #define __ETOPTIONS_H__
 
@@ -39,24 +39,24 @@ the GNU General Public License.
 
 namespace ET
 {
-  namespace Impl
-  {
-    struct Options
-    {
-      size_t tileSize;
+namespace Impl
+{
+struct Options
+{
+    size_t       tileSize;
 
-      unsigned int maxMipMapLevel;
-      unsigned int maxPixelError;
-      float factorC;
+    unsigned int maxMipMapLevel;
+    unsigned int maxPixelError;
+    float        factorC;
 
-      bool vertexNormals;
-      bool vertexTangents;
+    bool         vertexNormals;
+    bool         vertexTangents;
 
-      bool useLODMorph;
-      float lodMorphStart;
-      std::string lodMorphParam;
-    };
-  }
+    bool         useLODMorph;
+    float        lodMorphStart;
+    std::string  lodMorphParam;
+};
+}
 }
 
 #endif

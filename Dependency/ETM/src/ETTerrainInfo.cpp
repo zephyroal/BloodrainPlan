@@ -497,7 +497,7 @@ void TileTerrainInfo::LoadTerrain(const std::string& sceneDir, const std::string
                 size_t      imageWidth, imageHeight;
 
                 elementValue = pTxtureElement->Attribute("filename");
-				elementValue = UTF8ToANSI(elementValue);
+                elementValue = UTF8ToANSI(elementValue);
                 Ogre::Image image;
                 ImageInfo   iInfo;
 

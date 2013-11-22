@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETTERRAINIMPL_H__
 #define __ETTERRAINIMPL_H__
 
@@ -48,71 +48,99 @@ the GNU General Public License.
 
 namespace ET
 {
-  namespace Impl
-  {
-    class Tile;
+namespace Impl
+{
+class Tile;
 
-    class TerrainImpl
+class TerrainImpl
+{
+public:
+    TerrainImpl(Ogre::SceneManager* sceneMgr, const std::string& name);
+    ~TerrainImpl();
+
+    void createTerrain(const TerrainInfo& info, size_t tileSize, unsigned int maxLOD, bool vertexNormals, bool vertexTangents);
+    void createTerrain(const TerrainInfo&     info,
+                       const TileTerrainInfo& tInfo,
+                       size_t                 tileSize,
+                       unsigned int           maxLOD,
+                       bool                   vertexNormals,
+                       bool                   vertexTangents);
+    void destroyTerrain();
+
+    bool isTerrainLoaded() const
     {
-    public:
-      TerrainImpl(Ogre::SceneManager* sceneMgr, const std::string& name);
-      ~TerrainImpl();
+        return mTerrainLoaded;
+    }
 
-      void createTerrain(const TerrainInfo& info, size_t tileSize, unsigned int maxLOD, bool vertexNormals, bool vertexTangents);
-	  void createTerrain(const TerrainInfo& info, const TileTerrainInfo& tInfo, size_t tileSize, unsigned int maxLOD, bool vertexNormals, bool vertexTangents);
-      void destroyTerrain();
+    const TerrainInfo&     getTerrainInfo() const
+    {
+        return mInfo;
+    }
+    //  [10/7/2009 KingMars]
+    const TileTerrainInfo& getTileTerrainInfo() const
+    {
+        return mTileTerrainInfo;
+    }
+    void setLODErrorMargin(unsigned int maxPixelError, unsigned int viewportHeight);
 
-      bool isTerrainLoaded() const { return mTerrainLoaded; }
+    void setUseLODMorphing(bool lodMorph, float startMorphing, const std::string& morphParamName);
 
-      const TerrainInfo& getTerrainInfo() const { return mInfo; }
-	  //  [10/7/2009 KingMars]
-	  const TileTerrainInfo& getTileTerrainInfo() const { return mTileTerrainInfo; }
-      void setLODErrorMargin(unsigned int maxPixelError, unsigned int viewportHeight);
+    void setMaterial(Ogre::MaterialPtr material)
+    {
+        mMaterial = material;
+    }
+    const Ogre::MaterialPtr& getMaterial() const
+    {
+        return mMaterial;
+    }
 
-      void setUseLODMorphing(bool lodMorph, float startMorphing, const std::string& morphParamName);
+    void setTileTerrainMaterial(Ogre::MaterialPtr material)
+    {
+        mTileTerrainMaterial = material;
+    }
+    const Ogre::MaterialPtr& getTileTerrainMaterial() const
+    {
+        return mTileTerrainMaterial;
+    }
 
-      void setMaterial(Ogre::MaterialPtr material) { mMaterial = material; }
-      const Ogre::MaterialPtr& getMaterial() const { return mMaterial; }
-	
-	  void setTileTerrainMaterial( Ogre::MaterialPtr material ){ mTileTerrainMaterial = material; }
-	  const Ogre::MaterialPtr& getTileTerrainMaterial() const { return mTileTerrainMaterial; }
+    unsigned int getNeighbourState(size_t x, size_t z) const;
 
-      unsigned int getNeighbourState(size_t x, size_t z) const;
-
-      void deform(int x, int z, const Brush& brush, float intensity);
-      void tileSplat( int x, int z, const TileBrush& brush );
-	  void setTerrainType( int x, int z, bool bTileTerrain );	
-	  void setHeights(int x, int z, const Brush& brush);
-      void getHeights(int x, int z, Brush& brush) const;
-	  //从0开始算
-	  int getImgNum(){	return mTileTerrainInfo.imageArray.size()-1;	}
+    void deform(int x, int z, const Brush& brush, float intensity);
+    void tileSplat(int x, int z, const TileBrush& brush);
+    void setTerrainType(int x, int z, bool bTileTerrain);
+    void setHeights(int x, int z, const Brush& brush);
+    void getHeights(int x, int z, Brush& brush) const;
+    // 从0开始算
+    int getImgNum()
+    {
+        return mTileTerrainInfo.imageArray.size() - 1;
+    }
 
 
-    private:
-      void createTiles();
-      void updateTiles(int fromX, int fromZ, int toX, int toZ);
+private:
+    void createTiles();
+    void updateTiles(int fromX, int fromZ, int toX, int toZ);
 
-      Ogre::SceneManager* mSceneMgr;
-      Ogre::SceneNode* mTerrainNode;
-      bool mTerrainLoaded;
-      IndexHandler* mIndexHandler;
-      TerrainInfo mInfo;
-	  TileTerrainInfo mTileTerrainInfo;
-      Options mOpt;
-      std::string mInstanceName;
-      int mViewportHeight;
-      Ogre::MaterialPtr mMaterial;
-	  Ogre::MaterialPtr mTileTerrainMaterial;
+    Ogre::SceneManager* mSceneMgr;
+    Ogre::SceneNode*    mTerrainNode;
+    bool                mTerrainLoaded;
+    IndexHandler*       mIndexHandler;
+    TerrainInfo         mInfo;
+    TileTerrainInfo     mTileTerrainInfo;
+    Options             mOpt;
+    std::string         mInstanceName;
+    int                 mViewportHeight;
+    Ogre::MaterialPtr   mMaterial;
+    Ogre::MaterialPtr   mTileTerrainMaterial;
 
-      typedef std::vector<Tile*> TileCol;
-      typedef std::vector<TileCol> TileGrid;
-      /** Our terrain tile grid.*/
-      TileGrid mTiles;
+    typedef std::vector<Tile*> TileCol;
+    typedef std::vector<TileCol> TileGrid;
+    /** Our terrain tile grid.*/
+    TileGrid            mTiles;
 
-      bool maxLODAtBorders;
-
-    };
-  }
+    bool                maxLODAtBorders;
+};
+}
 }
 
 #endif

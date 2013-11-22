@@ -82,7 +82,7 @@ void CBloodRain3DApp::createScene(void)
             mSceneMgr->setShadowTextureCasterMaterial("Ogre/DepthShadowmap/Caster/Float");
             mSceneMgr->setShadowTextureReceiverMaterial("Ogre/DepthShadowmap/Receiver/Float");*/
 
-	mSceneDir  = std::string("../../media/scene/");
+    mSceneDir  = std::string("../../media/scene/");
     mSceneName = std::string("zhulin");
 
     int                 layerTextureWidth  = ET::SPLICE_COL * ET::SPLICE_IMAGE_SIZE;
@@ -106,7 +106,7 @@ void CBloodRain3DApp::createScene(void)
     // set position and size of the terrain
     ET::TileTerrainInfo tileTerrainInfo;
     // 创建高度，光度图，及相应使用的纹理大图
-	tileTerrainInfo.LoadTerrain( mSceneDir, mSceneName + ".Terrain");
+    tileTerrainInfo.LoadTerrain(mSceneDir, mSceneName + ".Terrain");
     int                 width  = tileTerrainInfo.width;
     int                 height = tileTerrainInfo.height;
     ET::TerrainInfo     terrainInfo(width + 1, height + 1, tileTerrainInfo.heightMapData);
@@ -120,7 +120,7 @@ void CBloodRain3DApp::createScene(void)
     // 根据地形高度图，纹理列表创建相应的地形
     mTerrainMgr->createTerrain(terrainInfo, tileTerrainInfo, tileTerrainInfo.tileSize + 1, 255, true, false);
     // 创建相应地图景物
-	createTTLBScene( mSceneDir+mSceneName + ".Scene");
+    createTTLBScene(mSceneDir + mSceneName + ".Scene");
     // create the splatting manager
     mSplatMgr = new ET::SplattingManager("ETSplatting", "ET", 192, 192, 3);
     // specify number of splatting textures we need to handle
@@ -352,7 +352,7 @@ void CBloodRain3DApp::createTTLBScene(const std::string& sceneName)
                     sValue  = propriety->Attribute("value");
                     if ( IsStrEqual("mesh name", strTemp))
                     {
-						sValue = UTF8ToANSI(sValue);
+                        sValue      = UTF8ToANSI(sValue);
                         pSsceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(sValue + StringConverter::toString(StaticEntityIndex++));
                         pEntity     = mSceneMgr->createEntity(sValue + StringConverter::toString(StaticEntityIndex++), sValue);
                         pSsceneNode->attachObject(pEntity);
@@ -421,7 +421,7 @@ void CBloodRain3DApp::createTTLBScene(const std::string& sceneName)
                     sValue  = propriety->Attribute("value");
                     if ( IsStrEqual("material", strTemp))
                     {
-						sValue = UTF8ToANSI(sValue);
+                        sValue = UTF8ToANSI(sValue);
                         pTerrainLiquid->setMaterial(sValue);
                         delete[] sValue;
                     }

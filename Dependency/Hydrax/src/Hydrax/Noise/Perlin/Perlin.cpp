@@ -159,10 +159,10 @@ namespace Hydrax {namespace Noise
 
                       MaterialManager*                    mMaterialManager = g->getHydrax()->getMaterialManager();
 
-                      std::string                        VertexProgramData, FragmentProgramData;
+                      std::string                         VertexProgramData, FragmentProgramData;
                       Ogre::GpuProgramParametersSharedPtr VP_Parameters, FP_Parameters;
-                      std::string                        EntryPoints[2] = {"main_vp", "main_fp"};
-                      std::string                        GpuProgramsData[2]; std::string GpuProgramNames[2];
+                      std::string                         EntryPoints[2] = {"main_vp", "main_fp"};
+                      std::string                         GpuProgramsData[2]; std::string GpuProgramNames[2];
 
                       // Vertex program
 

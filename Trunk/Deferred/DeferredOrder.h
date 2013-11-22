@@ -1,9 +1,9 @@
 #pragma once
-#include	"OgreShaderFFPRenderState.h"
+#include        "OgreShaderFFPRenderState.h"
 
-enum	DeferredOrder
+enum    DeferredOrder
 {
-	DO_OutDiff_Shininess = Ogre::RTShader::FFP_COLOUR,
-	DO_OutDepth = Ogre::RTShader::FFP_COLOUR + 1,
-	DO_OutNormal_ViewDistance = Ogre::RTShader::FFP_COLOUR + 2,
+    DO_OutDiff_Shininess      = Ogre::RTShader::FFP_COLOUR,
+    DO_OutDepth               = Ogre::RTShader::FFP_COLOUR + 1,
+    DO_OutNormal_ViewDistance = Ogre::RTShader::FFP_COLOUR + 2,
 };

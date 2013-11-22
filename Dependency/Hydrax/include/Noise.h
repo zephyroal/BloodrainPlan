@@ -124,12 +124,12 @@ protected:
                        /// Module name
                        std::string mName;
                        /// Has create() been already called?
-                       bool         mCreated;
+                       bool        mCreated;
 
                        /// Is GPU normal map generation supported?
-                       bool         mGPUNormalMapSupported;
+                       bool        mGPUNormalMapSupported;
                        /// Are GPU normal map resources created?
-                       bool         mGPUNormalMapResourcesCreated;
+                       bool        mGPUNormalMapResourcesCreated;
                    };
                    }}
 

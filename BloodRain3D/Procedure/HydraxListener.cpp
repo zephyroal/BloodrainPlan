@@ -3,7 +3,7 @@
 // Hydrax pointer
 Hydrax::Hydrax*               mHydrax = 0;
 
-std::string                  mSkyBoxes[_def_SkyBoxNum] =
+std::string                   mSkyBoxes[_def_SkyBoxNum] =
 {"Sky/ClubTropicana",
  "Sky/EarlyMorning",
  "Sky/Clouds"};

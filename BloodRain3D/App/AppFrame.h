@@ -22,8 +22,8 @@ class CBloodRain3DApp : public CMyApplication
 private:
     ET::TerrainManager*   mTerrainMgr;
     ET::SplattingManager* mSplatMgr;
-    std::string          mSceneName;
-	std::string          mSceneDir;
+    std::string           mSceneName;
+    std::string           mSceneDir;
 
     bool                  mHydraxEnable;
 public:

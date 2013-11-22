@@ -181,9 +181,9 @@ public:
             @param EntryPoints [0]: Vertex program entry point, [1]: Fragment program entry point
             @param Data [0] Vertex program data, [1]: Fragment program data
      */
-    bool fillGpuProgramsToPass(Ogre::Pass*        Pass,
+    bool fillGpuProgramsToPass(Ogre::Pass*       Pass,
                                const std::string GpuProgramNames[2],
-                               const ShaderMode&  SM,
+                               const ShaderMode& SM,
                                const std::string EntryPoints[2],
                                const std::string Data[2]);
 
@@ -195,8 +195,8 @@ public:
             @param Data
      */
     bool createGpuProgram(const std::string& Name,
-                          const ShaderMode&   SM,
-                          const GpuProgram&   GPUP,
+                          const ShaderMode&  SM,
+                          const GpuProgram&  GPUP,
                           const std::string& EntryPoint,
                           const std::string& Data);
 
@@ -271,10 +271,10 @@ public:
                      Add depth technique when a material is not an Ogre::Entity, such terrains, PLSM2 materials, etc.
                              This depth technique will be added with "HydraxDepth" scheme in ordeto can use it in the Depth RTT.
      */
-    void addDepthTextureTechnique(Ogre::Technique*    Technique,
+    void addDepthTextureTechnique(Ogre::Technique*   Technique,
                                   const std::string& TextureName,
                                   const std::string& AlphaChannel = "w",
-                                  const bool&         AutoUpdate = true);
+                                  const bool&        AutoUpdate = true);
 
     /** Get external depth techniques
         @return std::vector of external depth techniques
@@ -357,7 +357,7 @@ private:
      */
     bool _createSimpleColorMaterial(const Ogre::ColourValue& Color,
                                     const MaterialType&      MT,
-                                    const std::string&      Name,
+                                    const std::string&       Name,
                                     const bool&              DepthCheck = true,
                                     const bool&              DepthWrite = true);
 

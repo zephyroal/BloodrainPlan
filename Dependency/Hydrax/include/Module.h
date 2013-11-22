@@ -45,7 +45,7 @@ public:
                                @param MeshOptions Mesh options
                                @param NormalMode Normal generation mode
                         */
-                       Module(const std::string&                Name,
+                       Module(const std::string&                 Name,
                               Noise::Noise*                      n,
                               const Mesh::Options&               MeshOptions,
                               const MaterialManager::NormalMode& NormalMode);
@@ -145,7 +145,7 @@ public:
 
 protected:
                        /// Module name
-                       std::string                mName;
+                       std::string                 mName;
                        /// Noise generator pointer
                        Noise::Noise*               mNoise;
                        /// Module mesh options

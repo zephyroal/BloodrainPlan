@@ -35,7 +35,7 @@ public:
     DecalCursor(Ogre::SceneManager*  man,
                 Ogre::MaterialPtr    terrainMat,
                 const Ogre::Vector2& size,
-                const std::string&  tex);
+                const std::string&   tex);
     ~DecalCursor();
 
     inline bool isVisible() const
@@ -59,7 +59,7 @@ private:
     Ogre::Vector2           m_size;      /**< @brief size of decal */
     Ogre::Vector3           m_pos;
 
-    std::string            m_sTexName;     /**< @brief texture to apply */
+    std::string             m_sTexName;    /**< @brief texture to apply */
 
     Ogre::SceneNode*        m_nodeProj;      /**< @brief the projection node */
     Ogre::Frustum*          m_frustProj;    /**< @brief the projection frustum */

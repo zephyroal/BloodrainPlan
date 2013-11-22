@@ -75,7 +75,7 @@ public:
     struct RttOptions
     {
         /// Texture names
-        std::string     Name;
+        std::string      Name;
         /// Size; Size(0,0) to get main viewport size
         Size             Size_;
         /// Number of channels
@@ -378,13 +378,13 @@ public:
     {
 public:
         /// Rtt manager pointer
-        RttManager*              mRttManager;
+        RttManager*             mRttManager;
 
         /// std::string to store entity's original materials name
         std::queue<std::string> mMaterials;
 
         /// Camera.y - Plane.y difference
-        Ogre::Real               mCameraPlaneDiff;
+        Ogre::Real              mCameraPlaneDiff;
 
         /** Funtion that is called before the Rtt will render
             @param evt Ogre RenderTargetEvent
@@ -405,13 +405,13 @@ public:
     {
 public:
         /// Rtt manager pointer
-        RttManager*              mRttManager;
+        RttManager*             mRttManager;
 
         /// std::string to store entity's original materials name
         std::queue<std::string> mMaterials;
 
         /// Camera.y - Plane.y difference
-        Ogre::Real               mCameraPlaneDiff;
+        Ogre::Real              mCameraPlaneDiff;
 
         /** Funtion that is called before the Rtt will render
             @param evt Ogre RenderTargetEvent
@@ -432,7 +432,7 @@ public:
     {
 public:
         /// Rtt manager pointer
-        RttManager*  mRttManager;
+        RttManager* mRttManager;
 
         /// Old Hydrax mesh material name
         std::string mOldMaterialName;

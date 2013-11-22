@@ -11,7 +11,7 @@ class CChildView : public CWnd
 {
 // 构造
 public:
-	CChildView();
+    CChildView();
 
 // 属性
 public:
@@ -20,16 +20,15 @@ public:
 public:
 
 // 重写
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+protected:
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 // 实现
 public:
-	virtual ~CChildView();
+    virtual ~CChildView();
 
-	// 生成的消息映射函数
+    // 生成的消息映射函数
 protected:
-	afx_msg void OnPaint();
-	DECLARE_MESSAGE_MAP()
+    afx_msg void OnPaint();
+    DECLARE_MESSAGE_MAP()
 };
-

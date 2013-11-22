@@ -326,7 +326,7 @@ private:
     Ogre::SceneNode*                    mSceneNode;
 
     /// Material name
-    std::string                        mMaterialName;
+    std::string                         mMaterialName;
 
     /// Hydrax pointer
     Hydrax*                             mHydrax;

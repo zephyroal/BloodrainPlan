@@ -31,9 +31,9 @@ http://www.gnu.org/copyleft/lesser.txt.
 /// Define the dll export qualifier if compiling for Windows
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
    #ifdef HYDRAX_LIB
-     #define DllExport __declspec (dllexport)
+     #define DllExport __declspec(dllexport)
    #else
-     #define DllExport __declspec (dllimport)
+     #define DllExport __declspec(dllimport)
    #endif
 #else
    #define DllExport

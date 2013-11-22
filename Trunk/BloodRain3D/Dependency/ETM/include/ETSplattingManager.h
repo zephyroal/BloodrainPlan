@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETSPLATTINGMANAGER_H__
 #define __ETSPLATTINGMANAGER_H__
 
@@ -46,29 +46,29 @@ the GNU General Public License.
 // forward declarations
 namespace ET
 {
-  namespace Impl
-  {
-    struct SplattingImpl;
-  }
-  class Brush;
+namespace Impl
+{
+struct SplattingImpl;
+}
+class Brush;
 }
 
 
 namespace ET
 {
-  typedef std::vector<std::string> NameList;
-  typedef std::vector<Ogre::ColourValue> ColourList;
-  typedef std::vector<Ogre::Image> ImageList;
+typedef std::vector<std::string> NameList;
+typedef std::vector<Ogre::ColourValue> ColourList;
+typedef std::vector<Ogre::Image> ImageList;
 
-  /**
-   * SplattingManager allows you to create and edit an arbitrary amount of
-   * alpha splatting maps which can be used with a splatting shader
-   * to render multiple splatting textures per pass onto the terrain.
-   * You can use 1 to 4 channels per map.
-   */
-  class _ETManagerExport SplattingManager
-  {
-  public:
+/**
+ * SplattingManager allows you to create and edit an arbitrary amount of
+ * alpha splatting maps which can be used with a splatting shader
+ * to render multiple splatting textures per pass onto the terrain.
+ * You can use 1 to 4 channels per map.
+ */
+class _ETManagerExport SplattingManager
+{
+public:
     /**
      * Constructs the splatting manager.
      * @param baseName   base name for the map textures (will be appended by their number)
@@ -78,7 +78,7 @@ namespace ET
      * @param channels   Number of channels per texture (must be in {1, 2, 3, 4})
      */
     SplattingManager(const std::string& baseName, const std::string& group,
-      unsigned int width, unsigned int height, unsigned int channels = 4);
+                     unsigned int width, unsigned int height, unsigned int channels = 4);
     ~SplattingManager();
 
     /**
@@ -123,17 +123,16 @@ namespace ET
      * @param repeatZ  How often should the textures be splatted in Z direction?
      */
     void createBaseTexture(Ogre::Image& image, size_t width, size_t height, ImageList textures,
-      float repeatX, float repeatZ);
+                           float repeatX, float repeatZ);
 
-  private:
+private:
     // Implementation hiding via PIMPL idiom
     Impl::SplattingImpl* mImpl;
+};
 
-  };
 
-
-  /** Modulates a colour map by a lightmap. Can be used as a minimap of the terrain. */
-  Ogre::Image _ETManagerExport createMinimap(const Ogre::Image& colourMap, const Ogre::Image& lightMap);
+/** Modulates a colour map by a lightmap. Can be used as a minimap of the terrain. */
+Ogre::Image _ETManagerExport createMinimap(const Ogre::Image& colourMap, const Ogre::Image& lightMap);
 }
 
 #endif

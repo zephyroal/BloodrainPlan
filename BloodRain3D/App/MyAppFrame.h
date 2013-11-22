@@ -132,7 +132,7 @@ public:
     CMyApplication()
     {
         // 支持中文路径
-		std::string mLocale = ::setlocale(LC_ALL, "chs");
+        std::string mLocale = ::setlocale(LC_ALL, "chs");
         mFrameListener = 0;
         mRoot          = 0;
         // Provide a nice cross platform solution for locating the configuration files
@@ -214,8 +214,8 @@ protected:
     SceneManager*                             mSceneMgr;
     MyFrameListener*                          mFrameListener;
     RenderWindow*                             mWindow;
-    std::string                              mResourcePath;
-    std::string                              mConfigPath;
+    std::string                               mResourcePath;
+    std::string                               mConfigPath;
 #ifdef USE_RTSHADER_SYSTEM
     RTShader::ShaderGenerator*                mShaderGenerator;                                                 // The Shader generator instance.
     ShaderGeneratorTechniqueResolverListener* mMaterialMgrListener;                     // Material manager listener.
@@ -225,7 +225,7 @@ protected:
     /** Sets up the application - returns false if the user chooses to abandon configuration. */
     virtual bool setup(void)
     {
-        std::string                 pluginsPath;
+        std::string                  pluginsPath;
         // only use plugins.cfg if not static
 #ifndef OGRE_STATIC_LIB
 #if OGRE_DEBUG_MODE
@@ -304,8 +304,8 @@ protected:
                 ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
             ResourceGroupManager::LocationList::iterator it    = resLocationsList.begin();
             ResourceGroupManager::LocationList::iterator itEnd = resLocationsList.end();
-            std::string                                 shaderCoreLibsPath;
-            std::string                                 shaderCachePath;
+            std::string                                  shaderCoreLibsPath;
+            std::string                                  shaderCachePath;
 
             // Default cache path is current directory;
             shaderCachePath = "./";
@@ -439,7 +439,7 @@ protected:
         ConfigFile::SectionIterator seci = cf.getSectionIterator();
         // 感谢XX八部
         bool                        recursive;
-        std::string                secName, typeName, archName;
+        std::string                 secName, typeName, archName;
         while (seci.hasMoreElements())
         {
             secName = seci.peekNextKey();

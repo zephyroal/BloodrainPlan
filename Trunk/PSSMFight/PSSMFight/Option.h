@@ -1,20 +1,19 @@
 #pragma once
-#include	"stdafx.h"
-#include	<string>
+#include        "stdafx.h"
+#include        <string>
 
-class	Option
+class Option
 {
 public:
-	Option();
-	~Option();
+    Option();
+    ~Option();
 
-	bool					Initialize();
+    bool                                    Initialize();
 
-	const std::string&		GetWorkingPath();
-	const std::string&		GetResGroupName();
+    const std::string&              GetWorkingPath();
+    const std::string&              GetResGroupName();
 
 private:
-	std::string		m_strResGroupName;
-	std::string		m_strWorkingPath;
-
+    std::string m_strResGroupName;
+    std::string m_strWorkingPath;
 };

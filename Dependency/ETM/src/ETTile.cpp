@@ -54,15 +54,15 @@ const unsigned short DELTA_BINDING         = 1;
 const unsigned int   MORPH_CUSTOM_PARAM_ID = 77;
 
 Tile::Tile(const std::string& name,
-           SceneManager*       sm,
-           TerrainImpl*        tm,
-           IndexHandler*       indexHandler,
-           TerrainInfo&        info,
-           Options             opts,
-           size_t              startx,
-           size_t              startz,
-           bool                bTileTerrain,
-           TileTerrainInfo*    pTileTerrainInfo)
+           SceneManager*      sm,
+           TerrainImpl*       tm,
+           IndexHandler*      indexHandler,
+           TerrainInfo&       info,
+           Options            opts,
+           size_t             startx,
+           size_t             startz,
+           bool               bTileTerrain,
+           TileTerrainInfo*   pTileTerrainInfo)
     : MovableObject(name), mSceneMgr(sm), mTerrainMgr(tm),
     mIndexHandler(indexHandler), mInfo(info), mOpt(opts),
     mStartX(startx), mStartZ(startz),

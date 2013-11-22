@@ -215,15 +215,15 @@ struct SplattingImpl
 {
     std::string baseName;
     std::string group;
-    uint         width, height;
-    uint         channels;
-    uint         numTextures;
-    uint         numMaps;
+    uint        width, height;
+    uint        channels;
+    uint        numTextures;
+    uint        numMaps;
 
     typedef  std::vector<Impl::CoverageMap*> MapList;
-    MapList      maps;
+    MapList     maps;
 
-    void         paint(uint texture, uint x, uint y, float edit)
+    void        paint(uint texture, uint x, uint y, float edit)
     {
         uint map     = texture / channels;
         uint channel = texture % channels;

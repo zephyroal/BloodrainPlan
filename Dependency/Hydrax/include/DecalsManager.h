@@ -165,7 +165,7 @@ public:
 
 private:
     /// Decal texture name
-    std::string     mTextureName;
+    std::string      mTextureName;
     /// Decal Id
     int              mId;
     /// Decal projector

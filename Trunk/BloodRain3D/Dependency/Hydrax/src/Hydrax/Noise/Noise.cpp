@@ -24,72 +24,72 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "Noise.h"
 
-namespace Hydrax{namespace Noise
-{
-    Noise::Noise(const Ogre::String &Name, const bool& GPUNormalMapSupported)
-		: mName(Name) 
-	    , mCreated(false)
-		, mGPUNormalMapSupported(GPUNormalMapSupported)
-		, mGPUNormalMapResourcesCreated(false)
-	{
-	}
+namespace Hydrax {namespace Noise
+                  {
+                  Noise::Noise(const Ogre::String& Name, const bool& GPUNormalMapSupported)
+                      : mName(Name)
+                      , mCreated(false)
+                      , mGPUNormalMapSupported(GPUNormalMapSupported)
+                      , mGPUNormalMapResourcesCreated(false)
+                  {
+                  }
 
-	Noise::~Noise()
-	{
-	}
+                  Noise::~Noise()
+                  {
+                  }
 
-	void Noise::create()
-	{
-		mCreated = true;
-	}
+                  void Noise::create()
+                  {
+                      mCreated = true;
+                  }
 
-	void Noise::remove()
-	{
-		mCreated = false;
-	}
+                  void Noise::remove()
+                  {
+                      mCreated = false;
+                  }
 
-	bool Noise::createGPUNormalMapResources(GPUNormalMapManager *g)
-	{
-		if (mGPUNormalMapSupported)
-		{
-			if (mGPUNormalMapResourcesCreated)
-			{
-				removeGPUNormalMapResources(g);
-			}
+                  bool Noise::createGPUNormalMapResources(GPUNormalMapManager* g)
+                  {
+                      if (mGPUNormalMapSupported)
+                      {
+                          if (mGPUNormalMapResourcesCreated)
+                          {
+                              removeGPUNormalMapResources(g);
+                          }
 
-			mGPUNormalMapResourcesCreated = true;
+                          mGPUNormalMapResourcesCreated = true;
 
-			g->remove();
+                          g->remove();
 
-			return true;
-		}
+                          return true;
+                      }
 
-		return false;
-	}
+                      return false;
+                  }
 
-	void Noise::removeGPUNormalMapResources(GPUNormalMapManager *g)
-	{
-		if (mGPUNormalMapSupported && mGPUNormalMapResourcesCreated)
-		{
-			mGPUNormalMapResourcesCreated = false;
+                  void Noise::removeGPUNormalMapResources(GPUNormalMapManager* g)
+                  {
+                      if (mGPUNormalMapSupported && mGPUNormalMapResourcesCreated)
+                      {
+                          mGPUNormalMapResourcesCreated = false;
 
-			g->remove();
-		}
-	}
+                          g->remove();
+                      }
+                  }
 
-	void Noise::saveCfg(Ogre::String &Data)
-	{
-		Data += "#Noise options\n";
-		Data += "Noise="+mName+"\n\n";
-	}
+                  void Noise::saveCfg(Ogre::String& Data)
+                  {
+                      Data += "#Noise options\n";
+                      Data += "Noise=" + mName + "\n\n";
+                  }
 
-	bool Noise::loadCfg(Ogre::ConfigFile &CfgFile)
-	{
-		if (CfgFile.getSetting("Noise") == mName)
-		{
-			return true;
-		}
+                  bool Noise::loadCfg(Ogre::ConfigFile& CfgFile)
+                  {
+                      if (CfgFile.getSetting("Noise") == mName)
+                      {
+                          return true;
+                      }
 
-		return false;
-	}
-}}
+                      return false;
+                  }
+                  }}

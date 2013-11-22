@@ -9,9 +9,9 @@
  *   the static library.
  */
 
-#if defined( QTTESTRUNNER_DLL_BUILD )
+#if defined(QTTESTRUNNER_DLL_BUILD)
 #  define QTTESTRUNNER_API __declspec(dllexport)
-#elif defined ( QTTESTRUNNER_DLL )
+#elif defined (QTTESTRUNNER_DLL)
 #  define QTTESTRUNNER_API __declspec(dllimport)
 #else
 #  define QTTESTRUNNER_API

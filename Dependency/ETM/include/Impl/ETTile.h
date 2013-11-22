@@ -114,7 +114,7 @@ struct TexCoord
 class Tile : public Ogre::Renderable, public Ogre::MovableObject
 {
 public:
-    Tile(const std::string& name,
+    Tile(const std::string&  name,
          Ogre::SceneManager* sm,
          TerrainImpl*        tm,
          IndexHandler*       indexHandler,

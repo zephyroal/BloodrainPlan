@@ -1,10 +1,9 @@
-#include	"stdafx.h"
-#include	"Option.h"
+#include        "stdafx.h"
+#include        "Option.h"
 
 Option::Option()
 {
-	m_strResGroupName = "TestCoreResGroup"; 
-
+    m_strResGroupName = "TestCoreResGroup";
 }
 
 Option::~Option()
@@ -12,23 +11,23 @@ Option::~Option()
 }
 
 
-bool	Option::Initialize()
+bool Option::Initialize()
 {
-	char path[256];
-	GetCurrentDirectory( 256, path );
+    char path[256];
+    GetCurrentDirectory(256, path);
 
-	m_strWorkingPath = path;
-	m_strWorkingPath += "\\";    
+    m_strWorkingPath  = path;
+    m_strWorkingPath += "\\";
 
-	return true;
+    return true;
 }
 
-const std::string&	Option::GetResGroupName()
+const std::string&      Option::GetResGroupName()
 {
-	return m_strResGroupName;    
+    return m_strResGroupName;
 }
 
-const std::string&	Option::GetWorkingPath()
+const std::string&      Option::GetWorkingPath()
 {
-	return m_strWorkingPath;
+    return m_strWorkingPath;
 }

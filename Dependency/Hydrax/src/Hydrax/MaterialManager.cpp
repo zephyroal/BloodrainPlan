@@ -119,7 +119,7 @@ void MaterialManager::removeMaterials()
     }
 
     std::string AlphaChannels[] = {"x", "y", "z", "w",
-                                    "r", "g", "b", "a"};
+                                   "r", "g", "b", "a"};
 
     for (int k = 0; k < 8; k++)
     {
@@ -233,9 +233,9 @@ bool MaterialManager::createMaterials(const HydraxComponent& Components, const O
     return true;
 }
 
-bool MaterialManager::fillGpuProgramsToPass(Ogre::Pass*        Pass,
+bool MaterialManager::fillGpuProgramsToPass(Ogre::Pass*       Pass,
                                             const std::string GpuProgramNames[2],
-                                            const ShaderMode&  SM,
+                                            const ShaderMode& SM,
                                             const std::string EntryPoints[2],
                                             const std::string Data[2])
 {
@@ -256,8 +256,8 @@ bool MaterialManager::fillGpuProgramsToPass(Ogre::Pass*        Pass,
 }
 
 bool MaterialManager::createGpuProgram(const std::string& Name,
-                                       const ShaderMode&   SM,
-                                       const GpuProgram&   GPUP,
+                                       const ShaderMode&  SM,
+                                       const GpuProgram&  GPUP,
                                        const std::string& EntryPoint,
                                        const std::string& Data)
 {
@@ -335,11 +335,11 @@ bool MaterialManager::createGpuProgram(const std::string& Name,
 
 bool MaterialManager::_createWaterMaterial(const HydraxComponent& Components, const Options& Options)
 {
-    const bool   cDepth    = _isComponent(Components, HYDRAX_COMPONENT_DEPTH);
-    const bool   cSmooth   = _isComponent(Components, HYDRAX_COMPONENT_SMOOTH);
-    const bool   cSun      = _isComponent(Components, HYDRAX_COMPONENT_SUN);
-    const bool   cFoam     = _isComponent(Components, HYDRAX_COMPONENT_FOAM);
-    const bool   cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
+    const bool  cDepth    = _isComponent(Components, HYDRAX_COMPONENT_DEPTH);
+    const bool  cSmooth   = _isComponent(Components, HYDRAX_COMPONENT_SMOOTH);
+    const bool  cSun      = _isComponent(Components, HYDRAX_COMPONENT_SUN);
+    const bool  cFoam     = _isComponent(Components, HYDRAX_COMPONENT_FOAM);
+    const bool  cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
 
     std::string VertexProgramData, FragmentProgramData;
 
@@ -753,9 +753,9 @@ bool MaterialManager::_createWaterMaterial(const HydraxComponent& Components, co
     // -- Fog Disable by D.H. Mun
     WM_Technique0_Pass0->setFog(true, Ogre::FOG_NONE);
 
-    std::string                        GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
-    std::string                        GpuProgramNames[2] = {_def_Water_Shader_VP_Name, _def_Water_Shader_FP_Name};
-    std::string                        EntryPoints[2]     = {"main_vp", "main_fp"};
+    std::string                         GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
+    std::string                         GpuProgramNames[2] = {_def_Water_Shader_VP_Name, _def_Water_Shader_FP_Name};
+    std::string                         EntryPoints[2]     = {"main_vp", "main_fp"};
 
     fillGpuProgramsToPass(WM_Technique0_Pass0, GpuProgramNames, Options.SM, EntryPoints, GpuProgramsData);
 
@@ -829,7 +829,7 @@ bool MaterialManager::_createWaterMaterial(const HydraxComponent& Components, co
 
 bool MaterialManager::_createDepthMaterial(const HydraxComponent& Components, const Options& Options)
 {
-    const bool   cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
+    const bool  cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
 
     std::string VertexProgramData, FragmentProgramData;
 
@@ -959,9 +959,9 @@ bool MaterialManager::_createDepthMaterial(const HydraxComponent& Components, co
     DM_Technique0_Pass0->setFog(true, Ogre::FOG_NONE);
 
 
-    std::string                        GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
-    std::string                        GpuProgramNames[2] = {_def_Depth_Shader_VP_Name, _def_Depth_Shader_FP_Name};
-    std::string                        EntryPoints[2]     = {"main_vp", "main_fp"};
+    std::string                         GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
+    std::string                         GpuProgramNames[2] = {_def_Depth_Shader_VP_Name, _def_Depth_Shader_FP_Name};
+    std::string                         EntryPoints[2]     = {"main_vp", "main_fp"};
 
     fillGpuProgramsToPass(DM_Technique0_Pass0, GpuProgramNames, Options.SM, EntryPoints, GpuProgramsData);
 
@@ -992,7 +992,7 @@ bool MaterialManager::_createDepthMaterial(const HydraxComponent& Components, co
 
 bool MaterialManager::_createDepthTextureGPUPrograms(const HydraxComponent& Components, const Options& Options, const std::string& AlphaChannel)
 {
-    const bool   cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
+    const bool  cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
 
     std::string VertexProgramData, FragmentProgramData;
 
@@ -1120,7 +1120,7 @@ bool MaterialManager::_createDepthTextureGPUPrograms(const HydraxComponent& Comp
     std::string GpuProgramNames[2] = {_def_DepthTexture_Shader_VP_Name + AlphaChannel, _def_DepthTexture_Shader_FP_Name + AlphaChannel};
     std::string EntryPoints[2]     = {"main_vp", "main_fp"};
 
-    GpuProgram   GpuPrograms[2] = {GPUP_VERTEX, GPUP_FRAGMENT};
+    GpuProgram  GpuPrograms[2] = {GPUP_VERTEX, GPUP_FRAGMENT};
 
     for (int k = 0; k < 2; k++)
     {
@@ -1135,12 +1135,12 @@ bool MaterialManager::_createDepthTextureGPUPrograms(const HydraxComponent& Comp
 
 bool MaterialManager::_createUnderwaterMaterial(const HydraxComponent& Components, const Options& Options)
 {
-    const bool   cDepth        = _isComponent(Components, HYDRAX_COMPONENT_DEPTH);
-    const bool   cSmooth       = _isComponent(Components, HYDRAX_COMPONENT_SMOOTH);
-    const bool   cSun          = _isComponent(Components, HYDRAX_COMPONENT_SUN);
-    const bool   cFoam         = _isComponent(Components, HYDRAX_COMPONENT_FOAM);
-    const bool   cCaustics     = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
-    const bool   cUReflections = _isComponent(Components, HYDRAX_COMPONENT_UNDERWATER_REFLECTIONS);
+    const bool  cDepth        = _isComponent(Components, HYDRAX_COMPONENT_DEPTH);
+    const bool  cSmooth       = _isComponent(Components, HYDRAX_COMPONENT_SMOOTH);
+    const bool  cSun          = _isComponent(Components, HYDRAX_COMPONENT_SUN);
+    const bool  cFoam         = _isComponent(Components, HYDRAX_COMPONENT_FOAM);
+    const bool  cCaustics     = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
+    const bool  cUReflections = _isComponent(Components, HYDRAX_COMPONENT_UNDERWATER_REFLECTIONS);
 
     std::string VertexProgramData, FragmentProgramData;
 
@@ -1558,9 +1558,9 @@ bool MaterialManager::_createUnderwaterMaterial(const HydraxComponent& Component
     // -- Fog Disable by D.H. Mun
     UM_Technique0_Pass0->setFog(true, Ogre::FOG_NONE);
 
-    std::string                        GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
-    std::string                        GpuProgramNames[2] = {_def_Underwater_Shader_VP_Name, _def_Underwater_Shader_FP_Name};
-    std::string                        EntryPoints[2]     = {"main_vp", "main_fp"};
+    std::string                         GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
+    std::string                         GpuProgramNames[2] = {_def_Underwater_Shader_VP_Name, _def_Underwater_Shader_FP_Name};
+    std::string                         EntryPoints[2]     = {"main_vp", "main_fp"};
 
     fillGpuProgramsToPass(UM_Technique0_Pass0, GpuProgramNames, Options.SM, EntryPoints, GpuProgramsData);
 
@@ -1634,9 +1634,9 @@ bool MaterialManager::_createUnderwaterMaterial(const HydraxComponent& Component
 
 bool MaterialManager::_createUnderwaterCompositor(const HydraxComponent& Components, const Options& Options)
 {
-    const bool   cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
-    const bool   cDepth    = _isComponent(Components, HYDRAX_COMPONENT_DEPTH);
-    const bool   cGodRays  = _isComponent(Components, HYDRAX_COMPONENT_UNDERWATER_GODRAYS);
+    const bool  cCaustics = _isComponent(Components, HYDRAX_COMPONENT_CAUSTICS);
+    const bool  cDepth    = _isComponent(Components, HYDRAX_COMPONENT_DEPTH);
+    const bool  cGodRays  = _isComponent(Components, HYDRAX_COMPONENT_UNDERWATER_GODRAYS);
 
     std::string VertexProgramData, FragmentProgramData;
 
@@ -1803,9 +1803,9 @@ bool MaterialManager::_createUnderwaterCompositor(const HydraxComponent& Compone
     // -- Fog Disable by D.H. Mun
     DM_Technique0_Pass0->setFog(true, Ogre::FOG_NONE);
 
-    std::string                        GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
-    std::string                        GpuProgramNames[2] = {_def_Underwater_Compositor_Shader_VP_Name, _def_Underwater_Compositor_Shader_FP_Name};
-    std::string                        EntryPoints[2]     = {"main_vp", "main_fp"};
+    std::string                         GpuProgramsData[2] = {VertexProgramData, FragmentProgramData};
+    std::string                         GpuProgramNames[2] = {_def_Underwater_Compositor_Shader_VP_Name, _def_Underwater_Compositor_Shader_FP_Name};
+    std::string                         EntryPoints[2]     = {"main_vp", "main_fp"};
 
     fillGpuProgramsToPass(DM_Technique0_Pass0, GpuProgramNames, Options.SM, EntryPoints, GpuProgramsData);
 
@@ -1896,7 +1896,7 @@ bool MaterialManager::_createUnderwaterCompositor(const HydraxComponent& Compone
 
 bool MaterialManager::_createSimpleColorMaterial(const Ogre::ColourValue& Color,
                                                  const MaterialType&      MT,
-                                                 const std::string&      Name,
+                                                 const std::string&       Name,
                                                  const bool&              DepthCheck,
                                                  const bool&              DepthWrite)
 {
@@ -2180,10 +2180,10 @@ void MaterialManager::addDepthTechnique(Ogre::Technique* Technique, const bool& 
     }
 }
 
-void MaterialManager::addDepthTextureTechnique(Ogre::Technique*    Technique,
+void MaterialManager::addDepthTextureTechnique(Ogre::Technique*   Technique,
                                                const std::string& TextureName,
                                                const std::string& AlphaChannel,
-                                               const bool&         AutoUpdate)
+                                               const bool&        AutoUpdate)
 {
     if (!Ogre::HighLevelGpuProgramManager::getSingleton().resourceExists(_def_DepthTexture_Shader_VP_Name + AlphaChannel))
     {

@@ -422,14 +422,14 @@ void GodRaysManager::_updateProjector()
 
 void GodRaysManager::_createMaterials(const HydraxComponent& HC)
 {
-    std::string                        VertexProgramData, FragmentProgramData;
+    std::string                         VertexProgramData, FragmentProgramData;
     Ogre::GpuProgramParametersSharedPtr VP_Parameters, FP_Parameters;
-    std::string                        EntryPoints[2] = {"main_vp", "main_fp"};
-    std::string                        GpuProgramsData[2]; std::string GpuProgramNames[2];
+    std::string                         EntryPoints[2] = {"main_vp", "main_fp"};
+    std::string                         GpuProgramsData[2]; std::string GpuProgramNames[2];
     MaterialManager*                    mMaterialManager = mHydrax->getMaterialManager();
 
     int                                 NumberOfDepthChannels = 0;
-    std::string                        GB[2]                 = {"0, 1, 0", "0, 0, 1"};
+    std::string                         GB[2]                 = {"0, 1, 0", "0, 0, 1"};
 
     if (_isComponent(HC, HYDRAX_COMPONENT_CAUSTICS))
     {

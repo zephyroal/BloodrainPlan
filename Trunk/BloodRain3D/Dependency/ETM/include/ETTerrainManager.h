@@ -1,9 +1,9 @@
-//---------------------------------------------------------------
-// modified or deveoloped by Shen Yuqing 
+// ---------------------------------------------------------------
+// modified or deveoloped by Shen Yuqing
 // HUST CS 06
 // syq.myth@gmail.com
 // 2009
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 #ifndef __ETTERRAINMANAGER_H__
 #define __ETTERRAINMANAGER_H__
 
@@ -43,33 +43,33 @@ the GNU General Public License.
 // forward declarations
 namespace Ogre
 {
-  class SceneManager;
-  class MaterialPtr;
-  class Vector3;
-};
+class SceneManager;
+class MaterialPtr;
+class Vector3;
+}
 namespace ET
 {
-  class TerrainInfo;
-  class TileTerrainInfo;
-  class Brush;
-  class TileBrush;
-  namespace Impl
-  {
-    class TerrainImpl;
-  }
+class TerrainInfo;
+class TileTerrainInfo;
+class Brush;
+class TileBrush;
+namespace Impl
+{
+class TerrainImpl;
+}
 }
 
 
 
 namespace ET
 {
-  /**
-  * The Editable Terrain Manager creates and manages tiles of terrain
-  * constructed from heightmap data. The terrain can be edited any time.
-  **/
-  class _ETManagerExport TerrainManager
-  {
-  public:
+/**
+* The Editable Terrain Manager creates and manages tiles of terrain
+* constructed from heightmap data. The terrain can be edited any time.
+**/
+class _ETManagerExport TerrainManager
+{
+public:
     /**
      * Constructs the Terrain Manager.
      * @param sceneMgr  The Ogre Scene Manager to use for rendering.
@@ -87,8 +87,8 @@ namespace ET
      * @param vertexNormals  generate vertex normals? (necessary for dynamic lighting)
      * @param vertexTangents generate vertex tangents? (necessary for adv. dynamic lighting)
      */
-    void createTerrain(const TerrainInfo& info, const TileTerrainInfo& tileTerrainIndo, size_t tileSize = 33, unsigned int maxLOD = 255, 
-      bool vertexNormals = false, bool vertexTangents = false);
+    void createTerrain(const TerrainInfo& info, const TileTerrainInfo& tileTerrainIndo, size_t tileSize = 33, unsigned int maxLOD = 255,
+                       bool vertexNormals = false, bool vertexTangents = false);
 
     /** Destroys the currently loaded terrain (if any). */
     void destroyTerrain();
@@ -103,7 +103,7 @@ namespace ET
      * @param morphParamName  name of the shader parameter which contains the current morph factor
      */
     void setUseLODMorphing(bool lodMorph = true, float startMorphing = 0.25f,
-      const std::string& morphParamName = "morphFactor");
+                           const std::string& morphParamName = "morphFactor");
 
     /**
      * Specifies the pixel error tolerance when determining LOD to use for each tile.
@@ -115,10 +115,10 @@ namespace ET
 
 
     /** Retrieves the terrain info of the currently loaded terrain. */
-    const TerrainInfo& getTerrainInfo() const;
-	
-	//  [10/7/2009 KingMars]
-	const TileTerrainInfo& getTileTerrainInfo() const;
+    const TerrainInfo&     getTerrainInfo() const;
+
+    //  [10/7/2009 KingMars]
+    const TileTerrainInfo& getTileTerrainInfo() const;
 
 
     /** Sets the material to use for the terrain tiles. You need to call this
@@ -128,9 +128,9 @@ namespace ET
 
     /** Retrieve the currently used material for the terrain. */
     const Ogre::MaterialPtr& getMaterial() const;
-	
-	void setTileTerrainMaterial( Ogre::MaterialPtr material );
-	const Ogre::MaterialPtr& getTileTerrainMaetrial() const;
+
+    void setTileTerrainMaterial(Ogre::MaterialPtr material);
+    const Ogre::MaterialPtr& getTileTerrainMaetrial() const;
 
     /**
      * Deforms terrain vertices at the given coordinates with the given brush.
@@ -151,13 +151,13 @@ namespace ET
      */
     void getHeights(int x, int z, Brush& brush) const;
 
-	void tileSplat( int x, int y, const TileBrush& brush ) const;
-	int getImgNum();
-	void setTerrainType( int x, int y, bool bTileTerrain  );
-  private:
+    void tileSplat(int x, int y, const TileBrush& brush) const;
+    int getImgNum();
+    void setTerrainType(int x, int y, bool bTileTerrain);
+private:
     /** implementation hiding via PIMPL idiom */
     Impl::TerrainImpl* mImpl;
-  };
+};
 }
 
 

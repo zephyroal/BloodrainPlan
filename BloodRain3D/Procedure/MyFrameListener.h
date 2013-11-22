@@ -219,7 +219,7 @@ protected:
     RenderWindow*                mWindow;
     bool                         mStatsOn;
 
-    std::string                 mDebugText;
+    std::string                  mDebugText;
 
     unsigned int                 mNumScreenShots;
     float                        mMoveScale;

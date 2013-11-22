@@ -9,7 +9,7 @@
 #if defined(__BORLANDC__)
 #  include <cppunit/config/config-bcb5.h>
 #elif defined (_MSC_VER)
-#  if _MSC_VER == 1200 && defined(_WIN32_WCE) //evc4
+#  if _MSC_VER == 1200 && defined(_WIN32_WCE) // evc4
 #    include <cppunit/config/config-evc4.h>
 #  else
 #    include <cppunit/config/config-msvc6.h>
@@ -19,10 +19,10 @@
 #endif
 
 // Version number of package
-#ifndef CPPUNIT_VERSION 
+#ifndef CPPUNIT_VERSION
 #define CPPUNIT_VERSION  "1.12.0"
 #endif
- 
+
 #include <cppunit/config/CppUnitApi.h>    // define CPPUNIT_API & CPPUNIT_NEED_DLL_DECL
 #include <cppunit/config/SelectDllLoader.h>
 
@@ -44,7 +44,7 @@
 # define CPPUNIT_ENABLE_CU_TEST_MACROS        0
 #endif
 
-/* Define to 1 if the preprocessor expands (#foo) to "foo" (quotes incl.) 
+/* Define to 1 if the preprocessor expands (#foo) to "foo" (quotes incl.)
    I don't think there is any C preprocess that does NOT support this! */
 #if !defined(CPPUNIT_HAVE_CPP_SOURCE_ANNOTATION)
 # define CPPUNIT_HAVE_CPP_SOURCE_ANNOTATION   1
@@ -79,9 +79,9 @@
 // If not define, assumes that it's gcc
 // See class CompilerOutputter for format.
 #if !defined(CPPUNIT_COMPILER_LOCATION_FORMAT)
-#if defined(__GNUC__) && ( defined(__APPLE_CPP__) || defined(__APPLE_CC__) )
+#if defined(__GNUC__) && (defined(__APPLE_CPP__) || defined(__APPLE_CC__))
 // gcc/Xcode integration on Mac OS X
-# define CPPUNIT_COMPILER_LOCATION_FORMAT "%p:%l: " 
+# define CPPUNIT_COMPILER_LOCATION_FORMAT "%p:%l: "
 #else
 # define CPPUNIT_COMPILER_LOCATION_FORMAT "%f:%l:"
 #endif
@@ -89,17 +89,17 @@
 
 // If CPPUNIT_HAVE_CPP_CAST is defined, then c++ style cast will be used,
 // otherwise, C style cast are used.
-#if defined( CPPUNIT_HAVE_CPP_CAST )
-# define CPPUNIT_CONST_CAST( TargetType, pointer ) \
-    const_cast<TargetType>( pointer )
+#if defined(CPPUNIT_HAVE_CPP_CAST)
+# define CPPUNIT_CONST_CAST(TargetType, pointer) \
+    const_cast<TargetType>(pointer)
 
-# define CPPUNIT_STATIC_CAST( TargetType, pointer ) \
-    static_cast<TargetType>( pointer )
+# define CPPUNIT_STATIC_CAST(TargetType, pointer) \
+    static_cast<TargetType>(pointer)
 #else // defined( CPPUNIT_HAVE_CPP_CAST )
-# define CPPUNIT_CONST_CAST( TargetType, pointer ) \
-    ((TargetType)( pointer ))
-# define CPPUNIT_STATIC_CAST( TargetType, pointer ) \
-    ((TargetType)( pointer ))
+# define CPPUNIT_CONST_CAST(TargetType, pointer) \
+    ((TargetType)(pointer))
+# define CPPUNIT_STATIC_CAST(TargetType, pointer) \
+    ((TargetType)(pointer))
 #endif // defined( CPPUNIT_HAVE_CPP_CAST )
 
 // If CPPUNIT_NO_STD_NAMESPACE is defined then STL are in the global space.
@@ -122,7 +122,7 @@
 #endif  // defined(CPPUNIT_NO_NAMESPACE)
 
 /*! Stringize a symbol.
- * 
+ *
  * Use this macro to convert a preprocessor symbol to a string.
  *
  * Example of usage:
@@ -131,10 +131,10 @@
  * const char *name = CPPUNIT_STRINGIZE( CPPUNIT_PLUGIN_EXPORTED_NAME );
  * \endcode
  */
-#define CPPUNIT_STRINGIZE( symbol ) _CPPUNIT_DO_STRINGIZE( symbol )
+#define CPPUNIT_STRINGIZE(symbol) _CPPUNIT_DO_STRINGIZE(symbol)
 
 /// \internal
-#define _CPPUNIT_DO_STRINGIZE( symbol ) #symbol
+#define _CPPUNIT_DO_STRINGIZE(symbol) #symbol
 
 /*! Joins to symbol after expanding them into string.
  *
@@ -148,25 +148,25 @@
  * to obtain a 'unique' identifier.
  *
  * \internal From boost documentation:
- * The following piece of macro magic joins the two 
+ * The following piece of macro magic joins the two
  * arguments together, even when one of the arguments is
  * itself a macro (see 16.3.1 in C++ standard).  The key
  * is that macro expansion of macro arguments does not
  * occur in CPPUNIT_JOIN2 but does in CPPUNIT_JOIN.
  */
-#define CPPUNIT_JOIN( symbol1, symbol2 ) _CPPUNIT_DO_JOIN( symbol1, symbol2 )
+#define CPPUNIT_JOIN(symbol1, symbol2) _CPPUNIT_DO_JOIN(symbol1, symbol2)
 
 /// \internal
-#define _CPPUNIT_DO_JOIN( symbol1, symbol2 ) _CPPUNIT_DO_JOIN2( symbol1, symbol2 )
+#define _CPPUNIT_DO_JOIN(symbol1, symbol2) _CPPUNIT_DO_JOIN2(symbol1, symbol2)
 
 /// \internal
-#define _CPPUNIT_DO_JOIN2( symbol1, symbol2 ) symbol1##symbol2
+#define _CPPUNIT_DO_JOIN2(symbol1, symbol2) symbol1 ## symbol2
 
 /*! Adds the line number to the specified string to create a unique identifier.
  * \param prefix Prefix added to the line number to create a unique identifier.
  * \see CPPUNIT_TEST_SUITE_REGISTRATION for an example of usage.
  */
-#define CPPUNIT_MAKE_UNIQUE_NAME( prefix ) CPPUNIT_JOIN( prefix, __LINE__ )
+#define CPPUNIT_MAKE_UNIQUE_NAME(prefix) CPPUNIT_JOIN(prefix, __LINE__)
 
 /*! Defines wrap colunm for %CppUnit. Used by CompilerOuputter.
  */

@@ -206,9 +206,9 @@ public:
     -----------------------------------------------------------------------------*/
     static Ogre::Real getCaptionWidth(const Ogre::DisplayString& caption, Ogre::TextAreaOverlayElement* area)
     {
-        Ogre::Font*  font      = (Ogre::Font*)Ogre::FontManager::getSingleton().getByName(area->getFontName()).getPointer();
+        Ogre::Font* font      = (Ogre::Font*)Ogre::FontManager::getSingleton().getByName(area->getFontName()).getPointer();
         std::string current   = DISPLAY_STRING_TO_STRING(caption);
-        Ogre::Real   lineWidth = 0;
+        Ogre::Real  lineWidth = 0;
 
         for (unsigned int i = 0; i < current.length(); i++)
         {
@@ -243,16 +243,16 @@ public:
     -----------------------------------------------------------------------------*/
     static void fitCaptionToArea(const Ogre::DisplayString& caption, Ogre::TextAreaOverlayElement* area, Ogre::Real maxWidth)
     {
-        Ogre::Font*  f = (Ogre::Font*)Ogre::FontManager::getSingleton().getByName(area->getFontName()).getPointer();
+        Ogre::Font* f = (Ogre::Font*)Ogre::FontManager::getSingleton().getByName(area->getFontName()).getPointer();
         std::string s = DISPLAY_STRING_TO_STRING(caption);
 
-        size_t       nl = s.find('\n');
+        size_t      nl = s.find('\n');
         if (nl != std::string::npos)
         {
             s = s.substr(0, nl);
         }
 
-        Ogre::Real   width = 0;
+        Ogre::Real  width = 0;
 
         for (unsigned int i = 0; i < s.length(); i++)
         {
@@ -537,7 +537,7 @@ public:
 
         Ogre::Font*  font = (Ogre::Font*)Ogre::FontManager::getSingleton().getByName(mTextArea->getFontName()).getPointer();
 
-        std::string current       = DISPLAY_STRING_TO_STRING(text);
+        std::string  current       = DISPLAY_STRING_TO_STRING(text);
         bool         firstWord     = true;
         unsigned int lastSpace     = 0;
         unsigned int lineBegin     = 0;
@@ -742,7 +742,7 @@ protected:
     -----------------------------------------------------------------------------*/
     void filterLines()
     {
-        std::string shown    = "";
+        std::string  shown    = "";
         unsigned int maxLines = getHeightInLines();
         unsigned int newStart = (unsigned int) (mScrollPercentage * (mLines.size() - maxLines) + 0.5);
 
@@ -957,7 +957,7 @@ public:
         else
         {
             std::string desc = "Menu \"" + getName() + "\" contains no item at position " +
-                                Ogre::StringConverter::toString(index) + ".";
+                               Ogre::StringConverter::toString(index) + ".";
             OGRE_EXCEPT(Ogre::Exception::ERR_ITEM_NOT_FOUND, desc, "SelectMenu::removeItem");
         }
     }
@@ -974,7 +974,7 @@ public:
         if (index >= mItems.size())
         {
             std::string desc = "Menu \"" + getName() + "\" contains no item at position " +
-                                Ogre::StringConverter::toString(index) + ".";
+                               Ogre::StringConverter::toString(index) + ".";
             OGRE_EXCEPT(Ogre::Exception::ERR_ITEM_NOT_FOUND, desc, "SelectMenu::selectItem");
         }
 
@@ -1634,7 +1634,7 @@ public:
         if (index >= mNames.size())
         {
             std::string desc = "ParamsPanel \"" + getName() + "\" has no parameter at position " +
-                                Ogre::StringConverter::toString(index) + ".";
+                               Ogre::StringConverter::toString(index) + ".";
             OGRE_EXCEPT(Ogre::Exception::ERR_ITEM_NOT_FOUND, desc, "ParamsPanel::setParamValue");
         }
 
@@ -1662,7 +1662,7 @@ public:
         if (index >= mNames.size())
         {
             std::string desc = "ParamsPanel \"" + getName() + "\" has no parameter at position " +
-                                Ogre::StringConverter::toString(index) + ".";
+                               Ogre::StringConverter::toString(index) + ".";
             OGRE_EXCEPT(Ogre::Exception::ERR_ITEM_NOT_FOUND, desc, "ParamsPanel::getParamValue");
         }
 
@@ -1921,7 +1921,7 @@ public:
 
         Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
 
-        std::string          nameBase = mName + "/";
+        std::string           nameBase = mName + "/";
         std::replace(nameBase.begin(), nameBase.end(), ' ', '_');
 
         // create overlay layers for everything
@@ -2400,7 +2400,7 @@ public:
     }
 
     SelectMenu* createLongSelectMenu(TrayLocation               trayLoc,
-                                     const std::string&        name,
+                                     const std::string&         name,
                                      const Ogre::DisplayString& caption,
                                      Ogre::Real                 width,
                                      Ogre::Real                 boxWidth,
@@ -3134,7 +3134,7 @@ public:
 
             mLastStatUpdateTime = currentTime;
 
-            std::string                   s("FPS: ");
+            std::string                    s("FPS: ");
             s += Ogre::StringConverter::toString((int)stats.lastFPS);
 
             mFpsLabel->setCaption(s);
@@ -3146,7 +3146,7 @@ public:
 
                 oss.str("");
                 oss << std::fixed << std::setprecision(1) << stats.avgFPS;
-                std::string       str = oss.str();
+                std::string        str = oss.str();
                 values.push_back(str);
 
                 oss.str("");
@@ -3189,7 +3189,7 @@ public:
     void scriptParseStarted(const std::string& scriptName, bool& skipThisScript)
     {
         // ±àÂë µ°ÌÛ
-		mLoadBar->setComment( ANSIToUnicode(scriptName.c_str()) );
+        mLoadBar->setComment(ANSIToUnicode(scriptName.c_str()));
         windowUpdate();
     }
 
@@ -3550,7 +3550,7 @@ protected:
         mExpandedMenu = m;
     }
 
-    std::string                 mName;               // name of this tray system
+    std::string                  mName;              // name of this tray system
     Ogre::RenderWindow*          mWindow;             // render window
     InputContext                 mInputContext;
     Ogre::Overlay*               mBackdropLayer;      // backdrop layer

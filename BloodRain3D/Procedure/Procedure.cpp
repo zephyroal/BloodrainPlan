@@ -419,7 +419,7 @@ bool CProcedure::mouseReleased(const OIS::MouseEvent& arg, OIS::MouseButtonID id
                 // 加入新的物体
                 std::string name;
                 name = mNewEntityName + StringConverter::toString(m_iCount++);
-                Entity*      ent = mSceneMgr->createEntity(name, mNewEntityName);
+                Entity*     ent = mSceneMgr->createEntity(name, mNewEntityName);
 
                 /*Ogre::AnimationStateSet* allset =ent->getAllAnimationStates();
                 if(allset)
@@ -433,7 +433,7 @@ bool CProcedure::mouseReleased(const OIS::MouseEvent& arg, OIS::MouseButtonID id
                                 m_AnimationStateVec.push_back(Anim);
                         }
                 }*/
-                mCurrentObject = mSceneMgr->getRootSceneNode()->createChildSceneNode( std::string(name) + "Node",
+                mCurrentObject = mSceneMgr->getRootSceneNode()->createChildSceneNode(std::string(name) + "Node",
                                                                                      result.second);
                 mCurrentObject->attachObject(ent);
 
@@ -729,18 +729,18 @@ void CProcedure::OnGUITreeItemSelected(MyGUI::TreeControl* pTreeControl, MyGUI::
     if (pNode->getText().size() > 0)
     {
         MyGUI::UString path = ((MyGUI::TreeControl::Node*)(pNode->getParent()))->getText() + MyGUI::UString("/") + pNode->getText();
-		SetSceneAddType(UTF8ToANSI(path.asUTF8_c_str()));
+        SetSceneAddType(UTF8ToANSI(path.asUTF8_c_str()));
     }
 }
 
-void CProcedure::SetSceneAddType( std::string ObjectName)
+void CProcedure::SetSceneAddType(std::string ObjectName)
 {
     if (m_EditType != ET_SceneAdd)
     {
         return;
     }
     mPointer->detachAllObjects();
-    Entity*      newPoint;
+    Entity*     newPoint;
     std::string EntityName = "PointerSceneEdit" + ObjectName;
     if (mSceneMgr->hasEntity(EntityName))
     {
@@ -992,7 +992,7 @@ bool CProcedure::keyPressed(const OIS::KeyEvent& arg)
         return true;
     case OIS::KC_F8:     // 显示线框模式
         {
-            std::string      newVal;
+            std::string       newVal;
             Ogre::PolygonMode pm;
             switch (mCamera->getPolygonMode())
             {
@@ -1281,7 +1281,7 @@ void CProcedure::shutdownMyGUI()
 
 void CProcedure::createMyGUIScene()
 {
-	std::string           mLocale = ::setlocale(LC_ALL, "chs");
+    std::string            mLocale = ::setlocale(LC_ALL, "chs");
     if (!mLocale.empty())
     {
         MyGUI::LanguageManager::getInstance().setCurrentLanguage(mLocale);
