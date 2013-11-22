@@ -1,0 +1,46 @@
+bulletflow Ω£œ¿∆’π•01_01_blt
+{
+	maxtime	5
+	hitpoint …ÌÃÂ ‹ª˜µ„
+	eventsystem event1
+	{
+		operator birth
+		{
+			bulletsystemname	Ω£œ¿∆’π•01_01_blt_01
+			birthtimes	1
+		}
+		tester findtarget
+		{
+			output	event2
+			pursuittype	pointing
+			pursuitspeed	300
+			arrivedistance	20
+		}
+	}
+	eventsystem event2
+	{
+		operator spawn
+		{
+			bulletsystemname	Ω£œ¿∆’π•01_01_blt_02
+			isdeletesource	true
+		}
+	}
+}
+
+bulletsystem Ω£œ¿∆’π•01_01_blt_01
+{
+}
+
+bulletsystem Ω£œ¿∆’π•01_01_blt_02
+{
+	AnimEffect
+	{
+		AttachTime 0
+		AttachPoint 
+		EffectTemplateName ª˜÷–_Ω£œ¿∆’π•01_01
+		OffsetPos 0 0 0
+		OffsetRotation 1 0 0 0
+		Attach false
+	}
+}
+

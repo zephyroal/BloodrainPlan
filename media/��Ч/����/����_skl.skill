@@ -1,0 +1,65 @@
+刀.obj
+唐门普攻01_马下
+
+skill 唐门普攻01_马下
+{
+	Animation 刀_马下_攻击_01
+	BreakTime -1 
+	HitTime -1 
+	ShakeTime -1 
+	RepeatEffect false
+	Ribbon
+	{
+		AttachTime 0
+		AttachPoint 右手绑定点
+		OffsetPos 0 0 0
+		OffsetRotation 0.707107 0 0 0.707107
+		PointCount 30
+		LifeTime 1
+		RibbonWidth 250
+		StartAlphaValue 1
+		EndAlphaValue 1
+		StartColour 1 0.501961 0.25098 1
+		EndColour 1 0.501961 0.25098 1
+		FadeInTime 0
+		FadeOutTime 1
+		Material 武士普攻_21
+		InterTimes 2
+		UseInter false
+		VertexLifeTime 0
+	}
+	Ribbon
+	{
+		AttachTime 0
+		AttachPoint 右手绑定点
+		OffsetPos 0 0 0
+		OffsetRotation 0.707107 0 0 0.707107
+		PointCount 50
+		LifeTime 1
+		RibbonWidth 260
+		StartAlphaValue 1
+		EndAlphaValue 1
+		StartColour 1 0 0 1
+		EndColour 1 0 0 1
+		FadeInTime 0
+		FadeOutTime 1
+		Material 武士普攻_21
+		InterTimes 2
+		UseInter false
+		VertexLifeTime 0
+	}
+	Sound
+	{
+		SoundName skill\技能_施法_唐门普攻01_马下.wav
+		AttachTime 0
+	}
+	AnimBulletFlow
+	{
+		AttachTime 0.4
+		AttachPoint 脚部绑定点
+		BulletFlowTemplateName 武士普攻03_01_blt
+		OffsetPos 0 0 0
+		OffsetRotation 1 0 0 0
+		Attach false
+	}
+}
