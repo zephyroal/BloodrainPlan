@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyXML", "TinyXML.vcxproj", "{08060A31-6315-4F03-81EF-9089A1EBDAB2}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 1
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://zephyroal.visualstudio.com/defaultcollection
+		SccProjectUniqueName0 = TinyXML.vcxproj
+		SccProjectName0 = .
+		SccAuxPath0 = https://zephyroal.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		RelWithDbgInfo|Win32 = RelWithDbgInfo|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Debug|Win32.Build.0 = Debug|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Debug|Win32.Deploy.0 = Debug|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Release|Win32.ActiveCfg = Release|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Release|Win32.Build.0 = Release|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.Release|Win32.Deploy.0 = Release|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.RelWithDbgInfo|Win32.ActiveCfg = RelWithDbgInfo|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.RelWithDbgInfo|Win32.Build.0 = RelWithDbgInfo|Win32
+		{08060A31-6315-4F03-81EF-9089A1EBDAB2}.RelWithDbgInfo|Win32.Deploy.0 = RelWithDbgInfo|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
