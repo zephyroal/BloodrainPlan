@@ -134,6 +134,8 @@ void	DeferredShadow::_ensureShadowInfo()
 
 		m_ShadowInfo.pShadowViewport->setRenderQueueInvocationSequenceName( pShadowCastSeque->getName() );
 	}
+
+	
 	//	确认阴影屏幕四边形
 	if ( m_pShadowQuad == NULL )
 	{
@@ -150,6 +152,9 @@ void	DeferredShadow::_ensureShadowInfo()
 			assert( 0 );
 			//	可以考虑用代码方式生成材质. 目前先算了
 		}
+
+		
+
 		Pass* pPass = NULL;
 		pPass = m_pMtlShadowQuad->getTechnique( 0 )->getPass( 0 );
 		pPass->getTextureUnitState( 0 )->setTextureName( pShadowCastTexture->getName() );

@@ -118,7 +118,7 @@ namespace Ogre
 			curFuncInvocation->pushOperand( m_inVsPosition, Operand::OPS_IN);
 			curFuncInvocation->pushOperand( m_outVsViewPos, Operand::OPS_OUT );
 
-			vsMain->addAtomInstace( curFuncInvocation );
+			vsMain->addAtomInstance( curFuncInvocation );
 
 			//	-ps
 			curFuncInvocation = OGRE_NEW FunctionInvocation( FFP_FUNC_CONSTRUCT, DO_OutDepth, 0 );
@@ -127,13 +127,13 @@ namespace Ogre
 			curFuncInvocation->pushOperand( ParameterFactory::createConstParamFloat( 0.0f ), Operand::OPS_IN );
 			curFuncInvocation->pushOperand( ParameterFactory::createConstParamFloat( 0.0f ), Operand::OPS_IN );
 			curFuncInvocation->pushOperand( m_outColor1, Operand::OPS_OUT );
-			psMain->addAtomInstace( curFuncInvocation );
+			psMain->addAtomInstance( curFuncInvocation );
 
 			curFuncInvocation = OGRE_NEW FunctionInvocation( Func_OutLinerDepth, DO_OutDepth, 1 );
 			curFuncInvocation->pushOperand( m_inPsViewPos, Operand::OPS_IN );
 			curFuncInvocation->pushOperand( m_inPsFarClipDistance, Operand::OPS_IN );
 			curFuncInvocation->pushOperand( m_outColor1, Operand::OPS_OUT, Operand::OPM_X );
-			psMain->addAtomInstace( curFuncInvocation );
+			psMain->addAtomInstance( curFuncInvocation );
 
 			return true;
 		}

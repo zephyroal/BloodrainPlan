@@ -1,7 +1,6 @@
 #pragma	once
 #include	"stdafx.h"
 #include	"PickEntity.h"
-#include "OgreConfigFile.h"
 
 class	Option;
 class	DeferredSystem;
@@ -45,7 +44,6 @@ private:
 	bool	_loadScene();
 
 	void	_updateCameraRamble();
-	bool		setupResources();
 
 private:
 	HWND			m_hTopLevelWnd;
@@ -55,7 +53,7 @@ private:
 
 	Option*			m_pOption;
 	PickEntity*		m_pPickEntity;
-	bool					m_bIni;
+
 public:
 	Ogre::Root*								m_pRoot;
 	Ogre::RenderWindow*						m_pRenderWindow;
@@ -71,6 +69,3 @@ public:
 	DeferredSystem*							m_pDeferredSystem;
 	Ogre::WaterManager*						m_pWaterMgr;
 };
-
-
-

@@ -16,7 +16,6 @@ namespace	Ogre
 		MeshManager::getSingleton().createPlane( "WaterMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 100,100,10,10,true,1,60,60,Vector3::UNIT_Z );
 		m_pWaterPlane = m_pSceneMgr->createEntity( "WaterPlane", "WaterMesh" );
 
-		// MaterialManager::getSingleton().create( "WaterPlane","General");
 		pMtlWater = MaterialManager::getSingleton().getByName( "WaterPlane" );
 
 		Pass* pPass = NULL;

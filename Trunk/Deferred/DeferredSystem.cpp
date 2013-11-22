@@ -112,6 +112,7 @@ void	DeferredSystem::Update( float fLapseTime )
 
 void	DeferredSystem::Render()
 {
+
 	//	只拣选一次即可
 	
 	//	准备阴影深度图
@@ -119,6 +120,8 @@ void	DeferredSystem::Render()
 
 	//	实心物体
 	m_pViewportDiff_Depth_Normal->update();
+
+
 
 	m_pRoot->renderOneFrame();
 }

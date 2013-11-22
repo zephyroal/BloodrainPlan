@@ -8,7 +8,7 @@
 
 
 template<> 
-TestCore*	Ogre::Singleton< TestCore >::ms_Singleton = 0;
+TestCore*	Ogre::Singleton< TestCore >::msSingleton = 0;
 
 TestCore::TestCore()
 {
@@ -24,7 +24,6 @@ TestCore::TestCore()
 	m_pViewPort = NULL;
 	m_pSceneMgr = NULL;
 	m_pMainCamera = NULL;
-	m_bIni=false;
 // 	AllocConsole();
 // 	freopen( "CONOUT$","w",stdout );
 }
@@ -67,7 +66,7 @@ bool	TestCore::Initialize( HWND hTopLevelWnd, HWND hRenderWnd, int width, int he
 	{
 		return false;
 	}
-	m_bIni=true;
+
 	return true;
 }
 
@@ -120,8 +119,6 @@ void	TestCore::Resize( int width, int height )
 
 void	TestCore::Update( float lapseTime )
 {
-	if(!m_bIni)
-		return;
 	m_pKeyboard->capture();
 	m_pMouse->capture();
 
@@ -185,64 +182,19 @@ void	TestCore::EraseObj( Ogre::Entity* pEntity )
 	pEntity->getParentSceneNode()->showBoundingBox( false );
 }
 
- bool	TestCore::setupResources(void)
-{
-	using namespace Ogre;
-	// Load resource paths from config file
-	ConfigFile cf;
-#if OGRE_DEBUG_MODE
-	cf.load( "resources_d.cfg");
-#else
-	cf.load("resources.cfg");
-#endif
 
-	// Go through all sections & settings in the file
-	ConfigFile::SectionIterator seci = cf.getSectionIterator();
-	//¸ÐÐ»XX°Ë²¿
-	bool recursive;
-	String secName, typeName, archName;
-	while (seci.hasMoreElements())
-	{
-		secName = seci.peekNextKey();
-		ConfigFile::SettingsMultiMap *settings = seci.getNext();
-		ConfigFile::SettingsMultiMap::iterator i;
-		for (i = settings->begin(); i != settings->end(); ++i)
-		{
-			typeName = i->first;
-			archName = i->second;
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-			// OS X does not set the working directory relative to the app,
-			// In order to make things portable on OS X we need to provide
-			// the loading with it's own bundle path location
-			if (!StringUtil::startsWith(archName, "/", false)) // only adjust relative dirs
-				archName = String(macBundlePath() + "/" + archName);
-#endif
-			recursive= false;
-			if (archName[0] == '*')
-			{
-				archName.erase(0, 1);
-				Ogre::StringUtil::trim(archName);
-				recursive = true;
-			}
-			ResourceGroupManager::getSingleton().addResourceLocation(
-				archName, typeName, secName,recursive);
-		}
-	}
-	return true;
-}
 bool	TestCore::_loadOgre()
 {
 	using namespace Ogre;
-	m_pRoot = new Root("plugins_d.cfg", 
-		  "ogre.cfg",  "Ogre.log");
-/*
+	m_pRoot = new Root;
+
 #ifdef _DEBUG
 	m_pRoot->loadPlugin( "Plugin_OctreeSceneManager_d" );
 	m_pRoot->loadPlugin( "RenderSystem_Direct3D9_d" );
 #else
 	m_pRoot->loadPlugin( "Plugin_OctreeSceneManager" );
 	m_pRoot->loadPlugin( "RenderSystem_Direct3D9" );	
-#endif*/
+#endif
 
 	RenderSystem* pRenderSys = m_pRoot->getRenderSystemByName( "Direct3D9 Rendering Subsystem" );
 
@@ -269,7 +221,7 @@ bool	TestCore::_loadOgre()
 	//	parser resource
 	m_pRoot->addResourceLocation( m_pOption->GetWorkingPath() + "Data\\RTShaderLib", "FileSystem", m_pOption->GetResGroupName() );
 	m_pRoot->addResourceLocation( m_pOption->GetWorkingPath() + "Data\\Scene", "FileSystem", m_pOption->GetResGroupName() );
-	setupResources();
+
 	m_pRenderWindow = m_pRoot->createRenderWindow( "TestCore", m_Widht, m_Height, false, &winParams );
 
 
@@ -316,6 +268,7 @@ bool	TestCore::_loadOgre()
 	m_pDeferredSystem->BindScene( m_pSceneMgr, m_pMainCamera, m_pViewPort );
 
 	m_pWaterMgr = new Ogre::WaterManager( m_pDeferredSystem, m_pSceneMgr, m_pMainCamera, m_pViewPort );
+
 
 	return true;
 }
@@ -384,7 +337,7 @@ bool	TestCore::_loadScene()
 
 		pShadowQuad->setRenderQueueGroup( DeferredSystem::RenderQueue_MainWindow );
 
-		//m_pSceneMgr->getRootSceneNode()->attachObject( pShadowQuad );
+		m_pSceneMgr->getRootSceneNode()->attachObject( pShadowQuad );
 
 		MaterialPtr pMtl = MaterialManager::getSingleton().getByName( "DeferredMainQuadMtl" );
 		

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="DeferredSystem">
+      <UniqueIdentifier>{acccab65-778e-43c2-a5bc-89d6148ac436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Water">
+      <UniqueIdentifier>{68b87a4b-c2cb-4899-8545-2539867be3a1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DeferredOrder.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Option.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="OutDepth.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PickEntity.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCore.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildView.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Deferred.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredShadow.h">
+      <Filter>DeferredSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredSystem.h">
+      <Filter>DeferredSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="LiSPSMShadowCameraSetupEx.h">
+      <Filter>DeferredSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>Water</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Option.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="OutDepth.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PickEntity.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildView.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Deferred.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredShadow.cpp">
+      <Filter>DeferredSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredSystem.cpp">
+      <Filter>DeferredSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="LiSPSMShadowCameraSetupEx.cpp">
+      <Filter>DeferredSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>Water</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Deferred.ico">
+      <Filter>Resource</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Deferred.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Deferred.rc2">
+      <Filter>Resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DeferredTodo.txt" />
+    <Text Include="ShadowTodo.txt" />
+    <Text Include="WaterTodo.txt" />
+  </ItemGroup>
+</Project>
