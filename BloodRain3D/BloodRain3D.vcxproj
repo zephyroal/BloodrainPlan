@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{81CA0C06-5DDA-4EDA-BF1B-943F4537C891}</ProjectGuid>
+    <RootNamespace>BloodRain3D</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <SccProjectName>
+    </SccProjectName>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60610.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)/bin/$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)/Obj/$(ProjectName)/$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(OGRE_SRC)/Dependencies/src/ois/;$(OGRE_SRC)/Dependencies/src/ois/includes;$(DXSDK_DIR)/include;$(OGRE_SRC)/OgreMain/include;$(OGRE_SRC)/include;$(OGRE_SRC)/Samples/Common/include;$(OGRE_SRC)/Components/Overlay/include;$(OGRE_SRC)/Components/RTShaderSystem/include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)/bin/$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)/Obj/$(ProjectName)/$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(OGRE_SRC)/Dependencies/src/ois/;$(OGRE_SRC)/Dependencies/src/ois/includes;$(DXSDK_DIR)/include;$(OGRE_SRC)/OgreMain/include;$(OGRE_SRC)/include;$(OGRE_SRC)/Samples/Common/include;$(OGRE_SRC)/Components/Overlay/include;$(OGRE_SRC)/Components/RTShaderSystem/include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <OutDir>$(SolutionDir)/bin/$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)/Obj/$(ProjectName)/$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(OGRE_SRC)/Dependencies/src/ois/;$(OGRE_SRC)/Dependencies/src/ois/includes;$(DXSDK_DIR)/include;$(OGRE_SRC)/OgreMain/include;$(OGRE_SRC)/include;$(OGRE_SRC)/Samples/Common/include;$(OGRE_SRC)/Components/Overlay/include;$(OGRE_SRC)/Components/RTShaderSystem/include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>./;Imple;App;Character;GUI\TreeControl;GUI;Procedure;Sound;$(OGRE_SRC)\Dependencies\include\OIS;$(OGRE_SRC)/Include;$(OGRE_SRC)/OgreMain/Include;..\Dependency\ETM\include;..\Dependency\TinyXML;$(MyGUI_Home)\Common;..\Dependency\HydraX\include;$(MyGUI_Home)\Platforms\Ogre\OgrePlatform\include;$(MyGUI_Home)\Common\Base\Ogre;$(MyGUI_Home)\Common\Input\OIS;$(MyGUI_Home)\MyGUIEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>TinyXML.lib;OgreOverlay_d.lib;OgreMain_d.lib;OIS_d.lib;EditableTerrainManager_d.lib;Common_d.lib;MyGUI.OgrePlatform_d.lib;MyGUIEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(MyGUI_Home)/lib/$(Configuration);$(SolutionDir)/bin/$(Configuration);$(SolutionDir)/lib/$(Configuration);$(OGRE_SRC)/lib/$(Configuration);$(OGRE_SRC)/Dependencies/src/ois/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./;Imple;App;Character;GUI\TreeControl;GUI;Procedure;Sound;$(OGRE_SRC)\Dependencies\include\OIS;$(OGRE_SRC)/Include;$(OGRE_SRC)/OgreMain/Include;..\Dependency\ETM\include;..\Dependency\TinyXML;$(MyGUI_Home)\Common;..\Dependency\HydraX\include;$(MyGUI_Home)\Platforms\Ogre\OgrePlatform\include;$(MyGUI_Home)\Common\Base\Ogre;$(MyGUI_Home)\Common\Input\OIS;$(MyGUI_Home)\MyGUIEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>TinyXML.lib;OgreOverlay.lib;OgreMain.lib;OIS.lib;Hydrax.lib;Common.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)/bin/$(Configuration);$(SolutionDir)/lib/$(Configuration);$(OGRE_SRC)/lib/$(Configuration);$(MyGUI_Home)/lib/$(Configuration);$(OGRE_SRC)/Dependencies/src/ois/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./;Imple;App;Character;GUI\TreeControl;GUI;Procedure;Sound;$(OGRE_SRC)\Dependencies\include\OIS;$(OGRE_SRC)/Include;$(OGRE_SRC)/OgreMain/Include;..\Dependency\ETM\include;..\Dependency\TinyXML;$(MyGUI_Home)\Common;..\Dependency\HydraX\include;$(MyGUI_Home)\Platforms\Ogre\OgrePlatform\include;$(MyGUI_Home)\Common\Base\Ogre;$(MyGUI_Home)\Common\Input\OIS;$(MyGUI_Home)\MyGUIEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>TinyXML.lib;OgreOverlay.lib;OgreMain.lib;OIS.lib;Hydrax.lib;Common.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)/bin/$(Configuration);$(SolutionDir)/lib/$(Configuration);$(OGRE_SRC)/lib/$(Configuration);$(MyGUI_Home)/lib/$(Configuration);$(OGRE_SRC)/Dependencies/src/ois/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="GUI\MyInputContext.h" />
+    <ClInclude Include="GUI\MyTrays.h" />
+    <ClInclude Include="Imple\CMap.h" />
+    <ClInclude Include="Imple\DecalCursor.h" />
+    <ClInclude Include="Imple\LightMapMaker.h" />
+    <ClInclude Include="Imple\RaySelect.h" />
+    <ClInclude Include="Imple\SelectionRectangle.h" />
+    <ClInclude Include="Imple\TerrainLiquid.h" />
+    <ClInclude Include="Imple\WeaponTrail.h" />
+    <ClInclude Include="GUI\GUIManager.h" />
+    <ClInclude Include="GUI\MainPanel.h" />
+    <ClInclude Include="GUI\ScriptManager.h" />
+    <ClInclude Include="GUI\TreeControl\GenericNode.h" />
+    <ClInclude Include="GUI\TreeControl\TreeControl.h" />
+    <ClInclude Include="GUI\TreeControl\TreeControlItem.h" />
+    <ClInclude Include="Character\AICharacter.h" />
+    <ClInclude Include="Character\Character.h" />
+    <ClInclude Include="Character\MPCCharacter.h" />
+    <ClInclude Include="Character\NPCCharacter.h" />
+    <ClInclude Include="Character\PlayerCharacter.h" />
+    <ClInclude Include="Procedure\MyFrameListener.h" />
+    <ClInclude Include="Procedure\GameProcedur.h" />
+    <ClInclude Include="Procedure\LogoProcedure.h" />
+    <ClInclude Include="Procedure\MainProcedure.h" />
+    <ClInclude Include="Procedure\MenuProcedure.h" />
+    <ClInclude Include="Procedure\HydraxListener.h" />
+    <ClInclude Include="Procedure\Procedure.h" />
+    <ClInclude Include="App\AppFrame.h" />
+    <ClInclude Include="App\MyAppFrame.h" />
+    <ClInclude Include="App\CommonInclude.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Imple\DecalCursor.cpp" />
+    <ClCompile Include="Imple\LightMapMaker.cpp" />
+    <ClCompile Include="Imple\RaySelect.cpp" />
+    <ClCompile Include="Imple\SelectionRectangle.cpp" />
+    <ClCompile Include="Imple\TerrainLiquid.cpp" />
+    <ClCompile Include="Imple\WeaponTrail.cpp" />
+    <ClCompile Include="GUI\GUIManager.cpp" />
+    <ClCompile Include="GUI\MainPanel.cpp" />
+    <ClCompile Include="GUI\ScriptManager.cpp" />
+    <ClCompile Include="GUI\TreeControl\TreeControl.cpp" />
+    <ClCompile Include="GUI\TreeControl\TreeControlItem.cpp" />
+    <ClCompile Include="Character\AICharacter.cpp" />
+    <ClCompile Include="Character\Character.cpp" />
+    <ClCompile Include="Character\MPCCharacter.cpp" />
+    <ClCompile Include="Character\NPCCharacter.cpp" />
+    <ClCompile Include="Character\PlayerCharacter.cpp" />
+    <ClCompile Include="Procedure\GameProcedur.cpp" />
+    <ClCompile Include="Procedure\LogoProcedure.cpp" />
+    <ClCompile Include="Procedure\MainProcedure.cpp" />
+    <ClCompile Include="Procedure\MenuProcedure.cpp" />
+    <ClCompile Include="Procedure\HydraxListener.cpp" />
+    <ClCompile Include="Procedure\Procedure.cpp" />
+    <ClCompile Include="App\AppFrame.cpp" />
+    <ClCompile Include="CommonInclude.cpp" />
+    <ClCompile Include="WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dependency\ETM\EditableTerrain.vcxproj">
+      <Project>{2e30f488-61fd-455b-be50-9ad347c527a6}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\Dependency\Hydrax\Hydrax.vcxproj">
+      <Project>{5506c2ab-7dd1-47bb-a77d-eb26e52be41c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\Dependency\TinyXML\TinyXML.vcxproj">
+      <Project>{08060a31-6315-4f03-81ef-9089a1ebdab2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

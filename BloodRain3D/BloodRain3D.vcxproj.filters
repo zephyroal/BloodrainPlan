@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Imple">
+      <UniqueIdentifier>{503f39d8-729b-4dbb-af00-0f005016b299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{3e16998e-fba8-4a51-87f5-03eb3dd869c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\TreeControl">
+      <UniqueIdentifier>{5ec7f130-595b-4581-af75-eda940bd1d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character">
+      <UniqueIdentifier>{dff7e80b-d1fb-43d7-87f1-cbd6c1b9048f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Procedure">
+      <UniqueIdentifier>{69649167-7a1f-4853-83e1-f612d924cf66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Procedure\Working">
+      <UniqueIdentifier>{3e7034f3-6fe5-44ba-995a-04f80e2b64d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{fa334ed8-b1ec-4570-bf8f-88705b54c2af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{6a4cd1b2-9965-40da-80e0-5d58ab7a9bdc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Imple\CMap.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="Imple\DecalCursor.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="Imple\LightMapMaker.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="Imple\RaySelect.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="Imple\SelectionRectangle.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="Imple\TerrainLiquid.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="Imple\WeaponTrail.h">
+      <Filter>Imple</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\GUIManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\MainPanel.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\ScriptManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\TreeControl\GenericNode.h">
+      <Filter>GUI\TreeControl</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\TreeControl\TreeControl.h">
+      <Filter>GUI\TreeControl</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\TreeControl\TreeControlItem.h">
+      <Filter>GUI\TreeControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\AICharacter.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Character.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\MPCCharacter.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\NPCCharacter.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\PlayerCharacter.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\GameProcedur.h">
+      <Filter>Procedure</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\LogoProcedure.h">
+      <Filter>Procedure</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\MainProcedure.h">
+      <Filter>Procedure</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\MenuProcedure.h">
+      <Filter>Procedure</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\HydraxListener.h">
+      <Filter>Procedure\Working</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\Procedure.h">
+      <Filter>Procedure\Working</Filter>
+    </ClInclude>
+    <ClInclude Include="App\AppFrame.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="App\CommonInclude.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="Procedure\MyFrameListener.h">
+      <Filter>Procedure\Working</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\MyTrays.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\MyInputContext.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="App\MyAppFrame.h">
+      <Filter>App</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Imple\DecalCursor.cpp">
+      <Filter>Imple</Filter>
+    </ClCompile>
+    <ClCompile Include="Imple\LightMapMaker.cpp">
+      <Filter>Imple</Filter>
+    </ClCompile>
+    <ClCompile Include="Imple\RaySelect.cpp">
+      <Filter>Imple</Filter>
+    </ClCompile>
+    <ClCompile Include="Imple\SelectionRectangle.cpp">
+      <Filter>Imple</Filter>
+    </ClCompile>
+    <ClCompile Include="Imple\TerrainLiquid.cpp">
+      <Filter>Imple</Filter>
+    </ClCompile>
+    <ClCompile Include="Imple\WeaponTrail.cpp">
+      <Filter>Imple</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\GUIManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\MainPanel.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\ScriptManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\TreeControl\TreeControl.cpp">
+      <Filter>GUI\TreeControl</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\TreeControl\TreeControlItem.cpp">
+      <Filter>GUI\TreeControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\AICharacter.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\Character.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\MPCCharacter.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\NPCCharacter.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\PlayerCharacter.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Procedure\GameProcedur.cpp">
+      <Filter>Procedure</Filter>
+    </ClCompile>
+    <ClCompile Include="Procedure\LogoProcedure.cpp">
+      <Filter>Procedure</Filter>
+    </ClCompile>
+    <ClCompile Include="Procedure\MainProcedure.cpp">
+      <Filter>Procedure</Filter>
+    </ClCompile>
+    <ClCompile Include="Procedure\MenuProcedure.cpp">
+      <Filter>Procedure</Filter>
+    </ClCompile>
+    <ClCompile Include="Procedure\HydraxListener.cpp">
+      <Filter>Procedure\Working</Filter>
+    </ClCompile>
+    <ClCompile Include="Procedure\Procedure.cpp">
+      <Filter>Procedure\Working</Filter>
+    </ClCompile>
+    <ClCompile Include="App\AppFrame.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonInclude.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
