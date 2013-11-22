@@ -1,0 +1,14 @@
+Core/ShowTextureOverlay
+{
+	zorder 501
+	container Panel(Core/ShowTexturePanel)
+	{	
+		metrics_mode pixels
+		top 10
+		left 10
+		width 75
+		height 75
+		material Core/OgreShowTextureMaterial
+//		Core/OgreShowTexture Core/OgreText
+	}
+}

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="TaharezLook/FrameWindow" Name="EditRoot" >
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="TitlebarEnabled" Value="True" />
+        <Property Name="UnifiedAreaRect" Value="{{0.741025,0},{0.00894233,0},{0.996634,0},{0.9924,0}}" />
+        <Window Type="TaharezLook/TabControl" Name="EditRoot/EidtNoteBook" >
+            <Property Name="TabHeight" Value="{0,28.1166}" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TabPanePosition" Value="Top" />
+            <Property Name="UnifiedAreaRect" Value="{{0.0362599,0},{0.0560152,0},{0.960695,0},{0.988189,0}}" />
+            <Window Type="DefaultWindow" Name="EditRoot/EidtNoteBook/Tab 1" >
+                <Property Name="Text" Value="Terrain" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0163425,0},{-0.00649625,0},{0.98833,0},{0.993504,0}}" />
+                <Window Type="TaharezLook/FrameWindow" Name="EditRoot/EidtNoteBook/Tab1/BrushFrame" >
+                    <Property Name="Font" Value="BlueHighway-10" />
+                    <Property Name="Text" Value="Brush" />
+                    <Property Name="TitlebarFont" Value="Commonwealth-10" />
+                    <Property Name="SizingEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="TitlebarEnabled" Value="True" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.00393893,0},{0.0969921,0},{0.99774,0},{0.329127,0}}" />
+                    <Property Name="DragMovingEnabled" Value="False" />
+                    <Property Name="CloseButtonEnabled" Value="False" />
+                    <Window Type="TaharezLook/ScrollablePane" Name="EditRoot/EidtNoteBook/Tab1/BrushFrame/BrushPanel" >
+                        <Property Name="ContentArea" Value="l:0 t:0 r:0 b:0" />
+                        <Property Name="HorzStepSize" Value="0.1" />
+                        <Property Name="VertStepSize" Value="0.1" />
+                        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                        <Property Name="HorzOverlapSize" Value="0.01" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.0555202,0},{0.183118,0},{0.950141,0},{0.957833,0}}" />
+                        <Property Name="VertOverlapSize" Value="0.01" />
+                        <Property Name="HorzScrollPosition" Value="0" />
+                        <Property Name="VertScrollPosition" Value="0" />
+                        <AutoWindow NameSuffix="__auto_container__" >
+                            <Property Name="ContentArea" Value="l:0 t:0 r:0 b:0" />
+                            <Property Name="ChildExtentsArea" Value="l:0 t:0 r:0 b:0" />
+                        </AutoWindow>
+                    </Window>
+                </Window>
+                <Window Type="TaharezLook/FrameWindow" Name="EditRoot/EidtNoteBook/Tab 1/SplatFrame" >
+                    <Property Name="Font" Value="BlueHighway-12" />
+                    <Property Name="Text" Value="Splat" />
+                    <Property Name="TitlebarFont" Value="Commonwealth-10" />
+                    <Property Name="SizingEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="TitlebarEnabled" Value="True" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.0028381,0},{0.33573,0},{0.986375,0},{0.61334,0}}" />
+                    <Property Name="DragMovingEnabled" Value="False" />
+                    <Property Name="CloseButtonEnabled" Value="False" />
+                    <Window Type="TaharezLook/ScrollablePane" Name="EditRoot/EidtNoteBook/Tab 1/SplatFrame/SplatPanel" >
+                        <Property Name="ContentArea" Value="l:0 t:0 r:0 b:0" />
+                        <Property Name="HorzStepSize" Value="0.1" />
+                        <Property Name="VertStepSize" Value="0.1" />
+                        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                        <Property Name="HorzOverlapSize" Value="0.01" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.0462856,0},{0.183748,0},{0.945334,0},{0.971758,0}}" />
+                        <Property Name="VertOverlapSize" Value="0.01" />
+                        <Property Name="HorzScrollPosition" Value="0" />
+                        <Property Name="VertScrollPosition" Value="0" />
+                        <AutoWindow NameSuffix="__auto_container__" >
+                            <Property Name="ContentArea" Value="l:0 t:0 r:0 b:0" />
+                            <Property Name="ChildExtentsArea" Value="l:0 t:0 r:0 b:0" />
+                        </AutoWindow>
+                    </Window>
+                </Window>
+                <Window Type="TaharezLook/FrameWindow" Name="EditRoot/EidtNoteBook/Tab 1/TileFrame" >
+                    <Property Name="Font" Value="BlueHighway-10" />
+                    <Property Name="Text" Value="Tile" />
+                    <Property Name="TitlebarFont" Value="Commonwealth-10" />
+                    <Property Name="SizingEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="TitlebarEnabled" Value="True" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.00264883,0},{0.617625,0},{0.984663,0},{0.991133,0}}" />
+                    <Property Name="DragMovingEnabled" Value="False" />
+                    <Property Name="CloseButtonEnabled" Value="False" />
+                    <Window Type="TaharezLook/ScrollablePane" Name="EditRoot/EidtNoteBook/Tab 1/TileFrame/Tile" >
+                        <Property Name="ContentArea" Value="l:0 t:0 r:0 b:0" />
+                        <Property Name="HorzStepSize" Value="0.1" />
+                        <Property Name="VertStepSize" Value="0.1" />
+                        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                        <Property Name="HorzOverlapSize" Value="0.01" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.0440738,0},{0.117406,0},{0.947746,0},{0.968479,0}}" />
+                        <Property Name="VertOverlapSize" Value="0.01" />
+                        <Property Name="HorzScrollPosition" Value="0" />
+                        <Property Name="VertScrollPosition" Value="0" />
+                        <AutoWindow NameSuffix="__auto_container__" >
+                            <Property Name="ContentArea" Value="l:0 t:0 r:0 b:0" />
+                            <Property Name="ChildExtentsArea" Value="l:0 t:0 r:0 b:0" />
+                        </AutoWindow>
+                    </Window>
+                </Window>
+                <Window Type="TaharezLook/RadioButton" Name="EditRoot/EidtNoteBook/Tab 1/DeformSelect" >
+                    <Property Name="Text" Value="Deform" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.0566414,0},{0.00466057,0},{0.41374,0},{0.0467809,0}}" />
+                </Window>
+                <Window Type="TaharezLook/RadioButton" Name="EditRoot/EidtNoteBook/Tab 1/SplatSelect" >
+                    <Property Name="Text" Value="Splat" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.43834,0},{0.00510115,0},{0.732769,0},{0.0504687,0}}" />
+                </Window>
+                <Window Type="TaharezLook/RadioButton" Name="EditRoot/EidtNoteBook/Tab 1/TileSelect" >
+                    <Property Name="Text" Value="Tile" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.74387,0},{0.00766865,0},{0.99387,0},{0.0497881,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Spinner" Name="EditRoot/EidtNoteBook/Tab 1/BrushSizeSpinner" >
+                    <Property Name="Font" Value="BlueHighway-12" />
+                    <Property Name="Text" Value="64" />
+                    <Property Name="StepSize" Value="1" />
+                    <Property Name="CurrentValue" Value="64" />
+                    <Property Name="MaximumValue" Value="32767" />
+                    <Property Name="MinimumValue" Value="-32768" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.507241,0},{0.0524504,0},{0.817143,0},{0.0864492,0}}" />
+                </Window>
+                <Window Type="TaharezLook/StaticText" Name="EditRoot/EidtNoteBook/Tab 1/brushSizeStatic" >
+                    <Property Name="Font" Value="BlueHighway-12" />
+                    <Property Name="Text" Value="Brush Size:" />
+                    <Property Name="FrameEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.0774136,0},{0.0517586,0},{0.438505,0},{0.0873818,0}}" />
+                </Window>
+            </Window>
+            <Window Type="DefaultWindow" Name="EditRoot/EidtNoteBook/Tab 2" >
+                <Property Name="Text" Value="Scene" />
+                <Property Name="Visible" Value="False" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Window Type="TaharezLook/FrameWindow" Name="EditRoot/EidtNoteBook/Tab 2/ResourceManager" >
+                    <Property Name="Font" Value="BlueHighway-12" />
+                    <Property Name="Text" Value="ResourceManager" />
+                    <Property Name="TitlebarFont" Value="Commonwealth-10" />
+                    <Property Name="SizingEnabled" Value="False" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="TitlebarEnabled" Value="True" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.0372978,0},{0.0132627,0},{0.967446,0},{0.731894,0}}" />
+                    <Property Name="DragMovingEnabled" Value="False" />
+                    <Property Name="CloseButtonEnabled" Value="False" />
+                    <Window Type="TaharezLook/Listbox" Name="EditRoot/EidtNoteBook/Tab 2/ResourceManager/ResourceListBox" >
+                        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                        <Property Name="UnifiedAreaRect" Value="{{0.0556669,0},{0.0771949,0},{0.940462,0},{0.975564,0}}" />
+                    </Window>
+                </Window>
+                <Window Type="TaharezLook/StaticImage" Name="EditRoot/EidtNoteBook/Tab 2/Preview" >
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.426829,0},{0.742742,0},{0.955886,0},{0.976502,0}}" />
+                </Window>
+                <Window Type="TaharezLook/Checkbox" Name="EditRoot/EidtNoteBook/Tab 2/" >
+                    <Property Name="Text" Value="Preview" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.0321742,0},{0.927127,0},{0.411726,0},{0.970872,0}}" />
+                </Window>
+            </Window>
+            <Window Type="DefaultWindow" Name="EditRoot/EidtNoteBook/Tab 3" >
+                <Property Name="Text" Value="Other" />
+                <Property Name="Visible" Value="False" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0102154,0},{-0.0122144,0},{1.01022,0},{0.987785,0}}" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

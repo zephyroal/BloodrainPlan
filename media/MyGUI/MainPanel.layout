@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="20 72 345 563" layer="Overlapped" name="_Main">
+        <Property key="Caption" value="ControlCenter"/>
+        <Widget type="TabControl" skin="TabControl" position="2 2 323 523" name="MainControl">
+            <Property key="ButtonAutoWidth" value="true"/>
+            <Property key="SmoothShow" value="true"/>
+            <Widget type="TabItem" skin="Default" position="2 24 317 495">
+                <Property key="Caption" value="Deform"/>
+                <Widget type="Button" skin="Button" position="14 22 160 26" name="New">
+                    <Property key="Caption" value="New"/>
+                </Widget>
+                <Widget type="Button" skin="Button" position="14 53 160 26" name="Load">
+                    <Property key="Caption" value="Load Test Layout"/>
+                </Widget>
+                <Widget type="Button" skin="Button" position="14 85 160 26" name="Quit">
+                    <Property key="Caption" value="Quit"/>
+                </Widget>
+            </Widget>
+            <Widget type="TabItem" skin="Default" position="2 24 317 495">
+                <Property key="Caption" value="Paint"/>
+                <Widget type="ComboBox" skin="ComboBox" position="5 105 176 26" name="CreateObject">
+                    <Property key="ModeDrop" value="true"/>
+                    <Property key="Caption" value="Select Type"/>
+                </Widget>
+                <Widget type="ImageBox" skin="ImageBox" position="25 10 100 95" name="AtlasView"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 317 495">
+                <Property key="Caption" value="SceneAdd"/>
+                <Widget type="TreeControl" skin="Tree" position="5 5 320 490" align="Stretch" name="MyTree"/>
+                <Widget type="Canvas" skin="Canvas" position="150 5 145 155" name="SceneAddView"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 317 495">
+                <Property key="Caption" value="SceneEdit"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 317 495">
+                <Property key="Caption" value="Sys"/>
+            </Widget>
+        </Widget>
+    </Widget>
+</MyGUI>
