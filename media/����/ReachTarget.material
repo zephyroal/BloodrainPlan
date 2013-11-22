@@ -1,0 +1,51 @@
+
+
+material Game/ReachAble
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend add
+			depth_check on
+			depth_write off
+			depth_bias 7
+			
+			texture_unit
+			{
+				texture ReachAble.jpg
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/UnReachAble
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend add
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture UnReachAble.jpg
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}

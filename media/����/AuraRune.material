@@ -1,0 +1,250 @@
+material Game/AuraRune0
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune0.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune1
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune1.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune2
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune2.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+
+material Game/AuraRune3
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune3.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune4
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune4.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune5
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune5.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune6
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune6.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune7
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune7.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune8
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune8.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}
+
+material Game/AuraRune9
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture AuraRune9.tga
+				tex_address_mode clamp
+				rotate_anim 0.3
+				filtering none
+			}
+
+		}
+	}
+}

@@ -1,0 +1,24 @@
+material Game/UnitSelect
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture UnitSelectTexture.tga
+				tex_address_mode clamp
+				rotate_anim 0.1
+				filtering none
+			}
+
+		}
+	}
+}

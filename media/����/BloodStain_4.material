@@ -1,0 +1,23 @@
+material Game/BloodStain_4
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			fog_override true none
+			scene_blend alpha_blend
+			depth_check on
+			depth_write off
+			depth_bias 7
+
+			texture_unit
+			{
+				texture BloodStain_4.tga
+				tex_address_mode clamp
+				filtering none
+			}
+
+		}
+	}
+}
