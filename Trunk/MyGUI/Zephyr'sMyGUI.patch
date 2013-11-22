@@ -1,0 +1,295 @@
+Index: CMake/Packages/FindOGRE_Old.cmake
+===================================================================
+--- CMake/Packages/FindOGRE_Old.cmake	(revision 5287)
++++ CMake/Packages/FindOGRE_Old.cmake	(working copy)
+@@ -18,9 +18,9 @@
+ 
+ 	if (MYGUI_STANDALONE_BUILD)
+ 		CMAKE_POLICY(PUSH)
+-		SET(OGRE_INCLUDE_DIR "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/include" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/OgreMain/include" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/include/OGRE" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/boost_1_42" CACHE STRING "")
++		SET(OGRE_INCLUDE_DIR "C:/MYGUIHACK OGRE_HOME MYGUIBRACKETHACK/include" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/OgreMain/include" "C:/MYGUIHACK OGRE_HOME MYGUIBRACKETHACK/include/OGRE" "C:/MYGUIHACK OGRE_HOME MYGUIBRACKETHACK/boost_1_42" CACHE STRING "")
+ 		SET(OGRE_LIBRARIES "debug;OgreMain_d;optimized;OgreMain" CACHE STRING "")
+-		SET(OGRE_LIB_DIR "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/lib" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/lib" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/boost_1_42/lib" CACHE STRING "")
++		SET(OGRE_LIB_DIR "C:/MYGUIHACK OGRE_HOME MYGUIBRACKETHACK/lib" "C:/MYGUIHACK OGRE_SRC MYGUIBRACKETHACK/lib" "C:/MYGUIHACK OGRE_HOME MYGUIBRACKETHACK/boost_1_42/lib" CACHE STRING "")
+ 		SET(OGRE_FOUND TRUE)
+ 		CMAKE_POLICY(POP)
+ 	else()
+@@ -32,7 +32,7 @@
+ 		endif()
+ 		
+ 		IF (NOT OGRE_SOURCE)
+-			set(OGRE_SOURCE "" CACHE PATH "Path to Ogre sources (set it if you don't have OGRE_SRC or OGRE_SRC environment variables)")
++			set(OGRE_SOURCE "" CACHE PATH "Path to Ogre sources (set it if you don't have OGRE_HOME or OGRE_SRC environment variables)")
+ 		ENDIF ()
+ 		
+ 		if (NOT OGRE_BUILD)
+@@ -41,7 +41,7 @@
+ 
+ 		if (EXISTS ${OGRE_SOURCE}/CMake)
+ 			MESSAGE(STATUS "Original FindOGRE.cmake found, trying to use it")
+-			set (OGRE_SRC ${OGRE_SOURCE})
++			set (OGRE_HOME ${OGRE_SOURCE})
+ 			FIND_PACKAGE(OGRE)
+ 		endif()
+ 
+@@ -74,7 +74,7 @@
+ 
+ 		IF (WIN32) #Windows
+ 			MESSAGE(STATUS "Looking for OGRE")
+-			SET(OGRESDK $ENV{OGRE_SRC})
++			SET(OGRESDK $ENV{OGRE_HOME})
+ 			SET(OGRESOURCE $ENV{OGRE_SRC})
+ 			IF (OGRE_SOURCE)
+ 				MESSAGE(STATUS "Using OGRE built from source (from specified path)")
+@@ -86,14 +86,14 @@
+ 				SET(OGRE_INCLUDE_DIR ${OGRESDK}/include/OGRE ${OGRESDK}/include)
+ 				SET(OGRE_LIB_DIR ${OGRESDK}/lib)
+ 				IF (NOT OGRE_SOURCE)
+-					set(OGRE_SOURCE $ENV{OGRE_SRC} CACHE PATH "Path to Ogre sources (set it if you don't have OGRE_SRC or OGRE_SRC environment variables)")
++					set(OGRE_SOURCE $ENV{OGRE_HOME} CACHE PATH "Path to Ogre sources (set it if you don't have OGRE_HOME or OGRE_SRC environment variables)")
+ 				ENDIF ()
+ 			ELSEIF (OGRESOURCE)
+-				MESSAGE(STATUS "Using OGRE built from source")
+-				SET(OGRE_INCLUDE_DIR $ENV{OGRE_SRC}/OgreMain/include ${OGRE_SOURCE}/include)
++				MESSAGE(STATUS "Using OGRE built from source,ЧЯДгЈ¬ХэИ·µД№вГчґуµА")
++				SET( OGRE_INCLUDE_DIR $ENV{OGRE_SRC}/OgreMain/include; $ENV{OGRE_SRC}/include )
+ 				SET(OGRE_LIB_DIR $ENV{OGRE_SRC}/lib)
+ 				IF (NOT OGRE_SOURCE)
+-					set(OGRE_SOURCE $ENV{OGRE_SRC} CACHE PATH "Path to Ogre sources (set it if you don't have OGRE_SRC or OGRE_SRC environment variables)")
++					set(OGRE_SOURCE $ENV{OGRE_SRC} CACHE PATH "Path to Ogre sources (set it if you don't have OGRE_HOME or OGRE_SRC environment variables)")
+ 				ENDIF ()
+ 			ENDIF ()
+ 
+@@ -107,7 +107,7 @@
+ 		ELSE (WIN32) #Unix
+ 			IF (OGRE_SOURCE)
+ 				MESSAGE(STATUS "Using OGRE built from source (from specified path)")
+-				SET(OGRE_INCLUDE_DIR ${OGRE_SOURCE}/OgreMain/include)
++				SET(OGRE_INCLUDE_DIR ${OGRE_SOURCE}/OgreMain/include ${OGRE_SOURCE}/include)
+ 				SET(OGRE_LIB_DIR ${OGRE_SOURCE}/lib)
+ 			ELSE ()
+ 				CMAKE_MINIMUM_REQUIRED(VERSION 2.4.7 FATAL_ERROR)
+Index: Common/Input/Win32/InputManager.h
+===================================================================
+--- Common/Input/Win32/InputManager.h	(revision 5287)
++++ Common/Input/Win32/InputManager.h	(working copy)
+@@ -35,6 +35,8 @@
+ 
+ 		void setMousePosition(int _x, int _y);
+ 		void updateCursorPosition();
++		static bool m_bImming;
++		static bool m_bCompleted;
+ 
+ 	private:
+ 		static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+@@ -60,5 +62,4 @@
+ 	};
+ 
+ } // namespace input
+-
+ #endif // __INPUT_MANAGER_H__
+Index: Common/Ogre/RenderBox/RenderBoxScene.h
+===================================================================
+--- Common/Ogre/RenderBox/RenderBoxScene.h	(revision 5287)
++++ Common/Ogre/RenderBox/RenderBoxScene.h	(working copy)
+@@ -259,10 +259,10 @@
+ 			// СЃРѕР·РґР°РµРј РЅРѕРґ Рє РєРѕС‚РѕСЂСѓРјСѓ Р±СѓРґРµРј РІСЃСЏРєСѓСЋ РґСЂСЏРЅСЊ Р°С‚Р°С‡РёС‚СЊ
+ 			mNode = mScene->getRootSceneNode()->createChildSceneNode();
+ 
+-			mScene->setAmbientLight(Ogre::ColourValue(0.8, 0.8, 0.8));
++			mScene->setAmbientLight(Ogre::ColourValue(0.8f, 0.8f, 0.8f));
+ 
+ 			// РіР»Р°РІРЅС‹Р№ РёСЃС‚РѕС‡РЅРёРє СЃРІРµС‚Р°
+-			Ogre::Vector3 dir(-1, -1, 0.5);
++			Ogre::Vector3 dir(-1.0f, -1.0f, 0.5f);
+ 			dir.normalise();
+ 			Ogre::Light* light = mScene->createLight(MyGUI::utility::toString(this, "_LightRenderBox"));
+ 			light->setType(Ogre::Light::LT_DIRECTIONAL);
+@@ -309,7 +309,7 @@
+ 				float height = vec.y;
+ 				float len1 = height;
+ 				if (len1 < len2) len1 = len2;
+-				len1 /= 0.86; // [sqrt(3)/2] for 60 degrees field of view
++				len1 /= 0.86f; // [sqrt(3)/2] for 60 degrees field of view
+ 				// С†РµРЅС‚СЂ РѕР±СЉРµРєС‚Р° РїРѕ РІРµСЂС‚РёРєР°Р»Рё + РѕС‚СЉРµС…Р°С‚СЊ С‚Р°Рє, С‡С‚РѕР±С‹ РІР»РµР·Р»Р° Р±Р»РёР¶РЅСЏСЏ РіСЂР°РЅСЊ BoundingBox'Р° + С‡СѓС‚СЊ РІРІРµСЂС… Рё РµС‰Рµ РЅР°Р·Р°Рґ РґР»СЏ РєСЂР°СЃРѕС‚С‹
+ 				Ogre::Vector3 result = box.getCenter() + Ogre::Vector3(0, 0, vec.z / 2 + len1) + Ogre::Vector3(0, height * 0.1f, len1 * 0.2f);
+ 				Ogre::Vector3 look = Ogre::Vector3(0, box.getCenter().y /*+ box.getCenter().y * (1-mCurrentScale)*/, 0);
+Index: MyGUIEngine/include/MyGUI_Canvas.h
+===================================================================
+--- MyGUIEngine/include/MyGUI_Canvas.h	(revision 5287)
++++ MyGUIEngine/include/MyGUI_Canvas.h	(working copy)
+@@ -56,7 +56,7 @@
+ 				@remarks
+ 				The size specified at creation of the texture increases to nearest power of two and doesn't change any more. Texture is always stretched on all widget.
+ 			*/
+-			// Размер указаный при создании текстуры увеличиваеться до степени двойки и больше не меняется.
++			// Размер указаный пр?создании текстуры увеличиваеть? до степен?двойки ?больше не ме?ет?.
+ 			// Текстура всегда растягиваеться во весь виджет.
+ 			TRM_PT_CONST_SIZE,
+ 
+@@ -68,10 +68,10 @@
+ 				The size specified at creation of the texture is ignored.
+ 				The texture is automatically recreated if the size of the widget becomes bigger.
+ 			*/
+-			// Размер указаный при создании текстуры игнорируется.
+-			// Текстура всегда больше размера окна и кратна степени двойки.
+-			// Если размер виджета становится больше чем размер текстуры, текстура пересоздается.
+-			// Текстура всегда отображатся пиксель в пиксель на виджет, образуя рабочую область текстуры.
++			// Размер указаный пр?создании текстуры игнорирует?.
++			// Текстура всегда больше размер?окна ?кратна степен?двойки.
++			// Если размер виджет?становит? больше че?размер текстуры, текстура пересоздается.
++			// Текстура всегда отображатся пиксел??пиксел?на виджет, образуя рабочу?област?текстуры.
+ 			TRM_PT_VIEW_REQUESTED,
+ 
+ 			/**	Mode when the texture stretched on all widget and automatically changes the size for nice look.
+@@ -81,9 +81,9 @@
+ 				The size specified at creation of the texture is ignored.
+ 				The texture is automatically recreated if the size of the widget becomes bigger.
+ 			*/
+-			// Размер указаный при создании текстуры игнорируется.
+-			// Текстура всегда больше размера окна и кратна степени двойки.
+-			// Если размер виджета становится больше чем размер текстуры, текстура пересоздается.
++			// Размер указаный пр?создании текстуры игнорирует?.
++			// Текстура всегда больше размер?окна ?кратна степен?двойки.
++			// Если размер виджет?становит? больше че?размер текстуры, текстура пересоздается.
+ 			// Текстура всегда растягиваеться во весь виджет.
+ 			TRM_PT_VIEW_ALL
+ 		};
+Index: MyGUIEngine/include/MyGUI_DynLib.h
+===================================================================
+--- MyGUIEngine/include/MyGUI_DynLib.h	(revision 5287)
++++ MyGUIEngine/include/MyGUI_DynLib.h	(working copy)
+@@ -13,7 +13,7 @@
+ 
+ #if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
+ #    define MYGUI_DYNLIB_HANDLE hInstance
+-#    define MYGUI_DYNLIB_LOAD( a ) LoadLibrary( a )
++#    define MYGUI_DYNLIB_LOAD( a ) LoadLibraryA( a )
+ #    define MYGUI_DYNLIB_GETSYM( a, b ) GetProcAddress( a, b )
+ #    define MYGUI_DYNLIB_UNLOAD( a ) !FreeLibrary( a )
+ 
+Index: MyGUIEngine/include/MyGUI_StringUtility.h
+===================================================================
+--- MyGUIEngine/include/MyGUI_StringUtility.h	(revision 5287)
++++ MyGUIEngine/include/MyGUI_StringUtility.h	(working copy)
+@@ -52,6 +52,13 @@
+ 			return stream.str();
+ 		}
+ 
++		/*
++		inline std::wstring toString (T1 p1, T2 p2, T3 p3)
++				{
++					std::ostringstream stream;
++					stream << p1 << p2 << p3;
++					return stream.str();
++				}*/
+ 		template<typename T1,  typename T2,  typename T3, typename T4>
+ 		inline std::string toString (T1 p1, T2 p2, T3 p3, T4 p4)
+ 		{
+Index: MyGUIEngine/include/MyGUI_TabItem.h
+===================================================================
+--- MyGUIEngine/include/MyGUI_TabItem.h	(revision 5287)
++++ MyGUIEngine/include/MyGUI_TabItem.h	(working copy)
+@@ -18,7 +18,7 @@
+ 		TabItem widget description should be here.
+ 	*/
+ 	class MYGUI_EXPORT TabItem :
+-		public TextBox // FIXME пока для кэпшена вместо виджета текст (Bug #190)
++		public TextBox // FIXME пока для кэпшен?вместо виджет?текс?(Bug #190)
+ 	{
+ 		MYGUI_RTTI_DERIVED( TabItem )
+ 
+Index: MyGUIEngine/src/MyGUI_BackwardCompatibility.cpp
+===================================================================
+--- MyGUIEngine/src/MyGUI_BackwardCompatibility.cpp	(revision 5287)
++++ MyGUIEngine/src/MyGUI_BackwardCompatibility.cpp	(working copy)
+@@ -906,7 +906,7 @@
+ 				// сохраняем
+ 				std::string shared_text = node->findAttribute("texture");
+ 
+-				// берем детей и крутимся, основной цикл
++				// бере?дете??крутим?, основной цикл
+ 				xml::ElementEnumerator info = node->getElementEnumerator();
+ 				while (info.next("Info"))
+ 				{
+@@ -993,7 +993,7 @@
+ 	{
+ 		std::string resourceCategory = ResourceManager::getInstance().getCategoryName();
+ 
+-		// берем детей и крутимся, основной цикл со скинами
++		// бере?дете??крутим?, основной цикл со скинам?
+ 		xml::ElementEnumerator skin = _node->getElementEnumerator();
+ 		while (skin.next(_tag))
+ 		{
+Index: MyGUIEngine/src/MyGUI_ClipboardManager.cpp
+===================================================================
+--- MyGUIEngine/src/MyGUI_ClipboardManager.cpp	(revision 5287)
++++ MyGUIEngine/src/MyGUI_ClipboardManager.cpp	(working copy)
+@@ -74,9 +74,9 @@
+ #if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
+ 		// Р±РµСЂРµРј РёРјСЏ РЅР°С€РµРіРѕ СЌРєР·РµС€РЅРёРєР°
+ 		char buf[MAX_PATH];
+-		GetModuleFileName(0, (LPCH)&buf, MAX_PATH);
++		GetModuleFileNameA(0, (LPCH)&buf, MAX_PATH);
+ 		// Р±РµСЂРµРј РёРЅСЃС‚Р°РЅСЃ РЅР°С€РµРіРѕ РјРѕРґСѓР»СЏ
+-		HINSTANCE instance = GetModuleHandle(buf);
++		HINSTANCE instance = GetModuleHandleA(buf);
+ 
+ 		EnumChildWindows(GetDesktopWindow(), (WNDENUMPROC)EnumWindowProc, (LPARAM)instance);
+ 		mHwnd = (size_t)g_hWnd;
+Index: MyGUIEngine/src/MyGUI_UString.cpp
+===================================================================
+--- MyGUIEngine/src/MyGUI_UString.cpp	(revision 5287)
++++ MyGUIEngine/src/MyGUI_UString.cpp	(working copy)
+@@ -1836,9 +1836,11 @@
+ 		i = str.begin();
+ 		size_type length = 0;
+ 
+-		while ( i != ie ) {
++		while ( i != ie ) 
++		{
+ 			// characters pass until we find an extended sequence
+-			if (( *i ) & 0x80 ) {
++			if (( *i ) & 0x80 ) 
++			{
+ 				unsigned char c = ( *i );
+ 				size_t contBytes = 0;
+ 
+Index: Plugins/Plugin_HikariWidget/KeyboardHook.cpp
+===================================================================
+--- Plugins/Plugin_HikariWidget/KeyboardHook.cpp	(revision 5287)
++++ Plugins/Plugin_HikariWidget/KeyboardHook.cpp	(working copy)
+@@ -46,9 +46,24 @@
+ {
+ 	switch (msg)
+ 	{
++	case WM_CHAR:
++	{
++		if (wParam >> 8)
++		{
++			char mb[2] = {0};
++			mb[0] = (wParam >> 8) & 0xFF;
++			mb[1] = (wParam & 0xFF);
++			wchar_t wb = 0;
++			MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (char*)(mb), 2, &wb, 1);
++			Application::getInstance().injectKeyPress(MyGUI::KeyCode::None, wb);
++		}
++		else
++			Application::getInstance().injectKeyPress(MyGUI::KeyCode::None, wParam);
++		break;
++	}
+ 	case WM_KEYDOWN:
+ 	case WM_KEYUP:
+-	case WM_CHAR:
++	//case WM_CHAR:
+ 	case WM_DEADCHAR:
+ 	case WM_SYSKEYDOWN:
+ 	case WM_SYSKEYUP:
+@@ -71,7 +86,6 @@
+ 	{
+ 		if (listener)
+ 			listener->handleKeyMessage(hwnd, msg, wParam, lParam);
+-
+ 		break;
+ 	}
+ 	}
